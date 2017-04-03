@@ -1,0 +1,787 @@
+/**
+ * Author: Matthew Horridge<br>
+ * The University Of Manchester<br>
+ * Medical Informatics Group<br>
+ * Date: Jan 25, 2006<br><br>
+ * <p/>
+ * matthew.horridge@cs.man.ac.uk<br>
+ * www.cs.man.ac.uk/~horridgm<br><br>
+ */
+
+options {
+    JAVA_UNICODE_ESCAPE = true;
+    STATIC = false;
+}
+
+
+PARSER_BEGIN(DLSyntaxParser)
+
+package edu.stanford.smi.protegex.owl.model.classparser.dl;
+
+import edu.stanford.smi.protege.model.*;
+import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.classparser.*;
+import java.io.*;
+import java.util.*;
+
+public class DLSyntaxParser {
+
+    private static DatatypeNameChecker datatypeChecker;
+
+    private boolean create;
+
+    private OWLModel owlModel;
+
+    public static DatatypeNameChecker getDatatypeNameChecker() {
+        return datatypeChecker;
+    }
+
+    public OWLModel getOWLModel() {
+        return owlModel;
+    }
+
+    public void setCreate(boolean b) {
+        this.create = b;
+    }
+
+    public static OWLClass parseExpression(OWLModel owlModel, String expression, boolean create) throws ParseException {
+        DLSyntaxParserTokenManager tokMan = new DLSyntaxParserTokenManager(new JavaCharStream(new StringReader(expression)));
+        tokMan.setOWLModel(owlModel);
+        DLSyntaxParser parser = new DLSyntaxParser(tokMan);
+        parser.setCreate(create);
+        parser.owlModel = owlModel;
+        datatypeChecker = new DatatypeNameChecker(owlModel);
+        return parser.parse();
+    }
+
+
+}
+
+PARSER_END(DLSyntaxParser)
+
+
+TOKEN_MGR_DECLS : {
+
+    private OWLModel owlModel;
+
+    private DatatypeNameChecker datatypeChecker;
+
+    public void setOWLModel(OWLModel owlModel) {
+        this.owlModel = owlModel;
+        datatypeChecker = new DatatypeNameChecker(owlModel);
+    }
+
+}
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+TOKEN: {<OPENPAR: "(">}
+TOKEN: {<CLOSEPAR: ")">}
+TOKEN: {<OPENSQPAR: "[">}
+TOKEN: {<CLOSESQPAR: "]">}
+TOKEN: {<UNBOUNDEDVAL: "..">}
+
+/* COMMENTS */
+
+MORE :
+{
+  "//" : IN_SINGLE_LINE_COMMENT
+|
+  <"/**" ~["/"]> { input_stream.backup(1); } : IN_FORMAL_COMMENT
+|
+  "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_FORMAL_COMMENT>
+SPECIAL_TOKEN :
+{
+  <FORMAL_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+TOKEN :
+{
+  < INTEGER_LITERAL: (["-"])?["0"-"9"] (["0"-"9"])* >
+|
+  < FLOATING_POINT_LITERAL:
+        (["-"])?(["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)?
+      | (["-"])? "." (["0"-"9"])+ (<EXPONENT>)?
+      | (["-"])?(["0"-"9"])+ <EXPONENT>
+      | (["-"])?(["0"-"9"])+ (<EXPONENT>)?
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+|
+  < STRING_LITERAL:
+
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < ONE_OF: "owl:oneOf{" >
+|
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* | "'" (~["'"])* "'"> {
+    String idName = ParserUtils.dequoteIdentifier(matchedToken.image);
+    if(DLSyntaxParser.getDatatypeNameChecker().isDatatypeName(idName)) {
+		matchedToken.kind = DATATYPE_ID;
+    }
+    else {
+        Frame f = ParserUtils.getFrameByName(owlModel, idName);
+        if(f instanceof OWLClass) {
+            matchedToken.kind = CLASS_ID;
+        }
+        else if(f instanceof OWLObjectProperty) {
+            matchedToken.kind = OBJECT_PROPERTY_ID;
+        }
+        else if(f instanceof OWLDatatypeProperty) {
+            matchedToken.kind = DATATYPE_PROPERTY_ID;
+        }
+        else if(f instanceof OWLIndividual) {
+            matchedToken.kind = INDIVIDUAL_ID;
+        }
+
+    }
+  }
+|
+<DATATYPE_ID: <IDENTIFIER>>
+|
+<CLASS_ID: <IDENTIFIER>>
+|
+<OBJECT_PROPERTY_ID: <IDENTIFIER>>
+|
+<DATATYPE_PROPERTY_ID: <IDENTIFIER>>
+|
+<INDIVIDUAL_ID: <IDENTIFIER>>
+|
+  < #LETTER:
+      [
+       ":",
+       ".",
+       "-",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uac00"-"\ud7a3",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+
+OWLClass parse() :
+{
+    OWLClass result;
+}
+{
+    result=OWLUnionClass() <EOF>
+    {
+        return result;
+    }
+}
+
+OWLClass OWLUnionClass() :
+{
+    ArrayList operands = new ArrayList();
+    OWLClass cls;
+}
+{
+    (
+    (cls=OWLIntersectionClass() {operands.add(cls);})(("|" cls=OWLIntersectionClass(){operands.add(cls);})*)
+    )
+    {
+        if(create) {
+            if(operands.size() > 1) {
+                return owlModel.createOWLUnionClass(operands);
+            }
+            else {
+                return cls;
+            }
+
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+OWLClass OWLIntersectionClass() :
+{
+    ArrayList operands = new ArrayList();
+    OWLClass cls;
+}
+{
+    (
+    (cls=IntersectionClassOperand(){operands.add(cls);})
+    ("&"(cls=IntersectionClassOperand(){operands.add(cls);}))*
+    )
+    {
+        if(create) {
+            if(operands.size() > 1) {
+                return owlModel.createOWLIntersectionClass(operands);
+            }
+            else {
+                return cls;
+            }
+        }
+        return null;
+    }
+}
+
+OWLClass IntersectionClassOperand() :
+{
+    OWLClass cls;
+}
+{
+    (
+    cls=OWLNamedClass()
+    |
+    "(" cls=OWLUnionClass() ")"
+    |
+    cls=OWLRestriction()
+    |
+    cls=OWLComplementClass()
+    |
+    cls=OWLEnumeratedClass()
+    )
+    {
+        return cls;
+    }
+}
+
+OWLClass OWLNamedClass() :
+{
+    Token t;
+}
+{
+    t=<CLASS_ID> {
+      try {
+        String idName = ParserUtils.dequoteIdentifier(t.image);
+        return ParserUtils.getOWLClassFromName(owlModel, idName);
+      } catch (AmbiguousNameException ex) {
+        throw new ParseException(ex.getMessage());
+      }
+    }
+}
+
+OWLClass OWLRestriction() :
+{
+    OWLClass cls;
+}
+{
+    (
+    cls = OWLAllValuesFromRestriction()
+    |
+    cls = OWLSomeValuesFromRestriction()
+    |
+    cls = OWLMaxCardinalityRestriction()
+    |
+    cls = OWLMinCardinalityRestriction()
+    |
+    cls = OWLCardinalityRestriction()
+    ) {
+        return cls;
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// AllValuesFrom
+
+OWLClass OWLAllValuesFromRestriction() :
+{
+    OWLClass cls;
+}
+{
+    "*" (
+        cls = OWLAllValuesFromDatatypePart()
+        |
+        cls = OWLAllValuesFromObjectPart()
+        ) {
+            return cls;
+        }
+}
+
+OWLClass OWLAllValuesFromDatatypePart() :
+{
+    OWLDatatypeProperty prop;
+    RDFSDatatype datatype;
+}
+{
+    (
+    prop = DatatypeProperty()
+    datatype = Datatype()
+    ) {
+        if(create) {
+            return owlModel.createOWLAllValuesFrom(prop, datatype);
+        }
+        return null;
+    }
+}
+
+OWLClass OWLAllValuesFromObjectPart() :
+{
+    OWLObjectProperty prop;
+    OWLClass filler;
+}
+{
+    (
+    prop=ObjectProperty() filler=NestedClass()
+    )
+    {
+        if(create) {
+            return owlModel.createOWLAllValuesFrom(prop, filler);
+        }
+        return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// SomeValuesFrom
+
+OWLClass OWLSomeValuesFromRestriction() :
+{
+    OWLClass cls;
+}
+{
+    (
+    "?" (
+        cls=OWLSomeValuesFromDatatypePart()
+        |
+        cls=OWLSomeValuesFromObjectPart()
+        )
+    )
+    {
+        return cls;
+    }
+}
+
+OWLClass OWLSomeValuesFromDatatypePart() :
+{
+    OWLDatatypeProperty prop;
+    RDFSDatatype filler;
+}
+{
+    (
+    prop=DatatypeProperty() filler=Datatype()
+    )
+    {
+        if(create) {
+            return owlModel.createOWLSomeValuesFrom(prop, filler);
+        }
+        return null;
+    }
+}
+
+OWLClass OWLSomeValuesFromObjectPart() :
+{
+    OWLObjectProperty prop;
+    OWLClass filler;
+}
+{
+    (
+        prop=ObjectProperty() filler=NestedClass()
+    )
+    {
+        if(create) {
+            return owlModel.createOWLSomeValuesFrom(prop, filler);
+        }
+        return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// MinCardi
+
+OWLClass OWLMinCardinalityRestriction() :
+{
+    int card;
+    OWLMinCardinality cls = null;
+}
+{
+    (
+    ">" card=Integer() (
+        cls=OWLMinCardinalityDatatypePart()
+        |
+        (cls=OWLMinCardinalityObjectPart())?
+        )
+    )
+    {
+        if(create && cls != null) {
+            cls.setCardinality(card);
+            return cls;
+        }
+        return null;
+    }
+}
+
+OWLMinCardinality OWLMinCardinalityDatatypePart() :
+{
+    OWLDatatypeProperty prop;
+}
+{
+    (
+        prop=DatatypeProperty()
+    )
+    {
+        if(create) {
+            OWLMinCardinality minCardi = owlModel.createOWLMinCardinality();
+            minCardi.setOnProperty(prop);
+            return minCardi;
+        }
+        return null;
+    }
+}
+
+OWLMinCardinality OWLMinCardinalityObjectPart() :
+{
+    OWLObjectProperty prop;
+    OWLClass filler = null;
+}
+{
+    (
+    prop=ObjectProperty() (filler=NestedClass())?
+    )
+    {
+        if(create) {
+            OWLMinCardinality minCardi = owlModel.createOWLMinCardinality();
+            minCardi.setOnProperty(prop);
+            if(filler != null) {
+                minCardi.setValuesFrom(filler);
+            }
+            return minCardi;
+        }
+        return null;
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// MaxCardi
+
+OWLClass OWLMaxCardinalityRestriction() :
+{
+    int card;
+    OWLMaxCardinality cls = null;
+}
+{
+    (
+    "<" card=Integer() (
+        cls=OWLMaxCardinalityDatatypePart()
+        |
+        (cls=OWLMaxCardinalityObjectPart())?
+        )
+    )
+    {
+        if(create && cls != null) {
+            cls.setCardinality(card);
+            return cls;
+        }
+        return null;
+    }
+}
+
+OWLMaxCardinality OWLMaxCardinalityDatatypePart() :
+{
+    OWLDatatypeProperty prop;
+}
+{
+    (
+        prop=DatatypeProperty()
+    )
+    {
+        if(create) {
+            OWLMaxCardinality maxCardi = owlModel.createOWLMaxCardinality();
+            maxCardi.setOnProperty(prop);
+            return maxCardi;
+        }
+        return null;
+    }
+}
+
+OWLMaxCardinality OWLMaxCardinalityObjectPart() :
+{
+    OWLObjectProperty prop;
+    OWLClass filler = null;
+}
+{
+    (
+    prop=ObjectProperty() (filler=NestedClass())?
+    )
+    {
+        if(create) {
+            OWLMaxCardinality maxCardi = owlModel.createOWLMaxCardinality();
+            maxCardi.setOnProperty(prop);
+            if(filler != null) {
+                maxCardi.setValuesFrom(filler);
+            }
+            return maxCardi;
+        }
+        return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Cardi
+
+OWLClass OWLCardinalityRestriction() :
+{
+    int card;
+    OWLCardinality cls = null;
+}
+{
+    (
+    "=" card=Integer() (
+        cls=OWLCardinalityDatatypePart()
+        |
+        (cls=OWLCardinalityObjectPart())?
+        )
+    )
+    {
+        if(create && cls != null) {
+            cls.setCardinality(card);
+            return cls;
+        }
+        return null;
+    }
+}
+
+OWLCardinality OWLCardinalityDatatypePart() :
+{
+    OWLDatatypeProperty prop;
+}
+{
+    (
+        prop=DatatypeProperty()
+    )
+    {
+        if(create) {
+            OWLCardinality cardi = owlModel.createOWLCardinality();
+            cardi.setOnProperty(prop);
+            return cardi;
+        }
+        return null;
+    }
+}
+
+OWLCardinality OWLCardinalityObjectPart() :
+{
+    OWLObjectProperty prop;
+    OWLClass filler = null;
+}
+{
+    (
+    prop=ObjectProperty() (filler=NestedClass())?
+    )
+    {
+        if(create) {
+            OWLCardinality cardi = owlModel.createOWLCardinality();
+            cardi.setOnProperty(prop);
+            if(filler != null) {
+                cardi.setValuesFrom(filler);
+            }
+            return cardi;
+        }
+        return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Complement class
+
+OWLClass OWLComplementClass() :
+{
+    OWLClass cls;
+}
+{
+    (
+    "!"cls=NestedClass()
+    )
+    {
+        if(create) {
+            return owlModel.createOWLComplementClass(cls);
+        }
+        return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Enumerated class
+
+OWLClass OWLEnumeratedClass() :
+{
+    OWLIndividual ind;
+    ArrayList individuals = new ArrayList();
+}
+{
+    (
+    "{"
+        ind=Individual()
+        {individuals.add(ind);}
+        ((ind=Individual()
+            {  individuals.add(ind); })*)
+    "}"
+    )
+    {
+        return owlModel.createOWLEnumeratedClass(individuals);
+    }
+}
+
+RDFSDatatype Datatype() :
+{
+    Token token;
+}
+{
+    (
+    token=<DATATYPE_ID>
+    )
+    {
+        String idName = ParserUtils.dequoteIdentifier(token.image);
+        return owlModel.getRDFSDatatypeByName(datatypeChecker.getDatatypeQName(idName));
+    }
+
+}
+
+OWLDatatypeProperty DatatypeProperty() :
+{
+    Token t;
+    OWLDatatypeProperty prop;
+}
+{
+    t=<DATATYPE_PROPERTY_ID>{
+      try {
+        String idName = ParserUtils.dequoteIdentifier(t.image);
+        prop = ParserUtils.getOWLDatatypePropertyFromName(owlModel, idName);
+      } catch (AmbiguousNameException ex) {
+        throw new ParseException(ex.getMessage());
+      }
+      return prop;
+    }
+}
+
+OWLObjectProperty ObjectProperty() :
+{
+    Token t;
+    OWLObjectProperty prop;
+}
+{
+    t=<OBJECT_PROPERTY_ID>{
+       try {
+           String idName = ParserUtils.dequoteIdentifier(t.image);
+           prop = ParserUtils.getOWLObjectPropertyFromName(owlModel, idName); 
+       } catch (AmbiguousNameException ex) {
+                  throw new ParseException(ex.getMessage());
+       }
+       return prop;
+    }
+}
+
+OWLIndividual Individual() :
+{
+    Token t;
+}
+{
+    t=<INDIVIDUAL_ID>{
+       try {
+        String idName = ParserUtils.dequoteIdentifier(t.image);
+        return ParserUtils.getOWLIndividualFromName(owlModel, idName);
+       } catch (AmbiguousNameException ex) {
+          throw new ParseException(ex.getMessage());
+       } 
+    }
+}
+
+
+OWLClass NestedClass() :
+{
+    OWLClass cls;
+}
+{
+    (
+    cls=OWLNamedClass() | cls=OWLEnumeratedClass() | cls=OWLComplementClass() | "(" cls=OWLUnionClass() ")"
+    )
+    {
+        return cls;
+    }
+}
+
+int Integer() :
+{
+    Token t;
+}
+{
+    t=<INTEGER_LITERAL>{return Integer.parseInt(t.image);}
+}

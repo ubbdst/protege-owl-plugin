@@ -1,0 +1,936 @@
+//////////////////////////////////////////////////////////
+//
+//  Matthew Horridge (matthew.horridge@cs.man.ac.uk)
+//
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+// This grammar has several problems.  It looks like they can be
+// solved within the confines of JavaCC.  In particular when viewing
+// the grammar we find that named classes or restrictions are expressed
+// in the grammar element
+//    IDClass 	::= 	Identifier
+// Also the Restriction production,
+//    Restriction 	::=
+// is an orphan.  What is happening is that the java implementation of IDClass is 
+// doing some parsing of its own without telling the javacc parser.  One thing that 
+// helps is the fact that when the parser consumes a token, it can check whether the 
+// consumed token is a class, property or individual.  See the DLSyntax Parser for
+// example code.
+//
+// Also there is an ambiguity in the case that an individual has the name "true" or
+// "false".  The resolution of this ambiguity depends on the context and is also 
+// causing some awkward problems with the grammar.
+//////////////////////////////////////////////////////////
+
+
+
+options {
+    JAVA_UNICODE_ESCAPE = true;
+    STATIC = false;
+}
+
+PARSER_BEGIN(ManchesterOWLParser)
+
+package edu.stanford.smi.protegex.owl.model.classparser.manchester;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.hp.hpl.jena.ontology.OntClass;
+
+import edu.stanford.smi.protege.model.Cls;
+import edu.stanford.smi.protege.model.Frame;
+import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protege.model.Slot;
+import edu.stanford.smi.protege.model.ValueType;
+import edu.stanford.smi.protegex.owl.model.OWLAllValuesFrom;
+import edu.stanford.smi.protegex.owl.model.OWLCardinality;
+import edu.stanford.smi.protegex.owl.model.OWLCardinalityBase;
+import edu.stanford.smi.protegex.owl.model.OWLDatatypeProperty;
+import edu.stanford.smi.protegex.owl.model.OWLHasValue;
+import edu.stanford.smi.protegex.owl.model.OWLMaxCardinality;
+import edu.stanford.smi.protegex.owl.model.OWLMinCardinality;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.OWLRestriction;
+import edu.stanford.smi.protegex.owl.model.OWLSomeValuesFrom;
+import edu.stanford.smi.protegex.owl.model.ProtegeNames;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.model.RDFSClass;
+import edu.stanford.smi.protegex.owl.model.RDFSDatatype;
+import edu.stanford.smi.protegex.owl.model.RDFSLiteral;
+import edu.stanford.smi.protegex.owl.model.XSPNames;
+import edu.stanford.smi.protegex.owl.model.classparser.AmbiguousNameException;
+import edu.stanford.smi.protegex.owl.model.classparser.DatatypeNameChecker;
+import edu.stanford.smi.protegex.owl.model.classparser.ParserUtils;
+import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
+import edu.stanford.smi.protegex.owl.ui.profiles.OWLProfiles;
+import edu.stanford.smi.protegex.owl.ui.profiles.ProfilesManager;
+
+
+public class ManchesterOWLParser {
+
+    public static boolean nextCouldBeCls;
+    public static boolean nextCouldBeInstance;
+    public static boolean nextCouldBeSlot;
+    public static RDFProperty recentHasValueProperty;
+    public static String errorMessage;
+    public static boolean nextCouldBeDatatypeName;
+
+    private static DatatypeNameChecker datatypeNameChecker;
+
+    private OWLModel owlModel;
+
+    private boolean create;
+
+	public static DatatypeNameChecker getDatatypeNameChecker() {
+		return datatypeNameChecker;
+	}
+
+	private static void createDatatypeNameChecker(OWLModel owlModel) {
+		datatypeNameChecker = new DatatypeNameChecker(owlModel);
+	}
+
+    public static void checkClass(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = false;
+        parser.parseFile();
+    }
+
+
+    private void checkFeatureSupported(OntClass ontClass) throws ParseException {
+        if(!ProfilesManager.isFeatureSupported(owlModel, ontClass)) {
+            String label = ontClass.getLabel(null);
+            if(label == null) {
+                label = ontClass.getLocalName();
+            }
+            errorMessage = "Feature \"" + label + "\" unavailable in current language profile";
+            throw generateParseException();
+        }
+    }
+
+
+    public static void checkHasValueFiller(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = false;
+        parser.OWLHasValueValue();
+    }
+
+
+    public static void checkQuantifierFiller(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = false;
+        if(parser.DataType() == null) {
+            throw new ParseException("Unknown datatype \"" + text + "\".");
+        }
+    }
+
+
+    public static RDFSClass parseClass(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = true;
+        return parser.parseFile();
+    }
+
+
+    public static Object parseHasValueFiller(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = true;
+        return parser.OWLHasValueValue();
+    }
+
+
+    public static Object parseQuantifierFiller(OWLModel owlModel, String text) throws ParseException {
+        reset();
+        createDatatypeNameChecker(owlModel);
+        ManchesterOWLParser parser = new ManchesterOWLParser(new StringReader(text));
+        parser.owlModel = owlModel;
+        parser.create = false;
+        return parser.DataType();
+    }
+
+
+    private static void reset() {
+        nextCouldBeCls = false;
+        nextCouldBeSlot = false;
+        nextCouldBeInstance = false;
+        nextCouldBeDatatypeName = false;
+        errorMessage = null;
+    }
+}
+
+PARSER_END(ManchesterOWLParser)
+
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+TOKEN: {<SOME: "some" | "SOME">}
+TOKEN: {<ALL: "only" | "ONLY">}
+TOKEN: {<HAS: "has" | "HAS">}
+TOKEN: {<MIN: "min" | "MIN">}
+TOKEN: {<MAX: "max" | "MAX">}
+TOKEN: {<EXACT: "exactly" | "EXACTLY">}
+TOKEN: {<AND: "and" | "AND">}
+TOKEN: {<OR: "or" | "OR">}
+TOKEN: {<NOT: "not" | "NOT">}
+TOKEN: {<OPENPAR: "(">}
+TOKEN: {<CLOSEPAR: ")">}
+TOKEN: {<OPENSQPAR: "[">}
+TOKEN: {<CLOSESQPAR: "]">}
+TOKEN: {<UNBOUNDEDVAL: "..">}
+TOKEN: {<CLASS_EXPR_COMMENT: "//">}
+
+TOKEN :
+{
+  < INTEGER_LITERAL: (["-"])?["0"-"9"] (["0"-"9"])* >
+|
+  < FLOATING_POINT_LITERAL:
+        (["-"])?(["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)?
+      | (["-"])? "." (["0"-"9"])+ (<EXPONENT>)?
+      | (["-"])?(["0"-"9"])+ <EXPONENT>
+      | (["-"])?(["0"-"9"])+ (<EXPONENT>)?
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+|
+  < STRING_LITERAL:
+
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < ONE_OF: "owl:oneOf{" >
+|
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* | "'" (~["'"])* "'"> {
+    if(ManchesterOWLParser.getDatatypeNameChecker().isDatatypeName(ParserUtils.dequoteIdentifier(matchedToken.image))) {
+		matchedToken.kind = DATATYPEID;
+    }
+  }
+|
+<DATATYPEID: (<LETTER>)+>
+|
+  < #LETTER:
+      [
+       ":",
+       ".",
+       "-",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uac00"-"\ud7a3",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+
+RDFSClass parseFile() :
+{
+    RDFSClass result;
+    Token token;
+    String comment=null;
+}
+{
+    (token=<CLASS_EXPR_COMMENT>{comment = token.image;})?(result=OWLUnionClass(){
+        if(comment != null && result != null) {
+            if(result.isAnonymous() && owlModel.isProtegeMetaOntologyImported()) {
+                String propName = ProtegeNames.Slot.IS_COMMENTED_OUT;
+                RDFProperty commentProp = owlModel.getRDFProperty(propName);
+                if(commentProp != null) {
+                    result.setPropertyValue(commentProp, "true");
+                }
+            }
+        }
+
+    }) <EOF>
+       { return result; }
+}
+
+
+RDFSClass OWLUnionClass() :
+{
+    List clses = new ArrayList();
+    RDFSClass cls;
+}
+{
+    cls=OWLIntersectionClass() {clses.add(cls);} ( LOOKAHEAD(2) <OR>
+    cls=OWLIntersectionClass() {clses.add(cls);} )*
+    {
+        if(clses.size() == 1) {
+            return cls;
+        }
+        else {
+            checkFeatureSupported(OWLProfiles.Union_Classes);
+            if(create) {
+                return owlModel.createOWLUnionClass(clses);
+            }
+            else {
+                return null;
+            }
+        }
+    }
+}
+
+
+RDFSClass OWLIntersectionClass() :
+{
+    List clses = new ArrayList();
+    RDFSClass cls;
+}
+{
+    cls=OWLComplementClass() {clses.add(cls);} ( LOOKAHEAD(2) <AND>
+    cls=OWLComplementClass() {clses.add(cls);} )*
+    {
+        if(clses.size() == 1) {
+            return cls;
+        }
+        else {
+            if(create) {
+                return owlModel.createOWLIntersectionClass(clses);
+            }
+            else {
+                return null;
+            }
+        }
+    }
+}
+
+
+RDFSClass OWLComplementClass() :
+{
+    RDFSClass cls;
+}
+{
+    (
+        (<NOT> cls=OWLRestrictionOrNamedClass()
+            {
+                checkFeatureSupported(OWLProfiles.Complement_Classes);
+                if(create) {
+                    return owlModel.createOWLComplementClass(cls);
+                }
+                else {
+                    return null;
+                }
+            }
+        )
+      | cls=OWLRestrictionOrNamedClass()
+    )
+    {
+        return cls;
+    }
+}
+
+
+RDFSClass OWLRestrictionOrNamedClass() :
+{
+    RDFSClass cls;
+}
+{
+    (
+        cls=OWLEnumeratedClass()
+      | cls=IDClass()
+      | <OPENPAR> cls=OWLUnionClass() <CLOSEPAR>
+    )
+    {
+        return cls;
+    }
+}
+
+
+// An artificial concept that branches depending on whether the id is a class
+// or a slot name
+RDFSClass IDClass() :
+{
+    String id;
+}
+{
+    id=Identifier()
+    {
+    	Frame frame;
+        try {
+          frame = ParserUtils.getFrameByName(owlModel, id);
+        } catch (AmbiguousNameException ex) {
+          nextCouldBeCls = true;
+          nextCouldBeSlot = true;
+          errorMessage = ex.getMessage();
+          throw generateParseException();
+        }
+        if(frame instanceof RDFSClass) {
+            return (RDFSClass) frame;
+        }
+        else {
+            if(frame instanceof RDFProperty && !((RDFProperty)frame).isAnnotationProperty()) {
+                recentHasValueProperty = (RDFProperty) frame;
+                return Restriction(recentHasValueProperty);
+            }
+            else {
+                nextCouldBeCls = true;
+                nextCouldBeSlot = true;
+                errorMessage = "Class or property name expected";
+                throw generateParseException();
+            }
+        }
+    }
+}
+
+
+OWLRestriction Restriction(RDFProperty property) :
+{
+    OWLRestriction result;
+}
+{
+    (
+        result=OWLCardinalityBase(property)
+      | result=OWLHasValue(property)
+      | result=OWLAllValuesFrom(property)
+      | result=OWLSomeValuesFrom(property)
+    )
+    {
+        return result;
+    }
+}
+
+
+OWLCardinalityBase OWLCardinalityBase(RDFProperty property) :
+{
+    OWLCardinalityBase result;
+    RDFSClass valuesFromClass = null;
+}
+{
+    (
+        result=OWLMaxCardinality(property)
+      | result=OWLMinCardinality(property)
+      | result=OWLCardinality(property)
+    )  [ valuesFromClass = OWLUnionClass() ]
+    {
+        if(create && valuesFromClass != null) {
+            result.setValuesFrom(valuesFromClass);
+        }
+        return result;
+    }
+}
+
+
+OWLMaxCardinality OWLMaxCardinality(RDFProperty slot) :
+{
+    int card;
+}
+{
+    <MAX> card=CardinalityValue()
+    {
+        checkFeatureSupported(OWLProfiles.MaxCardinality_Restrictions);
+        if(create) {
+            return owlModel.createOWLMaxCardinality(slot, card);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+
+OWLMinCardinality OWLMinCardinality(RDFProperty slot) :
+{
+    int card;
+}
+{
+    <MIN> card=CardinalityValue()
+    {
+        checkFeatureSupported(OWLProfiles.MinCardinality_Restrictions);
+        if(create) {
+            return owlModel.createOWLMinCardinality(slot, card);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+
+OWLCardinality OWLCardinality(RDFProperty slot) :
+{
+    int card;
+}
+{
+    <EXACT> card=CardinalityValue()
+    {
+        checkFeatureSupported(OWLProfiles.MinCardinality_Restrictions);
+        checkFeatureSupported(OWLProfiles.MaxCardinality_Restrictions);
+        if(create) {
+            return owlModel.createOWLCardinality(slot, card);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+
+OWLHasValue OWLHasValue(RDFProperty slot) :
+{
+    Object value;
+}
+{
+    <HAS> value=OWLHasValueValue()
+    {
+        checkFeatureSupported(OWLProfiles.HasValue_Restrictions);
+        if(!(slot instanceof OWLDatatypeProperty)) {
+            if(OWLUtil.hasOWLDLProfile(owlModel) && (value instanceof Cls || value instanceof Slot)) {
+                value = null;
+            }
+            if(!(value instanceof Instance)) {
+                nextCouldBeInstance = true;
+                if(OWLUtil.hasOWLFullProfile(owlModel)) {
+                    nextCouldBeSlot = true;
+                    nextCouldBeCls = true;
+                    errorMessage = "Individual, class or property expected";
+                }
+                else {
+                    errorMessage = "Individual expected (in OWL DL)";
+                }
+                throw generateParseException();
+            }
+        }
+        else if(slot instanceof OWLDatatypeProperty && value instanceof Instance) {
+            errorMessage = "Datatype literal expected";
+            throw generateParseException();
+        }
+        if(create) {
+            return owlModel.createOWLHasValue(slot, value);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+
+Object OWLHasValueValueAndEOF() :
+{
+    Object result;
+}
+{
+    result=OWLHasValueValue() <EOF>
+    {
+        return result;
+    }
+}
+
+
+Object OWLHasValueValue() :
+{
+    Object result;
+}
+{
+    (
+        result=OWLHasValueValueString()
+      | result=OWLHasValueValueFloat()
+      | result=OWLHasValueValueInteger()
+      | result=OWLHasValueValueBooleanOrInstance()
+    )
+    {
+        return result;
+    }
+}
+
+
+String OWLHasValueValueString() :
+{
+    Token token;
+}
+{
+    token=<STRING_LITERAL>
+    {
+        String str = token.image;
+        int len = str.length();
+        return str.substring(1, len - 1);
+    }
+}
+
+
+Float OWLHasValueValueFloat() :
+{
+    Token token;
+}
+{
+    token=<FLOATING_POINT_LITERAL>
+    {
+        return Float.valueOf(token.image);
+    }
+}
+
+
+Integer OWLHasValueValueInteger() :
+{
+    Token token;
+}
+{
+    token=<INTEGER_LITERAL>
+    {
+        return Integer.valueOf(token.image);
+    }
+}
+
+
+Object OWLHasValueValueBooleanOrInstance() :
+{
+    String id;
+}
+{
+    id=Identifier()
+    {
+        if(id.equals("true")) {
+            return Boolean.TRUE;
+        }
+        else
+        if(id.equals("false")) {
+            return Boolean.FALSE;
+        }
+        else {
+            RDFResource instance = ParserUtils.getRDFResourceFromName(owlModel, id);
+            if(instance == null) {
+                nextCouldBeInstance = true;
+                nextCouldBeSlot = true;
+                nextCouldBeCls = true;
+                errorMessage = "Instance or datatype literal expected";
+                throw generateParseException();
+            }
+            return instance;
+        }
+    }
+}
+
+
+int CardinalityValue() :
+{
+    Token token;
+}
+{
+    token=<INTEGER_LITERAL>
+    {
+        int value = Integer.parseInt(token.image);
+        if(value >= 0) {
+            return value;
+        }
+        else {
+            throw generateParseException();
+        }
+    }
+}
+
+
+String Identifier() :
+{
+    Token t;
+}
+{
+    t=<IDENTIFIER> {
+        return ParserUtils.dequoteIdentifier(t.image);
+    }
+}
+
+
+RDFSClass OWLEnumeratedClass() :
+{
+    Collection values = new ArrayList();
+    String instanceText;
+}
+{
+    "{" (instanceText=Identifier()
+    {
+        Instance instance = (Instance) ParserUtils.getFrameByName(owlModel,  instanceText);
+        if(OWLUtil.hasOWLDLProfile(owlModel) && (instance instanceof Cls || instance instanceof Slot)) {
+            instance = null;
+        }
+        if(instance == null) {
+            nextCouldBeInstance = true;
+            if(OWLUtil.hasOWLFullProfile(owlModel)) {
+                nextCouldBeCls = true;
+                nextCouldBeSlot = true;
+                errorMessage = "Name of an individual, class or property expected";
+            }
+            else {
+                errorMessage = "Name of an individual expected (in OWL DL)";
+            }
+            throw generateParseException();
+        }
+        values.add(instance);
+    }
+    )* "}"
+    {
+        checkFeatureSupported(OWLProfiles.Enumerated_Classes);
+        if(create) {
+            return owlModel.createOWLEnumeratedClass(values);
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+
+OWLAllValuesFrom OWLAllValuesFrom(RDFProperty property) :
+{
+    RDFSClass allCls;
+    Object valueType;
+}
+{
+    <ALL> {
+        checkFeatureSupported(OWLProfiles.AllValuesFrom_Restrictions);
+    }
+    (
+        valueType=DataType() {
+            if(valueType instanceof RDFSClass || valueType == ValueType.INSTANCE) {
+                if(property instanceof OWLDatatypeProperty) {
+                    errorMessage = "owl:ObjectProperty or rdf:Property expected";
+                    throw generateParseException();
+                }
+                if(create) {
+                    return owlModel.createOWLAllValuesFrom(property, (RDFSClass)valueType);
+                }
+                else {
+                    return null;
+                }
+            }
+
+            if(valueType == null) {
+                errorMessage = "XML Schema datatype expected";
+                throw generateParseException();
+            }
+
+            if(!(property instanceof OWLDatatypeProperty)) {
+                errorMessage = "owl:DatatypeProperty expected";
+                throw generateParseException();
+            }
+            if(create) {
+                if(valueType instanceof RDFSDatatype) {
+                    return owlModel.createOWLAllValuesFrom(property, (RDFSDatatype)valueType);
+                }
+                else {
+                    return owlModel.createOWLAllValuesFrom(property, (RDFSLiteral[])valueType);
+                }
+            }
+            else {
+                return null;
+            }
+        }
+    )
+}
+
+
+OWLSomeValuesFrom OWLSomeValuesFrom(RDFProperty property) :
+{
+    RDFSClass someCls;
+    Object valueType;
+}
+{
+    <SOME> {
+        checkFeatureSupported(OWLProfiles.SomeValuesFrom_Restrictions);
+    }
+    (
+        valueType=DataType() {
+            if(valueType instanceof RDFSClass || valueType == ValueType.INSTANCE) {
+                if(property instanceof OWLDatatypeProperty) {
+                    errorMessage = "owl:ObjectProperty or rdf:Property expected";
+                    throw generateParseException();
+                }
+                if(create) {
+                    return owlModel.createOWLSomeValuesFrom(property, (RDFSClass) valueType);
+                }
+                else {
+                    return null;
+                }
+            }
+            else if(!(property instanceof OWLDatatypeProperty)) {
+                errorMessage = "owl:DatatypeProperty expected";
+                throw generateParseException();
+            }
+            if(valueType == null) {
+                errorMessage = "XML Schema datatype expected";
+                throw generateParseException();
+            }
+            if(create) {
+                if(valueType instanceof RDFSDatatype) {
+                    return owlModel.createOWLSomeValuesFrom(property, (RDFSDatatype)valueType);
+                }
+                else {
+                    return owlModel.createOWLSomeValuesFrom(property, (RDFSLiteral[])valueType);
+                }
+            }
+            else {
+                return null;
+            }
+        }
+    )
+}
+
+
+Object DataType() :
+{
+    RDFSLiteral[] oneOfValues = null;
+    Object cl = null;
+    RDFSDatatype datatype;
+    boolean userDerived = false;
+    RDFProperty minProp = null;
+    RDFProperty maxProp = null;
+    String minVal = null;
+    String maxVal = null;
+	nextCouldBeDatatypeName = true;
+}
+{
+    (<ONE_OF> oneOfValues=OneOfValues())  { return oneOfValues; }
+  | (token=<DATATYPEID> {
+        String qName = datatypeNameChecker.getDatatypeQName(token.image);
+        datatype = owlModel.getRDFSDatatypeByName(qName);
+     }
+    ( // User defined part
+	(
+        (
+            (token=<OPENPAR>{minProp = XSPNames.getRDFProperty(owlModel, XSPNames.XSP_MIN_EXCLUSIVE);})
+            |
+            (token=<OPENSQPAR>{minProp=XSPNames.getRDFProperty(owlModel, XSPNames.XSP_MIN_INCLUSIVE);})
+        )
+        (((token=<INTEGER_LITERAL>{minVal = token.image;} | token=<FLOATING_POINT_LITERAL>{minVal = token.image;} | <UNBOUNDEDVAL>)))?
+        ","
+        (((token=<INTEGER_LITERAL>{maxVal = token.image;} | token=<FLOATING_POINT_LITERAL>{maxVal = token.image;} | <UNBOUNDEDVAL>)))?
+        (
+            (token=<CLOSEPAR>{maxProp=XSPNames.getRDFProperty(owlModel, XSPNames.XSP_MAX_EXCLUSIVE);})
+            |
+            (token=<CLOSESQPAR>{maxProp=XSPNames.getRDFProperty(owlModel, XSPNames.XSP_MAX_INCLUSIVE);})
+        )
+    ){
+		userDerived = true;
+        //System.out.println("User defined:");
+        //System.out.println("Min prop: " + minProp);
+        //System.out.println("Max prop: " + maxProp);
+        //System.out.println("Min val: " + minVal);
+        //System.out.println("Max val: " + maxVal);
+
+    })?
+    ) {
+		if(userDerived == false) {
+			return datatype;
+		}
+		else {
+			if(create) {
+				RDFSDatatype udd = owlModel.createRDFSDatatype(owlModel.getNextAnonymousResourceName());
+				udd.setPropertyValue(XSPNames.getRDFProperty(owlModel, XSPNames.XSP_BASE), datatype);
+				if(minProp != null && minVal != null) {
+					udd.setPropertyValue(minProp, owlModel.createRDFSLiteral(minVal, datatype));
+				}
+				if(maxProp != null && maxVal != null) {
+					udd.setPropertyValue(maxProp, owlModel.createRDFSLiteral(maxVal, datatype));
+				}
+				return udd;
+			}
+			else {
+				return datatype;
+			}
+		}
+    }
+
+
+  | (cl=OWLComplementClass())
+        {
+            if(create) {
+                return cl;
+            }
+            else {
+                return ValueType.INSTANCE;
+            }
+        }
+}
+
+
+RDFSLiteral[] OneOfValues() :
+{
+    Collection result = new ArrayList();
+    Token token = null;
+    Object numberValue = null;
+}
+{
+    (
+        (token=<STRING_LITERAL>
+        {
+            String str = token.image;
+            int len = str.length();
+            result.add(owlModel.createRDFSLiteral(str.substring(1, len - 1)));
+        }) |
+        (numberValue=OWLHasValueValueInteger()
+        {
+           result.add(owlModel.createRDFSLiteral(numberValue));
+        }) |
+        (numberValue=OWLHasValueValueFloat()
+        {
+           result.add(owlModel.createRDFSLiteral(numberValue));
+        })
+    )* "}"  { return (RDFSLiteral[]) result.toArray(new RDFSLiteral[0]); }
+}

@@ -1,0 +1,488 @@
+Manifest-Version: 1.0
+Created-By: 1.4.2_01 (Sun Microsystems Inc.)
+
+Name: edu/stanford/smi/protegex/owl/database/CreateOWLDatabaseProjectPlugin.class
+Create-Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/database/CreateOWLDatabaseFromFileProjectPlugin.class
+Create-Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/jena/OWLFilesCreateProjectPlugin.class
+Create-Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/storage/ProtegeFromOWLFilesCreateProjectPlugin.class
+Create-Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/jena/CreateOWLProjectFromFilePlugin.class
+Create-Project-From-File-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/model/classdisplay/compact/CompactOWLClassDisplay.class
+OWLClassDisplay: True
+
+Name: edu/stanford/smi/protegex/owl/model/classdisplay/manchester/ManchesterOWLClassDisplay.class
+OWLClassDisplay: True
+
+Name: edu/stanford/smi/protegex/owl/model/classdisplay/dl/DLSyntaxClassDisplay.class
+OWLClassDisplay: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/CheckConsistencyAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/ClassifyTaxonomyAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/ComputeInferredTypesAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/inspector/ShowReasonerInspectorAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/javacode/JavaCodeGeneratorAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/jena/JenaSchemagenAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/OWLPluginVersionInfoAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/ValidatorAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/code/DIGAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/code/EMFAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/code/KazukiAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/code/SourceCodeAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/preferences/PreferencesAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metrics/ShowMetricsAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadatatab/alldifferent/AllDifferentAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/testing/OWLTestAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/testing/ShowTodoListAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/query/SPARQLOWLModelAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/triple/DeleteTripleAction.class
+TripleAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/query/QueryTripleAction.class
+TripleAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoClassesOrPropertiesInEnumerationsOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/menu/OWLMenuProjectPlugin.class
+Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/swrl/ui/SWRLProjectPlugin.class
+Project-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/RDFPropertiesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfSubpropertyMustBeSubpropertyOfInverseOfSuperpropertyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/constraints/SPARQLAssertTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/AddRDFTypeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/CollapseTreeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/ExpandTreeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/RemoveRDFTypeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/CreateSiblingClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/CreateSubclassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/DeleteClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/HideClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/UnhideClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/explorer/ExplorerAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/actions/CreateSubpropertyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/SymmetricSlotMustHaveEqualRangeAndDomainTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfSymmetricPropertyMustBeSymmetricPropertyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoPropertiesWithClassAsRangeOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/types/RDFPropertyTypesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/types/OWLDatatypePropertyTypesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/types/OWLObjectPropertyTypesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoImportOfSystemOntologiesOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/CreateClassUsingMetaclassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InversePropertyMustHaveMatchingRangeAndDomainTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/PropertyDomainEmptyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/PropertyDomainRedundancyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/CheckSingleConceptConsistencyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/ResourceListWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoMetaclassOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/DataRangeFieldWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/SingleLiteralWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/SingleLiteralAreaWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/MultiLiteralWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ExtractTaxonomyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/AddSubclassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/swrl/ui/actions/EditRuleAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoSuperOrSubPropertiesOfAnnotationPropertiesTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/conditions/InferredConditionsWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/ComputeSingleIndividualTypesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/SubpropertyDomainMustNarrowTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/SubpropertyRangeMustNarrowTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadata/AnnotationsWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfInverseFunctionalMustBeFunctionalTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/DeletePropertyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/CreateCloneAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadata/OWLMetadataWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/MultiResourceWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/SingleResourceWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/PropertyRangeRedundancyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/OWLPropertiesTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/OWLFormsTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/actions/ConvertToDatatypePropertyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/OWLClassesTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/domain/OWLDomainWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ClassTypeConverterWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/jena/export/JenaExportPlugin.class
+Export-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/jena/export/JenaN3FileExportPlugin.class
+Export-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/jena/export/JenaNTripleFileExportPlugin.class
+Export-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/jena/export/JenaTurtleFileExportPlugin.class
+Export-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoSubclassesOfRDFClassesOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfFunctionalMustBeInverseFunctionalTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfTopLevelPropertyMustBeTopLevelPropertyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/resourcedisplay/TriplesViewResourceDisplayPlugin.class
+ResourceDisplayPlugin: False-Deactivated
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/SwitchClassDefinitionResourceDisplayPlugin.class
+ResourceDisplayPlugin: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/actions/ChangePropertyTypeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/OWLFormWidget.class
+Cls-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/SortSubclassesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/refactoring/SetDeprecatedFalseAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/TransitivePropertiesCannotBeFunctionalOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadatatab/OWLMetadataTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/todo/TodoAnnotationOWLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/refactoring/RenameAcrossFilesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/conditions/AddCoveringAxiomAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/matrix/cls/ExistentialMatrixAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/matrix/cls/SubclassesMatrixAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/matrix/property/SubpropertiesMatrixAction.class
+ResourceAction: True
+
+Name: edu.stanford/smi/protegex/owl/database/OWLDatabaseKnowledgeBaseFactory.class
+Storage-Factory: True
+
+Name: edu/stanford/smi/protegex/owl/ui/individuals/OWLIndividualsTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/conditions/AssertedConditionsWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/conditions/ConditionsWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/SortSubclassesTreeAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/search/SearchNamedClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/RDFListWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/GetInferredSuperClassesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/GetInferredSubClassesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/jena/JenaKnowledgeBaseFactory.class
+Storage-Factory: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/OWLInversePropertyWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/SetSubclassesDisjointFalseAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/inference/ui/action/ComputeIndividualsBelongingToClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/actions/ConvertToObjectPropertyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/RDFSSubClassOfWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ExtractOntologyAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/conditions/AddClosureAxiomAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadatatab/alldifferent/AllDifferentWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ConvertToPrimitiveClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/jena/importer/JenaImportPlugin.class
+Import-Plugin: True
+
+Name: edu/stanford/smi/protegex/owl/ui/clsproperties/PropertyRestrictionsTreeWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ChangeMetaclassOfSubclassesAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadatatab/OWLNamespacesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/properties/range/OWLRangeWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/todo/DeprecationOWLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/owldl/NoCardiRestrictionOnTransitivePropertiesOWLDLTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/ExternalResourceURLWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/SetSubclassesDisjointTrueAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadata/RDFSNamedClassMetadataWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/OWLDateWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/OWLDateTimeWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/OWLTimeWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/SwitchableClassDefinitionWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/actions/ConvertIndividualToClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/testing/sanity/InverseOfTransitivePropertyMustBeTransitivePropertyTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ChangeMetaclassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/clsdesc/DisjointClassesWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ConvertToDefinedClassAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/swrl/ui/tab/SWRLTab.class
+Tab-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/refactoring/SetDeprecatedTrueAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/CreateRDFListResourceAction.class
+ResourceAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/ClassFormWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/HeaderWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/metadatatab/OntologyURIWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/repository/ShowRepositoryEditorAction.class
+OWLModelAction: True
+
+Name: edu/stanford/smi/protegex/owl/ui/cls/ClassAnnotationsAndDescriptionWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/testing/style/SingleAssertedSuperclassTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/style/PrimitiveSubclassesDisjointTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/style/MinCardiZeroTest.class
+OWLTest: True
+
+Name: edu/stanford/smi/protegex/owl/testing/style/SubclassesRestrictionDuplicatesThatOfSuperTest.class
+OWLTest: True
+
+Name: edu.stanford.smi.protegex.owl.ui.metadata.NameDocumentationWidget.class
+Slot-Widget: True
+
+Name: edu.stanford.smi.protegex.owl.swrl.ui.widget.SWRLRuleSlotWidget.class
+Slot-Widget: True
+
+Name: edu.stanford.smi.protegex.owl.inference.dig.DefaultProtegeDIGReasoner.class
+ReasonerPlugin: True
+
+Name: edu.stanford.smi.protegex.owl.ui.widget.InferredSuperClassesWidget.class
+Slot-Widget: True
+
+Name: edu.stanford.smi.protegex.owl.swrl.ui.actions.EnableSWRLTabAction.class
+OWLModelAction: True
+
+Name: edu.stanford.smi.protegex.owl.ui.menu.OWLBackwardsCompatibilityProjectFixups.class
+ProjectFixupPlugin: True

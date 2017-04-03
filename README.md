@@ -1,7 +1,7 @@
-# protege-owl-plugin-3.5
-Protege OWL plugin with minor bug fixes
+## protege-owl-plugin-3.5
+Protege OWL plugin with customization from the University of Bergen Library
 
-##Source codes
-Protege 3.5 : http://smi-protege.stanford.edu/svn/
+## Original source codes can be found here:
+For Protege 3.5 : http://smi-protege.stanford.edu/svn/
 
-Protege 3.5 OWL API : http://smi-protege.stanford.edu/repos/protege/owl/trunk/
+For Protege 3.5 OWL API : http://smi-protege.stanford.edu/repos/protege/owl/trunk/

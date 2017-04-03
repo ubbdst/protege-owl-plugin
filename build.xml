@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+
+<!-- ================================================================ -->
+<!-- Protege-OWL build file for ant (build.xml)                       -->
+<!-- ================================================================ -->
+
+
+<project name="Protege-OWL" default="usage" basedir=".">
+
+    <property environment="env"/>
+    <property name="protege.home" location="${env.PROTEGE_HOME}"/>
+
+    <property file = "local.properties"/>
+    <property name = "src" location = "./src"/>
+    <property name = "lib" location = "./lib"/>
+    <property name = "build" location = "./build"/>
+    <property name = "classes" location = "${build}/classes"/>
+    <property name = "dist" location = "${build}/dist"/>
+    <property name = "plugins" location = "${build}/plugins"/>
+    <property name = "gensrc" location = "${build}/gensrc"/>
+
+    <property name = "etc" location = "./etc"/>
+    <property name = "owlplugin" value = "edu.stanford.smi.protegex.owl"/>
+    <property name = "plugin" location = "${plugins}/${owlplugin}"/>
+    <property name = "pluginName" value="protege-owl"/>
+    <property name = "debug" value = "on"/>
+    <property name = "source" value = "1.6"/>
+    <property name = "deprecation" value = "off"/>
+    <property name = "jarfile" location = "${dist}/${pluginName}.jar"/>
+
+
+    <property name = "debug" value = "on"/>
+
+    <property name = "deprecation" value = "off"/>
+
+    <property name = "manchesterParseDir"
+              location = "${src}/edu/stanford/smi/protegex/owl/model/classparser/manchester"/>
+    <property name = "dlParseDir"
+              location = "${src}/edu/stanford/smi/protegex/owl/model/classparser/dl"/>
+    <property name = "compactParseDir"
+              location = "${src}/edu/stanford/smi/protegex/owl/model/classparser/compact"/>
+
+    <property name = "junit" location = "./junit"/>
+
+
+
+    <!-- =================================================================== -->
+    <!-- USAGE -->
+    <!-- Instructions for using the build file -->
+    <!-- =================================================================== -->
+    <target name = "usage">
+        <echo message = ""/>
+        <echo message = "protege owl build instructions"/>
+        <echo message = "-------------------------------------------------------------"/>
+        <echo message = ""/>
+        <echo message = " available targets are:"/>
+        <echo message = ""/>
+        <echo message = "   usage      --> provides help on using the build tool (default)"/>
+        <echo message = "   clean      --> cleans up all build related files and dirs"/>
+        <echo message = "   compile    --> compiles the source code"/>
+        <echo message = "   plugin.dir --> copies files into the Protege plugin directory"/>
+        <echo message = "   plugin.zip --> creates the protege-owl.zip file, "/>
+        <echo message = "                  containing the plugin dir"/>
+        <echo message = "   codeGeneration --> creates the generated code used by the junits"/>
+        <echo message = "   junit --> runs the junits"/>
+        <echo message = ""/>
+        <echo message = "-------------------------------------------------------------"/>
+        <echo message = ""/>
+    </target>
+
+
+    <!-- 
+       #  ********** Finding Protege Libraries. *************
+       # 
+       #  We are using an approach that allows developers to decide
+       #  whether to hand copy the needed jars into the lib directory or
+       #  to point them to a protege installation.
+      -->
+
+    <target name="useProtegeHome">
+        <echo message="Using Protege Home = ${protege.home} to find protege jars"/>
+        <property name="protege.lib" location="${protege.home}/protege.jar"/>
+        <property name="looks.lib"   location="${protege.home}/looks.jar"/>
+    </target>
+
+    <target name = "checkProtegeLibs" depends="useProtegeHome">
+        <condition property="libs.found">
+            <and>
+                <available file="${protege.lib}" type = "file"/>
+                <available file="${looks.lib}" type = "file"/>
+            </and>
+        </condition>
+        <path id="classpath.compile">
+            <pathelement location = "${protege.lib}"/>
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+    </target>
+
+    <target name="checkProtegeLibsAndReport" depends="checkProtegeLibs"
+            unless="libs.found">
+        <echo message="Missing protege libraries.  You can either "/>
+        <echo message="set the PROTEGE_HOME environment variable to a"/>
+        <echo message="protege installation directory where the"/>
+        <echo message="appropriate plugins have been installed or copy the"/>
+        <echo message="needed jars into the lib directory"/>
+        <echo message="Use the -v option to find the missing jar"/>
+        <fail message="build aborted."/>
+    </target>
+
+    <!-- 
+     #  ********** Finding Protege Libraries Done. *************
+     -->
+
+
+    <!-- ================================================================ -->
+    <!-- Creates the timestamp                                            -->
+    <!-- ================================================================ -->
+
+    <target name="init.time" depends="checkProtegeLibsAndReport">
+        <tstamp>
+            <format property="build.time" pattern="MM/dd/yyyy hh:mm aa"/>
+        </tstamp>
+    </target>
+
+
+    <target name="init" depends="init.time">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${classes}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${plugins}"/>
+    	<echo message="******************************************" />
+        <echo message="Using Java version to compile: ${ant.java.version}" />
+    	<echo message="******************************************" />
+    </target>
+
+    <!-- ================================================================ -->
+    <!-- Build the classpath                                              -->
+    <!--                                                                  -->
+    <!-- ================================================================ -->
+
+    <!-- ================================================================ -->
+    <!-- Clean up build directories -->
+    <!-- ================================================================ -->
+
+    <target name="clean"
+            description="clean up all build related files and dirs">
+        <delete dir="${build}"/>
+    </target>
+
+    <target name="javacc-compact">
+        <delete file="${compactParseDir}/CompactParser.java"/>
+        <delete file="${compactParseDir}/CompactParserConstants.java"/>
+        <delete file="${compactParseDir}/CompactParserTokenManager.java"/>
+        <delete file="${compactParseDir}/JavaCharStream.java"/>
+        <delete file="${compactParseDir}/ParseException.java"/>
+        <delete file="${compactParseDir}/Token.java"/>
+        <delete file="${compactParseDir}/TokenMgrError.java"/>
+        <!-- Run JavaCC on Parser.jj to regenerate files that were deleted in above step. -->
+        <javacc javacchome = "${javacc.home}/bin/lib" 
+               target = "${compactParseDir}/CompactParser.jj"
+               outputdirectory = "${compactParseDir}"/>
+    </target>
+
+
+    <target name="javacc-dl">
+        <delete file="${dlParseDir}/DLSyntaxParser.java"/>
+        <delete file="${dlParseDir}/DLSyntaxParserConstants.java"/>
+        <delete file="${dlParseDir}/DLSyntaxParserTokenManager.java"/>
+        <delete file="${dlParseDir}/JavaCharStream.java"/>
+        <delete file="${dlParseDir}/ParseException.java"/>
+        <delete file="${dlParseDir}/Token.java"/>
+        <delete file="${dlParseDir}/TokenMgrError.java"/>
+        <!-- Run JavaCC on Parser.jj to regenerate files that were deleted in above step. -->
+        <javacc javacchome = "${javacc.home}/bin/lib" 
+               target = "${dlParseDir}/DLSyntaxParser.jj"
+               outputdirectory = "${dlParseDir}"/>
+    </target>
+
+
+    <target name="javacc-manchester">
+        <delete file="${manchesterParseDir}/JavaCharStream.java"/>
+        <delete file="${manchesterParseDir}/ManchesterOWLParser.java"/>
+        <delete file="${manchesterParseDir}/ManchesterOWLParserConstants.java"/>
+        <delete file="${manchesterParseDir}/ManchesterOWLParserTokenManager.java"/>
+        <delete file="${manchesterParseDir}/ParseException.java"/>
+        <delete file="${manchesterParseDir}/Token.java"/>
+        <delete file="${manchesterParseDir}/TokenMgrError.java"/>
+        <!-- Run JavaCC on Parser.jj to regenerate files that were deleted in above step. -->
+        <javacc javacchome = "${javacc.home}/bin/lib" 
+               target = "${manchesterParseDir}/ManchesterOWLParser.jj"
+               outputdirectory = "${manchesterParseDir}"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <target name = "javacc" 
+            depends = "javacc-manchester,javacc-dl,javacc-compact">
+    </target>
+
+
+
+    <!-- ================================================================ -->
+    <!-- Compile the source code                                          -->
+    <!-- ================================================================ -->
+
+    <target name="compile" depends="init,checkProtegeLibsAndReport" 
+            description="compile the Java files" >
+        <javac srcdir="${src}" destdir="${classes}"            
+               deprecation = "${deprecation}"
+               debug = "${debug}"
+           source = "${source}"
+               includeAntRuntime="false">
+            <classpath refid="classpath.compile"/>
+        </javac>
+        <copy todir="${classes}">
+            <fileset dir="${src}">
+                <include name="**/*"/>
+                <exclude name="**/*.java"/>
+                <exclude name="**/MANIFEST.MF"/>
+                <exclude name="**/manifest.mf"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================ -->
+    <!-- create the protege-owl.jar file                                  -->
+    <!-- ================================================================ -->
+
+    <target name="jar" depends="compile" description="Create the protege-owl.jar file">
+        <copy todir="${build}" file="${src}/META-INF/MANIFEST.MF" overwrite="true"/>
+        <manifest file="${build}/MANIFEST.MF" 
+                  mode = "update">
+            <attribute name="Built-By" value = "${user.name}"/>
+            <attribute name="Build-Date" value = "${build.time}"/>
+        </manifest>
+        <jar jarfile="${jarfile}"
+             manifest="${build}/MANIFEST.MF">
+            <fileset dir="${classes}"/>
+        </jar>
+    </target>
+
+    <target name = "update" depends = "jar">
+        <copy file="${jarfile}"
+            todir = "${protege.home}/plugins/${owlplugin}"
+            overwrite = "true"/>
+    </target>
+
+
+    <!-- ================================================================ -->
+    <!-- Copy files into the Protege plugin directory                     -->
+    <!-- ================================================================ -->
+
+    <target name="plugin.dir" depends="jar" 
+            description="Make the directory that becomes a Protege plugin dir">
+        <delete dir="${plugin}"/>
+        <mkdir dir="${plugin}"/>
+
+        <copy todir="${plugin}">
+            <fileset file="${jarfile}"/>
+            <fileset dir="${lib}">
+                <exclude name="${looks.lib}"/>
+                <exclude name="protege*.jar"/>
+            </fileset>
+            <fileset dir="${etc}">
+                <include name="plugin.properties"/>
+                <include name="ont-policy.rdf"/>
+                <include name="*.owl"/>
+                <exclude name="MANIFEST.MF"/>
+                <exclude name="OWL.pprj"/>
+            </fileset>
+        </copy>
+    </target>
+
+
+    <target name="plugin.zip" 
+            depends="plugin.dir" 
+            description="Create the protege-owl.zip file, containing the plugin dir">
+        <zip destfile="${dist}/${pluginName}.zip">
+            <fileset dir="${plugins}">
+                <include name="${owlplugin}/**"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name = "install" depends = "plugin.zip">
+        <unzip src="${dist}/${pluginName}.zip" 
+             dest = "${protege.home}/plugins"
+             overwrite = "true"/>
+        <copy todir="${protege.home}/examples/pizza">
+            <fileset dir="./examples" includes="pizza.*"/>
+        </copy>
+        <copy todir="${protege.home}/examples/sqwrl">
+            <fileset dir="./examples" includes="SQWRLExamples.*"/>
+        </copy>
+        <copy todir="${protege.home}/examples/travel">
+            <fileset dir="./examples" includes="travel.*"/>
+        </copy>
+        <copy todir="${protege.home}/examples/family">
+            <fileset dir="./examples" includes="family.*"/>
+        </copy>
+    </target>
+
+    <!-- Run targets -->
+
+    <target name="debug" depends="install">
+        <java fork="true" dir="${protege.home}" 
+              classname="edu.stanford.smi.protege.Application">
+            <jvmarg value = "-Xdebug"/>
+            <jvmarg value = "-Xrunjdwp:transport=dt_socket,address=8100,server=y,suspend=y"/>
+            <classpath>
+                <pathelement path="${protege.home}/protege.jar"/>
+                <pathelement path="${protege.home}/${looks.lib}"/>
+                <pathelement path="${protege.home}/unicode_panel.jar"/>
+                <pathelement path="${protege.home}/plugins/edu.stanford.smi.protegex.changes/change-model.jar"/>
+                <fileset dir="./dbdrivers"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run" depends="install">
+        <java fork="true" dir="${protege.home}" 
+              classname="edu.stanford.smi.protege.Application">
+            <classpath>
+                <pathelement path="${protege.home}/protege.jar"/>
+                <pathelement path="${protege.home}/${looks.lib}"/>
+                <pathelement path="${protege.home}/unicode_panel.jar"/>
+                <pathelement path="${protege.home}/plugins/edu.stanford.smi.protegex.changes/change-model.jar"/>
+                <fileset dir="./dbdrivers"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run.server" depends="install">
+        <java fork="true" dir="${protege.home}" 
+                  classname="edu.stanford.smi.protege.server.Server">
+            <jvmarg value = "-Djava.rmi.server.codebase=file:${protege.home}/protege.jar"/>
+            <classpath>
+                <pathelement path="${protege.home}/protege.jar"/>
+                <pathelement path="${protege.home}/${looks.lib}"/>
+                <pathelement path="${protege.home}/unicode_panel.jar"/>
+                <pathelement path="${protege.home}/plugins/edu.stanford.smi.protegex.changes/change-model.jar"/>
+                <fileset dir="./dbdrivers"/>
+            </classpath>
+            <arg value="examples/server/metaproject.pprj"/>
+        </java>
+    </target>
+
+    <target name="debug.server" depends="install">
+        <java fork="true" dir="${protege.home}" 
+                  classname="edu.stanford.smi.protege.server.Server">
+            <jvmarg value = "-Xdebug"/>
+            <jvmarg value = "-Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y"/>
+            <jvmarg value = "-Djava.rmi.server.codebase=file:${protege.home}/protege.jar"/>
+            <classpath>
+                <pathelement path="${protege.home}/protege.jar"/>
+                <pathelement path="${protege.home}/${looks.lib}"/>
+                <pathelement path="${protege.home}/unicode_panel.jar"/>
+                <pathelement path="${protege.home}/plugins/edu.stanford.smi.protegex.changes/change-model.jar"/>
+                <fileset dir="./dbdrivers"/>
+            </classpath>
+            <arg value="examples/server/metaproject.pprj"/>
+        </java>
+    </target>
+
+    <!-- Junit targets -->
+
+    <target name="codeGeneration" depends="jar">
+        <javac srcdir = "${junit}" destdir = "${classes}" debug = "on" 
+              includeAntRuntime="false"
+              includes="**/GenerateJunitCode.java">
+            <classpath refid = "classpath.compile"/>
+            <classpath>
+                <pathelement location = "${jarfile}"/>
+            </classpath>
+        </javac>
+        <delete dir="${gensrc}"/>
+        <mkdir dir="${gensrc}"/>
+        <java classname = "edu.stanford.smi.protegex.owl.javacode.tests.GenerateJunitCode" fork="true">
+            <classpath>
+                <pathelement location="${classes}"/>
+                <pathelement location = "${protege.lib}"/>
+                <pathelement location = "${looks.lib}"/>
+                <fileset dir="${lib}">
+                    <include name = "*.jar"/>
+                </fileset>
+            </classpath>
+            <jvmarg value="-Djava.util.logging.config.file=logging.properties"/>
+        </java>
+    </target>
+
+    <target name = "junit-compile" depends = "jar,codeGeneration">
+        <javac srcdir = "${junit};${gensrc}" 
+               destdir = "${classes}" debug = "on" 
+              includeAntRuntime="false">
+            <classpath refid = "classpath.compile"/>
+            <classpath>
+                <pathelement location = "${jarfile}"/>
+                <pathelement location = "${classes}"/>
+            </classpath>
+        </javac>
+        <copy todir = "${build}/junit/projects">
+            <fileset dir="${junit}/projects"/>
+        </copy>
+        <copy file = "junit.properties" todir = "${build}"/>
+    </target>
+
+    <target name = "checkJunitConfiguration" depends = "junit-compile">
+        <java classname = "edu.stanford.smi.protegex.owl.junit_config.CheckConfiguration"
+          dir="${build}" fork="true">
+            <classpath>
+                <pathelement location="${classes}"/>
+                <pathelement location = "${protege.lib}"/>
+                <pathelement location = "${looks.lib}"/>
+                <pathelement location = "${lib}/junit.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="junitResources">
+        <copy todir="${build}/examples">
+            <fileset dir="./examples"/>
+        </copy>
+        <copy todir="${build}"
+          file="junit-logging.properties"/>
+    </target>
+
+    <!--
+     My experience is that "ant junit" provides almost no debugging
+     information when things go wrong.  (This was not true in my
+     previous job and I don't know the difference. log4j??)  When there is a
+     problem I generally use my development environment to debug
+     faulting junit.  For scripting problems with the junits the options
+
+        filtertrace="false" 
+        showoutput="true"
+
+     give a little more information.  Also when you know that some
+     junits are failing, removing the option 
+
+        haltonfailure = "on" 
+        haltonerror   = "on"
+
+     is helpful for showing all the failures.  But in the committed
+     version I think that this option is very important because it
+     means that the developer will never mistakenly believe that
+     junits have succeeded.
+       -->
+    <!-- 
+         <jvmarg value="-Xdebug"/>
+         <jvmarg value="-Xrunjdwp:transport=dt_socket,address=8100,server=y,suspend=y"/>
+         -->
+    <target name = "junit" 
+           description = "run the tests (anybody can do it)"
+           depends = "plugin.dir,junit-compile,checkJunitConfiguration, junitResources">
+        <property file="junit.properties"/>
+        <junit printsummary="withOutAndErr"
+            dir = "${build}" 
+            fork = "yes"
+            filtertrace="${junit.filtertrace}"
+            showoutput="${junit.showoutput}"
+            haltonfailure = "${junit.haltonfailure}"
+            haltonerror = "${junit.haltonerror}">
+            <jvmarg value="-Xmx${junit.memory}"/>
+            <jvmarg value="-Djunit.server.protege.jar=${protege.lib}"/>
+            <jvmarg value="-Djava.util.logging.config.file=junit-logging.properties"/>
+            <classpath>
+                <pathelement location="${classes}"/>
+                <pathelement location = "${protege.lib}"/>
+                <pathelement location = "${looks.lib}"/>
+                <fileset dir="${plugin}">
+                    <include name = "**/*.jar"/>
+                </fileset>
+                <fileset dir="dbdrivers">
+                    <include name = "**/*.jar"/>
+                </fileset>
+            </classpath>
+            <batchtest>
+                <fileset dir="${junit}">
+                    <include name = "${junit.includes}"/>
+                    <exclude name = "**/*Abstract*.java"/>
+                    <exclude name = "**/*FailedTestCase.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+</project>
