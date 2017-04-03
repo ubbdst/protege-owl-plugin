@@ -26,12 +26,7 @@ package edu.stanford.smi.protegex.owl.ui.individuals;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -90,6 +85,8 @@ import edu.stanford.smi.protege.util.ViewAction;
 import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFSClass;
+import edu.stanford.smi.protegex.owl.model.impl.AbstractOWLModel;
+import edu.stanford.smi.protegex.owl.model.triplestore.TripleStore;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
@@ -292,18 +289,20 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     }
 
 
+
     //TODO
     protected Action createCreateAction() {
-        createAction = new CreateAction("Create instance (individual) ", OWLIcons.getCreateIndividualIcon(OWLIcons.RDF_INDIVIDUAL)) {
+        createAction = new CreateAction("Create new instance", OWLIcons.getCreateIndividualIcon(OWLIcons.RDF_INDIVIDUAL)) {
             @Override
 			public void onCreate() {
-                System.out.println("Creating instance");
                 if (!classes.isEmpty()) {
                 	RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
-                	final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
-
-                    System.out.println("Attempting to creating instance with name: " + name);
-
+                	//final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
+                    //Changes by HEMED 03-04-2017
+                    String defaultNamespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
+                    //TODO: Deals with creation logic and ensure uniqueness. Shall we use UUID?
+                	final String name = defaultNamespace + "/instance/" + UUID.randomUUID().toString();
+                    System.out.println("Creating instance with name: " + name);
                 	Transaction<Instance> t = new Transaction<Instance>(owlModel, "Create Individual: " +
                 			NamespaceUtil.getLocalName(name) + " of " + CollectionUtilities.toString(classes), name) {
                 	    private Instance instance;
