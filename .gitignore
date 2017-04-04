@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 build
+build/classes
 *.iml
 out
 logs

@@ -85,12 +85,11 @@ import edu.stanford.smi.protege.util.ViewAction;
 import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFSClass;
-import edu.stanford.smi.protegex.owl.model.impl.AbstractOWLModel;
-import edu.stanford.smi.protegex.owl.model.triplestore.TripleStore;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+import edu.stanford.smi.protegex.owl.util.UBBInstanceURI;
 
 /**
  * The panel that holds the list of direct instances of one or more classes. If
@@ -289,6 +288,17 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     }
 
 
+    /**
+     * A rough method to test out name generation
+     * @return
+     */
+    private String generateInstanceName(){
+        String defaultNamespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
+        //TODO: Deals with creation logic and ensure uniqueness. Shall we use UUID?
+        final String name = defaultNamespace + "instance" + "/" + UUID.randomUUID().toString();
+        return name;
+    }
+
 
     //TODO
     protected Action createCreateAction() {
@@ -298,10 +308,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 if (!classes.isEmpty()) {
                 	RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
                 	//final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
-                    //Changes by HEMED 03-04-2017
-                    String defaultNamespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
-                    //TODO: Deals with creation logic and ensure uniqueness. Shall we use UUID?
-                	final String name = defaultNamespace + "/instance/" + UUID.randomUUID().toString();
+                	final String name = new UBBInstanceURI(owlModel).generateUBBUniqueFrameName();
                     System.out.println("Creating instance with name: " + name);
                 	Transaction<Instance> t = new Transaction<Instance>(owlModel, "Create Individual: " +
                 			NamespaceUtil.getLocalName(name) + " of " + CollectionUtilities.toString(classes), name) {
@@ -461,7 +468,9 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
             @Override
 			protected Instance copy(Instance instance, boolean isDeep) {
-                Instance copy = super.copy(instance, isDeep);
+                final String newName = new UBBInstanceURI(owlModel).generateUBBUniqueFrameName();
+                System.out.println("Copying instance: " + instance.getName() + " to " + newName);
+                Instance copy = (Instance)super.copy(instance, isDeep).rename(newName);
                 setSelectedInstance(copy);
                 return copy;
             }
