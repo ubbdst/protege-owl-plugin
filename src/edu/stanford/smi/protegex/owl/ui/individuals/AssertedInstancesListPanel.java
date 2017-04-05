@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -66,22 +67,7 @@ import edu.stanford.smi.protege.ui.BrowserTextListFinder;
 import edu.stanford.smi.protege.ui.ConfigureAction;
 import edu.stanford.smi.protege.ui.FrameRenderer;
 import edu.stanford.smi.protege.ui.HeaderComponent;
-import edu.stanford.smi.protege.util.AllowableAction;
-import edu.stanford.smi.protege.util.ApplicationProperties;
-import edu.stanford.smi.protege.util.CollectionUtilities;
-import edu.stanford.smi.protege.util.ComponentFactory;
-import edu.stanford.smi.protege.util.ComponentUtilities;
-import edu.stanford.smi.protege.util.CreateAction;
-import edu.stanford.smi.protege.util.Disposable;
-import edu.stanford.smi.protege.util.FrameWithBrowserText;
-import edu.stanford.smi.protege.util.FrameWithBrowserTextComparator;
-import edu.stanford.smi.protege.util.GetInstancesAndBrowserTextJob;
-import edu.stanford.smi.protege.util.LabeledComponent;
-import edu.stanford.smi.protege.util.ModalDialog;
-import edu.stanford.smi.protege.util.SelectableContainer;
-import edu.stanford.smi.protege.util.SimpleListModel;
-import edu.stanford.smi.protege.util.StringUtilities;
-import edu.stanford.smi.protege.util.ViewAction;
+import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFSClass;
@@ -89,7 +75,7 @@ import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
-import edu.stanford.smi.protegex.owl.util.UBBInstanceURI;
+import edu.stanford.smi.protegex.owl.util.UBBInstanceURIGenerator;
 
 /**
  * The panel that holds the list of direct instances of one or more classes. If
@@ -115,6 +101,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     private Collection<Instance> listenedToInstances = new ArrayList<Instance> ();
     private boolean showSubclassInstances;
+    private static transient Logger log = Log.getLogger(AssertedInstancesListPanel.class);
 
     private static final int SORT_LIMIT;
     static {
@@ -288,19 +275,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     }
 
 
-    /**
-     * A rough method to test out name generation
-     * @return
-     */
-    private String generateInstanceName(){
-        String defaultNamespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
-        //TODO: Deals with creation logic and ensure uniqueness. Shall we use UUID?
-        final String name = defaultNamespace + "instance" + "/" + UUID.randomUUID().toString();
-        return name;
-    }
-
-
-    //TODO
     protected Action createCreateAction() {
         createAction = new CreateAction("Create new instance", OWLIcons.getCreateIndividualIcon(OWLIcons.RDF_INDIVIDUAL)) {
             @Override
@@ -308,8 +282,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 if (!classes.isEmpty()) {
                 	RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
                 	//final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
-                	final String name = new UBBInstanceURI(owlModel).generateUBBUniqueFrameName();
-                    System.out.println("Creating instance with name: " + name);
+                	final String name = new UBBInstanceURIGenerator(owlModel).generateUniqueInstanceName();
+                     log.info("Creating new instance with name: " + name);
                 	Transaction<Instance> t = new Transaction<Instance>(owlModel, "Create Individual: " +
                 			NamespaceUtil.getLocalName(name) + " of " + CollectionUtilities.toString(classes), name) {
                 	    private Instance instance;
@@ -468,8 +442,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
             @Override
 			protected Instance copy(Instance instance, boolean isDeep) {
-                final String newName = new UBBInstanceURI(owlModel).generateUBBUniqueFrameName();
-                System.out.println("Copying instance: " + instance.getName() + " to " + newName);
+                final String newName = new UBBInstanceURIGenerator(owlModel).generateUniqueInstanceName();
+                log.info("Copying instance: " + instance.getName() + " to " + newName);
                 Instance copy = (Instance)super.copy(instance, isDeep).rename(newName);
                 setSelectedInstance(copy);
                 return copy;
