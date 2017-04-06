@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-/build
+ build
 /build/classes
 *.iml
-/logs
-/out
+logs
+out
