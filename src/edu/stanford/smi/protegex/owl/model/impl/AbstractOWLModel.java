@@ -617,7 +617,6 @@ public abstract class AbstractOWLModel extends DefaultKnowledgeBase
     	return getUniqueFrameName(activeNamespace + partialLocalName);
     }
 
-
     public OWLAllDifferent createOWLAllDifferent() {
         return (OWLAllDifferent) createInstance(null, getOWLAllDifferentClass());
     }
@@ -1611,6 +1610,7 @@ public abstract class AbstractOWLModel extends DefaultKnowledgeBase
         sb.append(UNIQUE_SESSION_ID);
         return sb.toString();
     }
+
 
 
     public Collection getRDFProperties() {
@@ -2819,6 +2819,8 @@ public abstract class AbstractOWLModel extends DefaultKnowledgeBase
     }
 
 
+
+
     public String getURIForResourceName(String name) {
     	return OWLUtil.getInternalFullName(this, name);
     }
@@ -3722,4 +3724,3 @@ public abstract class AbstractOWLModel extends DefaultKnowledgeBase
     }
 
 }
-

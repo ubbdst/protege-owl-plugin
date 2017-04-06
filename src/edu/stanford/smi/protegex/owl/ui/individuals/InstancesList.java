@@ -146,4 +146,3 @@ public class InstancesList extends TooltippedSelectableList
         return false;
     }
 }
-

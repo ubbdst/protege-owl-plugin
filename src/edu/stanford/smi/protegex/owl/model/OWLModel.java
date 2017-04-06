@@ -173,6 +173,7 @@ public interface OWLModel extends ProtegeKnowledgeBase, OWLTestManager {
      */
     String getUniqueFrameName(String baseURI);
 
+
     OWLAllDifferent createOWLAllDifferent();
 
 
@@ -1928,4 +1929,3 @@ public interface OWLModel extends ProtegeKnowledgeBase, OWLTestManager {
     
     void setWriterSettings(WriterSettings writerSettings);
 }
-

@@ -79,4 +79,3 @@ public class OWLFrameStoreUtils {
     return result;
   }
 }
-

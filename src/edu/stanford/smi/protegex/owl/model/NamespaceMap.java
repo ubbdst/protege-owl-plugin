@@ -61,4 +61,3 @@ public interface NamespaceMap {
 
     void setPrefix(URI namespace, String prefix);
 }
-

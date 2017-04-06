@@ -80,4 +80,4 @@ public class GetIsIncludedJob extends ProtegeJob {
         super.localize(kb);
         LocalizeUtils.localize(resource, kb);
     }
-}
+}

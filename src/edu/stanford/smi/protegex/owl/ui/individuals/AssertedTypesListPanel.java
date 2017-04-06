@@ -294,4 +294,3 @@ public class AssertedTypesListPanel extends SelectableContainer {
 	}
 
 }
-

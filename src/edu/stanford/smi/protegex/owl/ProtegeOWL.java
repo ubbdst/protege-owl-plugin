@@ -177,4 +177,3 @@ public class ProtegeOWL {
         Application.main(args);
     }
 }
-

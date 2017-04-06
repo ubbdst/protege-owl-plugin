@@ -228,4 +228,3 @@ public class ProtegeUI {
 		return (frame instanceof RDFResource) ? ((RDFResource)frame).getIconName() : null;
 	}	
 }
-

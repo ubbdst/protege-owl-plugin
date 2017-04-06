@@ -110,4 +110,3 @@ public interface OWLModelAction extends Disposable, IconOwner {
      */
     void run(OWLModel owlModel);
 }
-

@@ -404,4 +404,3 @@ public interface ProtegeInstance extends Instance {
      */
     void removeDirectType(Cls cls);
 }
-

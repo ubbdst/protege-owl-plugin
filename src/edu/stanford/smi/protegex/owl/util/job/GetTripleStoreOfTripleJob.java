@@ -114,4 +114,3 @@ public class GetTripleStoreOfTripleJob extends ProtegeJob {
     }
 
 }
-

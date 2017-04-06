@@ -344,4 +344,3 @@ public class OWLIndividualsTab extends AbstractTabWidget implements NavigationHi
         }
     }
 }
-

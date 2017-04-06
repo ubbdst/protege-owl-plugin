@@ -210,4 +210,3 @@ public abstract class AbstractNamespaceManager implements NamespaceManager, Seri
         listeners = new HashSet<NamespaceManagerListener>();
     }
 }
-

@@ -224,4 +224,3 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern{
         return "OWLBrowserSlotPattern(" + getSerialization() + ")";
     }
 }
-
