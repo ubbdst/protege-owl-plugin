@@ -285,4 +285,3 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
         table.getTableModel().updateValues();
     }
 }
-

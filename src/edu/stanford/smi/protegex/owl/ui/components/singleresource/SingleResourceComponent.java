@@ -60,6 +60,7 @@ import edu.stanford.smi.protegex.owl.ui.actions.ResourceActionManager;
 import edu.stanford.smi.protegex.owl.ui.components.AbstractPropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+import edu.stanford.smi.protegex.owl.util.InstanceURIGenerator;
 
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
@@ -186,7 +187,10 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
                 "Select type of new resource...");
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
         if (cls != null) {
-            Instance instance = ((KnowledgeBase) owlModel).createInstance(null, cls);
+            //Generate unique name for the instance
+            final String uniqueInstanceName = new InstanceURIGenerator(owlModel).generateUniqueInstanceName();
+            //Instance instance = ((KnowledgeBase) owlModel).createInstance(null, cls);
+            Instance instance = ((KnowledgeBase) owlModel).createInstance(uniqueInstanceName, cls);
             if (instance instanceof RDFUntypedResource) {
                 instance = OWLUtil.assignUniqueURI((RDFUntypedResource) instance);
             }
@@ -279,4 +283,3 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
   
 
 }
-

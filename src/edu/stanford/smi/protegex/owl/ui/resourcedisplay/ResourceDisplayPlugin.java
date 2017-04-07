@@ -46,4 +46,3 @@ public interface ResourceDisplayPlugin {
      */
     void initResourceDisplay(RDFResource resource, JPanel hostPanel);
 }
-

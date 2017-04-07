@@ -23,6 +23,7 @@
 
 package edu.stanford.smi.protegex.owl.ui.resourcedisplay;
 
+import java.awt.*;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
@@ -55,8 +56,12 @@ public class InstanceNameComponent extends JPanel implements Disposable {
 
     public InstanceNameComponent() {
         textField = new InstanceNameEditor();
-   
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //Disable instance name for editing
+        //textField.setDisabledTextColor(Color.orange);
+        //textField.setEnabled(false);
+        //textField.setBackground(Color.LIGHT_GRAY);
+        //textField.setForeground(Color.BLACK);
         add(textField);
     }
 
@@ -144,4 +149,3 @@ public class InstanceNameComponent extends JPanel implements Disposable {
     	super.setEnabled(enabled);
     };
 }
-

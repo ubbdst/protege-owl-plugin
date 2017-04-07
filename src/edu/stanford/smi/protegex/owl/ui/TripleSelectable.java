@@ -60,4 +60,3 @@ public interface TripleSelectable extends edu.stanford.smi.protege.util.Selectab
      */
     void setSelectedTriples(Collection triples);
 }
-

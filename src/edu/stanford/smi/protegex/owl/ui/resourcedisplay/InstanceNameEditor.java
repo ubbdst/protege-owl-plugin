@@ -85,7 +85,6 @@ public class InstanceNameEditor extends JTextField {
 
     public InstanceNameEditor() {
         super();
-
         OWLUI.addCopyPastePopup(this);
 
         addFocusListener(new FocusAdapter() {
@@ -294,4 +293,3 @@ public class InstanceNameEditor extends JTextField {
         return errorDescription == null;
     }
 }
-

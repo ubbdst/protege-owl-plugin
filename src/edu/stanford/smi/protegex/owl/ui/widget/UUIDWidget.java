@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * A slot widget that will copy instance UUID to the slot.
+ * A widget that copies UUID from the instance URI to the a given slot.
  * The widget is disabled for editing.
  * <p>
  *
@@ -27,9 +27,8 @@ public class UUIDWidget extends TextFieldWidget {
     private static transient Logger log = Log.getLogger(UUIDWidget.class);
 
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
-
-        //check if a slot accept values of type String,
-        // if it does then show this widget in the dropdown list as one of the it's options.
+        //Check if a slot accept values of type String,
+        //if it does, then show this widget in the dropdown list as one of the options.
         boolean isString = cls.getTemplateSlotValueType(slot) == ValueType.STRING;
 
         return isString;
@@ -37,18 +36,18 @@ public class UUIDWidget extends TextFieldWidget {
 
     /**
      * Set value of the slot if it does not have one.
-     *
-     * @param values
-     **/
+     */
     @Override
     public void setValues(final Collection values) {
         String uuid = (String)CollectionUtilities.getFirstItem(values);
         if (uuid == null) {
             setText(getUUIDFromInstanceURI());
-            getTextField().setEnabled(false);
             setInstanceValues();
-        } else
+        } else {
             super.setValues(values);
+        }
+        //Disable this widget for editing
+        getTextField().setEnabled(false);
     }
 
     /**
@@ -73,11 +72,9 @@ public class UUIDWidget extends TextFieldWidget {
      */
     private boolean isValidUUID(String s) {
         try {
+            //If parsing passes, then we know it is valid UUID
             UUID.fromString(s);
             return true;
-        } catch (StringIndexOutOfBoundsException se) {
-            //log.severe(s + " is not valid UUID. See " + se.getLocalizedMessage());
-            return false;
         } catch (IllegalArgumentException ie) {
             //log.severe(s + " is not valid UUID. See " + ie.getLocalizedMessage());
             return false;

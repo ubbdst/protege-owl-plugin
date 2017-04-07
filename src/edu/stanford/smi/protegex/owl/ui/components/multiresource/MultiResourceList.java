@@ -56,6 +56,7 @@ import edu.stanford.smi.protegex.owl.ui.ResourceRenderer;
 import edu.stanford.smi.protegex.owl.ui.TripleSelectable;
 import edu.stanford.smi.protegex.owl.ui.actions.ResourceActionManager;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+import edu.stanford.smi.protegex.owl.util.InstanceURIGenerator;
 
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
@@ -190,7 +191,9 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         RDFSNamedClass cls = ProtegeUI.getSelectionDialogFactory().selectClass(this, owlModel, clses, "Select type of new resource");
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
         if (cls != null) {
-            RDFResource instance = cls.createInstance(null);
+            //Generate unique name for the instance
+            final String name = new InstanceURIGenerator(owlModel).generateUniqueInstanceName();
+            RDFResource instance = cls.createInstance(name);
             if (instance instanceof RDFUntypedResource) {
                 instance = OWLUtil.assignUniqueURI((RDFUntypedResource) instance);
             }
@@ -280,4 +283,3 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
     }
     
 }
-

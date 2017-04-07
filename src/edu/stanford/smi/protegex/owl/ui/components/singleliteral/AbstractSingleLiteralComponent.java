@@ -454,4 +454,3 @@ public abstract class AbstractSingleLiteralComponent extends AbstractPropertyVal
 		textComponent.removeKeyListener(textCompKeyListener);
 	}
 }
-

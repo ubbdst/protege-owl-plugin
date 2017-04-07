@@ -118,4 +118,3 @@ public class OWLDateTimeWidget extends OWLDateWidget implements TimePanel.Listen
         return OWLWidgetMapper.isSuitable(OWLDateTimeWidget.class, cls, slot);
     }
 }
-

@@ -81,4 +81,3 @@ public class RDFSSubClassOfComponent extends MultiResourceComponent {
         }
     }
 }
-

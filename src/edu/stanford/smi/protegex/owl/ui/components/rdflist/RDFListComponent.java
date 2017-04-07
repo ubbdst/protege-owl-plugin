@@ -37,6 +37,7 @@ import edu.stanford.smi.protegex.owl.ui.ResourceRenderer;
 import edu.stanford.smi.protegex.owl.ui.components.AbstractPropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.resourceselection.ResourceSelectionAction;
+import edu.stanford.smi.protegex.owl.util.InstanceURIGenerator;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -367,7 +368,9 @@ public class RDFListComponent extends AbstractPropertyValuesComponent implements
         RDFSNamedClass cls = ProtegeUI.getSelectionDialogFactory().selectClass(this, getOWLModel(), clses,
                 "Select type of new list element");
         if (cls != null) {
-            RDFResource instance = cls.createInstance(null);
+            //Generate unique name for the instance
+            final String name = new InstanceURIGenerator(getOWLModel()).generateUniqueInstanceName();
+            RDFResource instance = cls.createInstance(name);
             if (instance instanceof RDFSClass) {
                 RDFSClass newclass = (RDFSClass) instance;
                 if (newclass.getSuperclassCount() == 0) {

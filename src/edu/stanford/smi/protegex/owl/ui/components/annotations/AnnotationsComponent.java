@@ -164,4 +164,3 @@ public class AnnotationsComponent extends AbstractTriplesComponent {
     	super.setEnabled(enabled);
     };
 }
-

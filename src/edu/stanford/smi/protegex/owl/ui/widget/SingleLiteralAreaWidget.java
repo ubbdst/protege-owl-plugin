@@ -59,4 +59,3 @@ public class SingleLiteralAreaWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(SingleLiteralAreaWidget.class, cls, slot);
     }
 }
-

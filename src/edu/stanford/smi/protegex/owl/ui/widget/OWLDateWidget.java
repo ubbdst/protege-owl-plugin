@@ -279,4 +279,3 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         return OWLWidgetMapper.isSuitable(OWLDateWidget.class, cls, slot);
     }
 }
-

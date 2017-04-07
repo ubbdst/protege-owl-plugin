@@ -78,7 +78,9 @@ import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 /**
  * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top. For classes this can also be used to switch between asserted and
  * inferred view.
- * 
+ *
+ * Modified by Hemed Al Ruwehy to disable editing for instance name
+ *
  * @author Holger Knublauch <holger@knublauch.com>
  */
 public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
@@ -454,12 +456,17 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 		}
 	}
 
+	/**
+	 *Load header label and disable instance name component
+	 */
 	@Override
 	protected void loadHeaderLabel(Instance instance)
 	{
-
 		if (instanceNameComponent != null) {
 			instanceNameComponent.setInstance(instance);
+			//Disable entire instanceNameComponent for editing
+			// Is it enough to only disable here?
+			instanceNameComponent.setEnabled(false);
 		} else {
 			super.loadHeaderLabel(instance);
 		}
@@ -711,4 +718,3 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 	};
 
 }
-
