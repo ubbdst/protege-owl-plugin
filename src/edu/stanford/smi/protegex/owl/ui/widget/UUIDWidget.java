@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  * A widget that copies UUID from the instance URI to the a given slot.
- * The widget is disabled for editing.
+ * This widget is disabled for editing.
  * <p>
  *
  * @author Hemed Al Ruwehy
@@ -65,7 +65,6 @@ public class UUIDWidget extends TextFieldWidget {
         }
         return instanceId;
     }
-
 
     /**
      * Check if a string is valid UUID

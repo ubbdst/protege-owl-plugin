@@ -8,26 +8,26 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * A class for generating instance (individual) URI based on the University of Bergen Library (UBB) requirements.
+ * A class for generating instance (individual) URI using UUID due to the University of Bergen Library (UBB) requirements.
  * UBB wants the instance URI (ID/name) to be in the form of "default_namespace + UUID"
  * e.g http://data.ub.uib.no/7673868d-231e-490d-9c4f-19288e7e668d
  * <p>
- * The generated name is ensured to be unique, because we are checking the knowledge base for every new name
+ * The generated name ((URI) is ensured to be unique, because we are checking the knowledge base for every new name
  * and if one exists from before (which is unlikely due to the use of UUID), new name is generated.
  *
  * @author Hemed Al Ruwehy,
  *         2017-04-04
  *         University of Bergen Library
  */
-public class InstanceURIGenerator {
+public class UUIDInstanceURI implements InstanceURI {
 
     private static final String INSTANCE_LABEL = "instance";
     private static final String PATH_SEPARATOR = "/";
     private static final String DEFAULT_UBB_NAMESPACE = "http://data.ub.uib.no/";
-    private static transient Logger log = Log.getLogger(InstanceURIGenerator.class);
+    private static transient Logger log = Log.getLogger(UUIDInstanceURI.class);
     private OWLModel owlModel;
 
-    public InstanceURIGenerator(OWLModel owlModel) {
+    public UUIDInstanceURI(OWLModel owlModel) {
         this.owlModel = owlModel;
     }
 
@@ -92,6 +92,8 @@ public class InstanceURIGenerator {
 
     /**
      * Check if an instance (frame) with given name exists in the knowledge base
+     *
+     * @return {@code true} if instance exists, otherwise {@code false}
      */
     private boolean instanceExists(String frameName) {
         if(owlModel == null){
@@ -112,6 +114,7 @@ public class InstanceURIGenerator {
     /**
      * Generate frame name and ensure uniqueness
      */
+    @Override
     public String generateUniqueInstanceName() {
         String instanceUri;
 

@@ -75,7 +75,7 @@ import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
-import edu.stanford.smi.protegex.owl.util.InstanceURIGenerator;
+import edu.stanford.smi.protegex.owl.util.UUIDInstanceURI;
 
 /**
  * The panel that holds the list of direct instances of one or more classes. If
@@ -282,7 +282,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 if (!classes.isEmpty()) {
                 	RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
                 	//final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
-                	final String name = new InstanceURIGenerator(owlModel).generateUniqueInstanceName();
+                	final String name = new UUIDInstanceURI(owlModel).generateUniqueInstanceName();
                      log.info("Creating new instance with name: " + name);
                 	Transaction<Instance> t = new Transaction<Instance>(owlModel, "Create Individual: " +
                 			NamespaceUtil.getLocalName(name) + " of " + CollectionUtilities.toString(classes), name) {
@@ -442,7 +442,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
             @Override
 			protected Instance copy(Instance instance, boolean isDeep) {
-                final String newName = new InstanceURIGenerator(owlModel).generateUniqueInstanceName();
+                final String newName = new UUIDInstanceURI(owlModel).generateUniqueInstanceName();
                 log.info("Copying instance: " + instance.getName() + " to " + newName);
                 Instance copy = (Instance)super.copy(instance, isDeep).rename(newName);
                 setSelectedInstance(copy);
