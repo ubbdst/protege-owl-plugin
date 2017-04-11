@@ -192,7 +192,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
         if (cls != null) {
             //Generate unique name for the instance
-            final String name = new UUIDInstanceURI(owlModel).generateUniqueInstanceName();
+            final String name = new UUIDInstanceURI(owlModel).generateUniqueName();
             RDFResource instance = cls.createInstance(name);
             if (instance instanceof RDFUntypedResource) {
                 instance = OWLUtil.assignUniqueURI((RDFUntypedResource) instance);

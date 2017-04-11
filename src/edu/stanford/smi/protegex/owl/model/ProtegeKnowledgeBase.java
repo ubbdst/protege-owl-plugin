@@ -2012,4 +2012,3 @@ public interface ProtegeKnowledgeBase extends KnowledgeBase {
      */
     void setFrameFactory(FrameFactory factory);
 }
-

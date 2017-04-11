@@ -83,7 +83,7 @@ public class UUIDInstanceURI implements InstanceURI {
     /**
      * Get default namespace
      */
-    private String getNamespaceForActiveProject() {
+    public String getNamespaceForActiveProject() {
         if(owlModel != null ) {
             return owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
         }
@@ -102,7 +102,6 @@ public class UUIDInstanceURI implements InstanceURI {
         return owlModel.getHeadFrameStore().getFrame(frameName) != null;
     }
 
-
     /**
      *Get default namespace for the University of Bergen
      */
@@ -115,7 +114,7 @@ public class UUIDInstanceURI implements InstanceURI {
      * Generate frame name and ensure uniqueness
      */
     @Override
-    public String generateUniqueInstanceName() {
+    public String generateUniqueName() {
         String instanceUri;
 
         do {

@@ -171,5 +171,3 @@ public class OntologyURIWidget extends AbstractPropertyWidget {
     	super.setEnabled(enabled);
     };
 }
-
-

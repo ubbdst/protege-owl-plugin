@@ -188,7 +188,7 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
         if (cls != null) {
             //Generate unique name for the instance
-            final String uniqueInstanceName = new UUIDInstanceURI(owlModel).generateUniqueInstanceName();
+            final String uniqueInstanceName = new UUIDInstanceURI(owlModel).generateUniqueName();
             //Instance instance = ((KnowledgeBase) owlModel).createInstance(null, cls);
             Instance instance = ((KnowledgeBase) owlModel).createInstance(uniqueInstanceName, cls);
             if (instance instanceof RDFUntypedResource) {

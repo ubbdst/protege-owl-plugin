@@ -369,7 +369,7 @@ public class RDFListComponent extends AbstractPropertyValuesComponent implements
                 "Select type of new list element");
         if (cls != null) {
             //Generate unique name for the instance
-            final String name = new UUIDInstanceURI(getOWLModel()).generateUniqueInstanceName();
+            final String name = new UUIDInstanceURI(getOWLModel()).generateUniqueName();
             RDFResource instance = cls.createInstance(name);
             if (instance instanceof RDFSClass) {
                 RDFSClass newclass = (RDFSClass) instance;

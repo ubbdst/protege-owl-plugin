@@ -16,6 +16,6 @@ public interface InstanceURI {
      *
      * @return a new and unique instance URI
      */
-    String generateUniqueInstanceName();
+    String generateUniqueName();
 
 }
