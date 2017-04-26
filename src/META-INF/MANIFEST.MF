@@ -187,7 +187,10 @@ Slot-Widget: True
 Name: edu/stanford/smi/protegex/owl/ui/widget/UUIDWidget.class
 Slot-Widget: True
 
-Name: edu/stanford/smi/protegex/owl/ui/widget/ClassHierarchyWidget.class
+Name: edu/stanford/smi/protegex/owl/ui/widget/UBBSignatureWidget.class
+Slot-Widget: True
+
+Name: edu/stanford/smi/protegex/owl/ui/widget/ClassHierarchyURIWidget.class
 Slot-Widget: True
 
 Name: edu/stanford/smi/protegex/owl/ui/widget/SingleLiteralAreaWidget.class

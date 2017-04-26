@@ -51,4 +51,3 @@ public class DataRangeFieldWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(DataRangeFieldWidget.class, cls, slot);
     }
 }
-

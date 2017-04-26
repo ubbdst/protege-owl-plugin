@@ -144,5 +144,3 @@ public class ImportTypePage extends OWLWizardPage implements ActionListener {
     }
 
 }
-
-

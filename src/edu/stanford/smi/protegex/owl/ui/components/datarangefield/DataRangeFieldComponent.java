@@ -182,4 +182,3 @@ public class DataRangeFieldComponent extends AbstractPropertyValuesComponent {
     	comboBox.removeActionListener(comboBoxListener);
     }
 }
-

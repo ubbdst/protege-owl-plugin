@@ -85,7 +85,7 @@ public class UUIDInstanceURI implements InstanceURI {
      */
     public String getNamespaceForActiveProject() {
         if(owlModel != null ) {
-            return owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
+            return constructNamespace(owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace());
         }
         return DEFAULT_UBB_NAMESPACE;
     }
@@ -120,7 +120,7 @@ public class UUIDInstanceURI implements InstanceURI {
         do {
             //Keep generating new name until there is no such name in the knowledge base
             //(though unlikely due to the use of UUID)
-            instanceUri = constructNamespace(getNamespaceForActiveProject()) + generateRandomUUID();
+            instanceUri = getNamespaceForActiveProject() + generateRandomUUID();
         }
         while (instanceExists(instanceUri));
         return instanceUri;

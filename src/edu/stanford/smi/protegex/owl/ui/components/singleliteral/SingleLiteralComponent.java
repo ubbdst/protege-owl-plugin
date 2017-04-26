@@ -63,4 +63,3 @@ public class SingleLiteralComponent extends AbstractSingleLiteralComponent {
                 JTextField.RIGHT : JTextField.LEFT);
     }
 }
-

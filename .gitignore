@@ -5,5 +5,5 @@
 .iml
 logs
 out
-*.DS_Store
+.DS_Store
 protege.properties

@@ -1,9 +1,6 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import edu.stanford.smi.protege.model.Cls;
-import edu.stanford.smi.protege.model.Facet;
-import edu.stanford.smi.protege.model.Slot;
-import edu.stanford.smi.protege.model.ValueType;
+import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
@@ -13,7 +10,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * A widget that copies UUID from the instance URI to the a given slot.
+ * A widget that copies UUID from the instance URI to a given slot.
  * This widget is disabled for editing.
  * <p>
  *
@@ -41,7 +38,7 @@ public class UUIDWidget extends TextFieldWidget {
     public void setValues(final Collection values) {
         String uuid = (String)CollectionUtilities.getFirstItem(values);
         if (uuid == null) {
-            setText(getUUIDFromInstanceURI());
+            setText(getUUIDFromInstanceURI(getInstance()));
             setInstanceValues();
         } else {
             super.setValues(values);
@@ -53,9 +50,9 @@ public class UUIDWidget extends TextFieldWidget {
     /**
      * Extract UUID from instance URI, if it exists
      */
-    private String getUUIDFromInstanceURI() {
+    public static String getUUIDFromInstanceURI(Instance instance) {
         String instanceId = "";
-        String instanceURI = getInstance().getName();
+        String instanceURI = instance.getName();
         int lastIndex = instanceURI.lastIndexOf(PATH_SEPARATOR);
         if (lastIndex != -1) {
             String lastPart = instanceURI.substring(lastIndex + 1, instanceURI.length());
@@ -69,8 +66,12 @@ public class UUIDWidget extends TextFieldWidget {
     /**
      * Check if a string is valid UUID
      */
-    private boolean isValidUUID(String s) {
+    public static boolean isValidUUID(String s) {
         try {
+            //Fail early
+            if(s == null || s.trim().isEmpty()){
+                return false;
+            }
             //If parsing passes, then we know it is valid UUID
             UUID.fromString(s);
             return true;

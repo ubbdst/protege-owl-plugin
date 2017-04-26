@@ -4,6 +4,7 @@ import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Facet;
 import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.model.ValueType;
+import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.util.RDFClassType;
@@ -19,7 +20,7 @@ import java.util.Collection;
  *         The University of Bergen Library
  *         2017-04-10
  */
-public class ClassHierarchyWidget extends TextFieldWidget {
+public class ClassHierarchyURIWidget extends TextFieldWidget {
     private static String PATH_SEPARATOR = "/";
 
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
@@ -29,10 +30,6 @@ public class ClassHierarchyWidget extends TextFieldWidget {
 
         return isString;
     }
-
-    //TODO:Refactor class to use Enum
-    //TODO: Set this widget a default for hierarchy slot?
-
 
     /**
      * Get OWL model
@@ -46,34 +43,32 @@ public class ClassHierarchyWidget extends TextFieldWidget {
      * Get active namespace for the active project
      */
     public String getNamespace() {
-        String activeNamespace = new UUIDInstanceURI(getOWLModel()).getNamespaceForActiveProject();
-        return UUIDInstanceURI.constructNamespace(activeNamespace);
+        return new UUIDInstanceURI(getOWLModel()).getNamespaceForActiveProject();
     }
 
     @Override
-    public void setValues(Collection collection) {
-        /*
-          TODO:
-          1) Get value from identifier slot, if it does not exist, get UUID from instance URI.
-        */
-
+    public void setValues(Collection values) {
         /*
          TODO:
           2) Act on changes when identifier value is changed as well as when the direct type changes (e.g. by drag-and-drop to a different hierarchy)
-         */
-        System.out.println("Oyvind logic: " + rewriteURIFromClassAndIdentifier());
-        super.setValues(collection);
+        */
+        String savedValue = (String) CollectionUtilities.getFirstItem(values);
+        if (savedValue == null) {
+            setText(writeClassHierarchyURI());
+            setInstanceValues();
+        } else {
+            super.setValues(values);
+        }
+        //Disable this widget from being edited by user
+        getTextField().setEnabled(false);
     }
 
-    private String rewriteURIFromClassAndIdentifier() {
-        //Use identifier if it exists, fallback to ubbont:UUID if not.
-        //TODO:
-        //This can be either Identifier or UUID respectively
-        //Create a method to retrieve those
-        String identifier = "ubb-dummie".toLowerCase();
-        //List<String> rdftype = convertToString(getInstance().getDirectTypes());
+    /**
+     * Write URI for the class hierarchy
+     */
+    private String writeClassHierarchyURI() {
+        String identifier = getIdentifier().toLowerCase();
         String prefix = getClassURIPrefix(getInstance().getDirectTypes()) + PATH_SEPARATOR;
-        //String prefix = rdfTypeToURL(rdftype);
         try {
             String fullURI = prefix  +  URLEncoder.encode(identifier, "UTF-8");
             return fullURI.toLowerCase();
@@ -81,6 +76,22 @@ public class ClassHierarchyWidget extends TextFieldWidget {
             e.printStackTrace();
         }
         return prefix;
+    }
+
+    /**
+     * Get identifier. Check identifier slot if it has a value, if it does return it
+     * If not, return instance UUID.
+     */
+    private String getIdentifier() {
+        //Process identifier slot
+        Slot identifierSlot = getKnowledgeBase().getSlot("http://purl.org/dc/terms/identifier");
+        if (identifierSlot != null) {
+            Object slotValue = getInstance().getDirectOwnSlotValue(identifierSlot);
+            if(slotValue != null ){
+                return slotValue.toString();
+            }
+        }
+        return UUIDWidget.getUUIDFromInstanceURI(this.getInstance());
     }
 
 
