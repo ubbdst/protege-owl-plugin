@@ -74,5 +74,3 @@ public class ClassFormWidget extends AbstractPropertyWidget {
         }
     }
 }
-
-

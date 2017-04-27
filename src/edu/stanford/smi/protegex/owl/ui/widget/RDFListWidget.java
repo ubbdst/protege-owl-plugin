@@ -57,4 +57,3 @@ public class RDFListWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(RDFListWidget.class, cls, slot);
     }
 }
-

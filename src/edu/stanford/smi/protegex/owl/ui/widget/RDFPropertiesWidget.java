@@ -63,4 +63,3 @@ public class RDFPropertiesWidget extends AbstractSlotWidget {
         }
     }
 }
-

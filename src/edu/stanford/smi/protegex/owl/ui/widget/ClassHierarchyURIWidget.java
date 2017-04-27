@@ -67,10 +67,9 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      * Write URI for the class hierarchy
      */
     private String writeClassHierarchyURI() {
-        String identifier = getIdentifier().toLowerCase();
         String prefix = getClassURIPrefix(getInstance().getDirectTypes()) + PATH_SEPARATOR;
         try {
-            String fullURI = prefix  +  URLEncoder.encode(identifier, "UTF-8");
+            String fullURI = prefix + URLEncoder.encode(getIdentifier(), "UTF-8");
             return fullURI.toLowerCase();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
