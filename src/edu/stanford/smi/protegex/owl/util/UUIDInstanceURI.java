@@ -103,7 +103,7 @@ public class UUIDInstanceURI implements InstanceURI {
     }
 
     /**
-     *Get default namespace for the University of Bergen
+     * Get default namespace for the University of Bergen
      */
     public static String getUBBDefaultNamespace(){
         return DEFAULT_UBB_NAMESPACE;
@@ -116,7 +116,6 @@ public class UUIDInstanceURI implements InstanceURI {
     @Override
     public String generateUniqueName() {
         String instanceUri;
-
         do {
             //Keep generating new name until there is no such name in the knowledge base
             //(though unlikely due to the use of UUID)

@@ -5,8 +5,10 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +41,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     @Override
     public Collection getValues() {
         String slotValue = getText();
+       // System.out.println("Slot values: " + slotValue);
         validateSignature(slotValue);
         prepareValueChange(slotValue);
         return CollectionUtilities.createList(slotValue);
@@ -113,20 +116,29 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * @param newValue a new value
      */
     private void replaceSlotValue(Slot slot, String oldValue, String newValue) {
-        int lastPositionOfSeparator = oldValue.lastIndexOf('/');
-        if (lastPositionOfSeparator != -1) {
-            newValue = oldValue.substring(0, lastPositionOfSeparator + 1) + newValue;
-            if (!oldValue.equals(newValue)) {
+        Instance instance = getInstance();
+        //Get UUID from instance URI
+        String uuid = UUIDWidget.getUUIDFromInstanceURI(instance);
+        //Get corresponding class URI prefix
+        String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
+
+        if (newValue == null) {//If the value is null, replace with default UUID
+            instance.setOwnSlotValue(slot, classHierarchyPrefix + uuid);
+        }
+        else {//Else, perform a background check
+            String currentSlotValue = newValue.toLowerCase();
+            if (!oldValue.equalsIgnoreCase(classHierarchyPrefix + currentSlotValue)) {
                 //Restrict the call only to the instances of a selected class
                 Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
-                if (!slotValueExists(instances, slot, newValue)) {
+                if (!slotValueExists(instances, slot, currentSlotValue)) {
                     //Execute change
-                    getInstance().setDirectOwnSlotValue(slot, newValue);
+                    instance.setDirectOwnSlotValue(slot, classHierarchyPrefix + currentSlotValue);
                 } else
-                    log.info("Slot value [" + newValue + "] already exists for a classHierarchyURI widget");
+                    log.info("Slot value [" + classHierarchyPrefix + currentSlotValue+ "] already exists for a classHierarchyURI widget");
             }
         }
     }
+
 
 
     /**
@@ -156,7 +168,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return instances
                 .parallelStream()
                 .map(instance -> instance.getDirectOwnSlotValue(slot))
-                .anyMatch(slotValue -> slotValue != null && slotValue.toString().equals(value));
+                .anyMatch(slotValue -> slotValue != null && slotValue.toString().equalsIgnoreCase(value));
     }
 
 
