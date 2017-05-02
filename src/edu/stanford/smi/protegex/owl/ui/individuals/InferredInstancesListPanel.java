@@ -94,4 +94,3 @@ public class InferredInstancesListPanel extends SelectableContainer {
         refill();
     }
 }
-

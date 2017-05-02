@@ -2,13 +2,16 @@ package edu.stanford.smi.protegex.owl.ui.widget;
 
 import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
+import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
+import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
  * A widget that holds identifier value and
@@ -19,6 +22,7 @@ import java.util.Collection;
  *         2017-04-27
  */
 public class UBBSignatureWidget extends TextFieldWidget {
+    private static transient Logger log = Log.getLogger(UBBSignatureWidget.class);
 
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
 
@@ -89,7 +93,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * Prepare slot value change
      */
     private void prepareValueChange(String currentValue) {
-        Slot slot = getKnowledgeBase().getSlot("http://data.ub.uib.no/ontology/classHierarchyURI");
+        Slot slot = getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
         if (slot != null) {
             Object slotValue = getInstance().getDirectOwnSlotValue(slot);
             //Update value of a given slot iff it is not the same with this value
@@ -119,7 +123,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
                     //Execute change
                     getInstance().setDirectOwnSlotValue(slot, newValue);
                 } else
-                    System.out.println("Slot value [" + newValue + "] already exists for a classHierarchyURI widget");
+                    log.info("Slot value [" + newValue + "] already exists for a classHierarchyURI widget");
             }
         }
     }

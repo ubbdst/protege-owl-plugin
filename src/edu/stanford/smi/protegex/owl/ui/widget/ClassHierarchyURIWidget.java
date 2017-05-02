@@ -1,14 +1,11 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import edu.stanford.smi.protege.model.Cls;
-import edu.stanford.smi.protege.model.Facet;
-import edu.stanford.smi.protege.model.Slot;
-import edu.stanford.smi.protege.model.ValueType;
+import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.util.RDFClassType;
-import edu.stanford.smi.protegex.owl.util.UUIDInstanceURI;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
+import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,12 +36,6 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     }
 
 
-    /**
-     * Get active namespace for the active project
-     */
-    public String getNamespace() {
-        return new UUIDInstanceURI(getOWLModel()).getNamespaceForActiveProject();
-    }
 
     @Override
     public void setValues(Collection values) {
@@ -67,7 +58,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      * Write URI for the class hierarchy
      */
     private String writeClassHierarchyURI() {
-        String prefix = getClassURIPrefix(getInstance().getDirectTypes()) + PATH_SEPARATOR;
+        String prefix = InstanceUtil.getClassURIPrefix(getInstance());
         try {
             String fullURI = prefix + URLEncoder.encode(getIdentifier(), "UTF-8");
             return fullURI.toLowerCase();
@@ -83,58 +74,16 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      */
     private String getIdentifier() {
         //Process identifier slot
-        Slot identifierSlot = getKnowledgeBase().getSlot("http://purl.org/dc/terms/identifier");
+        Instance instance = this.getInstance();
+        Slot identifierSlot = getKnowledgeBase().getSlot(UBBSlotNames.IDENTIFIER);
         if (identifierSlot != null) {
-            Object slotValue = getInstance().getDirectOwnSlotValue(identifierSlot);
+            Object slotValue = instance.getDirectOwnSlotValue(identifierSlot);
             if(slotValue != null ){
                 return slotValue.toString();
             }
         }
-        return UUIDWidget.getUUIDFromInstanceURI(this.getInstance());
+        return UUIDWidget.getUUIDFromInstanceURI(instance);
     }
 
 
-    /**
-     * Return a default class URI prefix
-     */
-    private String getDefaultClassURIPrefix(String className) {
-        String regex = ".+[/#]([^/#]+)$";
-        if (!className.matches(regex)) {
-            throw new IllegalArgumentException("RDFType does not have anything after a \"#\" or \"/\""
-                    + "You might want to change property name [" + className + "] in the ontology");
-        }
-        String typeName = className.replaceAll(regex, "$1");
-        return getNamespace() + "instance" + PATH_SEPARATOR + typeName;
-    }
-
-
-    /**
-     * Return corresponding class URI for a given RDF class type.
-     */
-    private String getClassURIPrefix(Collection<Cls> rdfTypes) {
-        int iterations = 0;
-        if (rdfTypes.size() >= 2) {
-            System.out.println("Found classes: " + rdfTypes.toString() + " for instance " + getInstance().getName());
-        }
-        for (Cls clazz : rdfTypes) {
-            iterations++;
-            String className = clazz.getName();
-            if (className.equals(RDFClassType.CONCEPT.getName())) {
-                return getNamespace() + "topic";
-            } else if (className.equals(RDFClassType.CONCEPT_SCHEME.getName())) {
-                return getNamespace() + "conceptscheme";
-            } else if (className.equals(RDFClassType.PROXY_COLLECTION.getName())) {
-                return getNamespace() + "instance/collection";
-            } else if (className.equals(RDFClassType.EXHIBITION.getName())) {
-                return getNamespace() + "exhibition";
-            } else {
-                if (iterations == rdfTypes.size()) {
-                    //If we reach the end of the list, and none of the above class names are present,
-                    //then fallback to a default class URI prefix
-                    return getDefaultClassURIPrefix(className);
-                }
-            }
-        }
-        return getNamespace();
-    }
 }

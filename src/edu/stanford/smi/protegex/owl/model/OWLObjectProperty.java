@@ -48,4 +48,3 @@ public interface OWLObjectProperty extends OWLProperty {
 
     void setTransitive(boolean value);
 }
-

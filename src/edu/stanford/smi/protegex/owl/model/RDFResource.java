@@ -745,4 +745,3 @@ public interface RDFResource extends ProtegeInstance, RDFObject, Visitable {
      */
     void setVisible(boolean b);
 }
-

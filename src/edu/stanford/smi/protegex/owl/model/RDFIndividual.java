@@ -33,4 +33,3 @@ import edu.stanford.smi.protege.model.SimpleInstance;
 public interface RDFIndividual extends RDFResource, SimpleInstance {
 
 }
-
