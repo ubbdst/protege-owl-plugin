@@ -194,4 +194,3 @@ public class UpdateInferredHierarchyTask extends AbstractReasonerTask {
 
     }
 }
-

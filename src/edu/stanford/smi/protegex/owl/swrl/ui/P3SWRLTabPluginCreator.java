@@ -54,4 +54,3 @@ public interface P3SWRLTabPluginCreator
 
 	Container getSWRLPluginGUI();
 }
-

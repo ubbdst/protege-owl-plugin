@@ -33,4 +33,3 @@ public interface WidgetClassMapper {
 
     String getWidgetClassURI(String javaClassName);
 }
-

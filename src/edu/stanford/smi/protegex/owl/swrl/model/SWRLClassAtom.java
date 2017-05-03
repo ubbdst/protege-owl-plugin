@@ -39,4 +39,4 @@ public interface SWRLClassAtom extends SWRLAtom {
     RDFSClass getClassPredicate();
 
     void setClassPredicate(RDFSClass aClass);
-}
+}

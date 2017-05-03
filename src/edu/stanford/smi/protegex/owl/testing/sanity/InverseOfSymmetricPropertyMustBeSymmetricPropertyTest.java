@@ -74,4 +74,3 @@ public class InverseOfSymmetricPropertyMustBeSymmetricPropertyTest extends Abstr
         }
     }
 }
-

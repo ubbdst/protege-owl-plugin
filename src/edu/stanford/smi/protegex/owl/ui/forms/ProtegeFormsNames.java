@@ -88,4 +88,3 @@ public class ProtegeFormsNames {
     public static final OntClass OWLObjectPropertyTypesWidget = m_model.createClass( "http://www.owl-ontologies.com/forms/protege.owl#OWLObjectPropertyTypesWidget" );
     
 }
-

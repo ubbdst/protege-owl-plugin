@@ -70,4 +70,3 @@ public class DefaultProduct extends DefaultRDFIndividual
         setPropertyValue(getPriceProperty(), new Float(newPrice));
     }
 }
-

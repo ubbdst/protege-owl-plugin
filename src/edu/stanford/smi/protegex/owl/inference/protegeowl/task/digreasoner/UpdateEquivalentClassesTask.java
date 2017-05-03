@@ -190,4 +190,3 @@ public class UpdateEquivalentClassesTask extends AbstractReasonerTask {
 
 }
 
-

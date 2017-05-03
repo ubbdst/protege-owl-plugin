@@ -40,4 +40,3 @@ public class HiddenClassesFilter implements ExplorerFilter {
         return !childClass.isVisible();
     }
 }
-

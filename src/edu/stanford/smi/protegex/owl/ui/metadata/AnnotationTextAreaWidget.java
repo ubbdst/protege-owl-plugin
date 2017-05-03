@@ -254,4 +254,3 @@ public class AnnotationTextAreaWidget extends AbstractPropertyWidget {
         }
     }
 }
-

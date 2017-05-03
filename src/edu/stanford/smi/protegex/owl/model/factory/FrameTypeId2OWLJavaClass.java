@@ -147,4 +147,3 @@ public class FrameTypeId2OWLJavaClass {
 
 	
 }
-

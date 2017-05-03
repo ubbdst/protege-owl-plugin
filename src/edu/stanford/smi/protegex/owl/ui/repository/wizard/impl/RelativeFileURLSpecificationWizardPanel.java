@@ -84,4 +84,3 @@ public class RelativeFileURLSpecificationWizardPanel extends RelativeURLSpecific
 			+ "slash '/', and spaces must be replaced with \"%20\".</p>";
 }
 
-

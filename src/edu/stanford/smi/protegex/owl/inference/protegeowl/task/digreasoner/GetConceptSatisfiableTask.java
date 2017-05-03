@@ -109,4 +109,3 @@ public class GetConceptSatisfiableTask extends AbstractReasonerTask implements B
     }
 }
 
-

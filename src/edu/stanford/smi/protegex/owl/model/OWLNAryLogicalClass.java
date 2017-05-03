@@ -81,4 +81,3 @@ public interface OWLNAryLogicalClass extends OWLLogicalClass {
      */
     void removeOperand(RDFSClass operand);
 }
-

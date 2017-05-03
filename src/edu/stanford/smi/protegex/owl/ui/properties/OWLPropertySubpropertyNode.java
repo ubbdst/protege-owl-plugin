@@ -49,4 +49,3 @@ public class OWLPropertySubpropertyNode extends SlotSubslotNode {
 	
 
 }
-

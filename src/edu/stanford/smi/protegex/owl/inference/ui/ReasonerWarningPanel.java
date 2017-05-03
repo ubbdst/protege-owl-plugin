@@ -79,4 +79,3 @@ public class ReasonerWarningPanel extends OWLTestResultsPanel {
 
 }
 
-

@@ -189,4 +189,3 @@ public class CreateValueAction extends ResourceSelectionAction {
         }
     }
 }
-

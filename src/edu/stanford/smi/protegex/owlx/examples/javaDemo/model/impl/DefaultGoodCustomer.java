@@ -44,4 +44,3 @@ public class DefaultGoodCustomer extends DefaultCustomer
     public DefaultGoodCustomer() {
     }
 }
-

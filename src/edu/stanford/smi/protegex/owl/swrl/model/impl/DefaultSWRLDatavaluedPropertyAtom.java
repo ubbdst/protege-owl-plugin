@@ -110,4 +110,3 @@ public class DefaultSWRLDatavaluedPropertyAtom extends DefaultSWRLAtom implement
 } // DefaultSWRLDatavaluedPropertyAtom
 
 
-

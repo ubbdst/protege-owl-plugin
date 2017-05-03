@@ -108,4 +108,3 @@ public class ReasonerLogRecordRenderer implements ListCellRenderer, TreeCellRend
     }
 }
 
-

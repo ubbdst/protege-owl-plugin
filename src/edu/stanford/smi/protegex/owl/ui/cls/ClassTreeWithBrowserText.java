@@ -115,4 +115,3 @@ public class ClassTreeWithBrowserText extends ClassTree {
     }
 
 }
-

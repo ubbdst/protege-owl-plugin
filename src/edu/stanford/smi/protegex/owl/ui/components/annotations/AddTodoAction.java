@@ -63,4 +63,3 @@ public class AddTodoAction extends AbstractAction {
         table.editCell(row);
     }
 }
-

@@ -47,4 +47,3 @@ public abstract class AbstractTabWidget extends edu.stanford.smi.protege.widget.
         return (OWLModel) super.getKnowledgeBase();
     }
 }
-

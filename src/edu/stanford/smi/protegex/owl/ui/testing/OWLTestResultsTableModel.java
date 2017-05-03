@@ -191,4 +191,3 @@ public class OWLTestResultsTableModel extends AbstractTableModel
         fireTableDataChanged();
     }
 }
-

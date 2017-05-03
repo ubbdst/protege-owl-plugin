@@ -31,4 +31,3 @@ public interface InputStreamSource {
     InputStream getInputStream() throws IOException;
     URL getURL();
 }
-

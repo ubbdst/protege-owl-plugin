@@ -48,4 +48,3 @@ public interface EditableMatrixColumn extends MatrixColumn {
      */
     void setValueAt(RDFResource instance, Object value);
 }
-

@@ -105,4 +105,3 @@ public interface DIGReasoner {
      */
     public Document performRequest(Document request) throws DIGReasonerException;
 }
-

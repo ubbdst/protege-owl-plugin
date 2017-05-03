@@ -89,4 +89,3 @@ public class TripleStoreSelectionPanel extends JPanel {
                     "will probably be editable, where as ontologies that are imported from the web will not " +
                     "be editable.</p>";
 }
-

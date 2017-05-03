@@ -56,4 +56,3 @@ public class SeparatorCellRenderer extends DefaultTableCellRenderer {
         g.drawLine(4, y, getWidth() - 6 - strWidth, y);
     }
 }
-

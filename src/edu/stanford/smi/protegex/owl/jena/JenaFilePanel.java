@@ -77,4 +77,3 @@ public class JenaFilePanel extends JPanel {
     }
     
 }
-

@@ -157,4 +157,3 @@ public class ProjectBasedJavaCodeGeneratorOptions implements EditableJavaCodeGen
     	project.getSettingsMap().setBoolean(PREFIX_MODE, value);
 }
 }
-

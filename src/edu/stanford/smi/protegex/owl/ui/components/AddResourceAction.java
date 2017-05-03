@@ -176,4 +176,3 @@ public class AddResourceAction extends ResourceSelectionAction {
         }
     }
 }
-

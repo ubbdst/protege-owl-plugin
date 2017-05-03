@@ -44,4 +44,3 @@ public interface Suggestion {
 
     public String getDescription();
 }
-

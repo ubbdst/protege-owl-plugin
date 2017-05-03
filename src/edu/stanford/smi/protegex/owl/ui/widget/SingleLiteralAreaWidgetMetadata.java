@@ -42,4 +42,3 @@ public class SingleLiteralAreaWidgetMetadata implements OWLWidgetMetadata {
         }
     }
 }
-

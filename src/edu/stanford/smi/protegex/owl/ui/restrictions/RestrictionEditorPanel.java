@@ -445,4 +445,3 @@ public class RestrictionEditorPanel extends JComponent implements ModalDialogFac
         propertyList.setListData(propertiesList.toArray());
     }
 }
-

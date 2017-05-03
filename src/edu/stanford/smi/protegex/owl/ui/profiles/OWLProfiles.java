@@ -147,4 +147,3 @@ public class OWLProfiles {
     public static final OntClass Qualified_Cardinality_Restrictions = m_model.createClass("http://protege.stanford.edu/plugins/owl/OWLProfiles.owl#Qualified-Cardinality-Restrictions");
 
 }
-

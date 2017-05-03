@@ -104,4 +104,3 @@ public class EmptyOntologyURIPage extends OWLWizardPage {
             "web where the new ontology will eventually be made available.</p>";
 }
 
-

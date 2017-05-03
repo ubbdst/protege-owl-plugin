@@ -36,4 +36,3 @@ public interface PropertyConditionsDisplay {
 
     void displayRowsWithProperty(OWLProperty property);
 }
-

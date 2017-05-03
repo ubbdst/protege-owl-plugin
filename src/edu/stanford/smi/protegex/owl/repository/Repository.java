@@ -146,4 +146,3 @@ public interface Repository {
     abstract OutputStream getOutputStream(URI ontologyName) throws IOException;
     
 }
-

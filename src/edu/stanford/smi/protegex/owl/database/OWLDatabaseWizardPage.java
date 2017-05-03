@@ -219,4 +219,3 @@ public class OWLDatabaseWizardPage extends DatabaseWizardPage {
         return false;
     }
 }
-

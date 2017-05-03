@@ -47,4 +47,3 @@ public interface JavaCodeGeneratorOptions {
     
     boolean getPrefixMode();
 }
-

@@ -50,4 +50,3 @@ public class CollapseTreeAction extends ResourceAction {
         return component instanceof TreePanel;
     }
 }
-

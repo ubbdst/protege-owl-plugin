@@ -59,4 +59,3 @@ public interface OWLClassParser {
 
     RDFResource parseQuantifierFiller(OWLModel owlModel, String expression) throws OWLClassParseException;
 }
-

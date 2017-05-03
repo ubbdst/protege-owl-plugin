@@ -83,4 +83,3 @@ public class DefaultRDFExternalResource extends DefaultSimpleInstance implements
         // visitor.visitRDFExternalResource(this);
     }
 }
-

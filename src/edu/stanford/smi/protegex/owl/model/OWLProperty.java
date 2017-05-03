@@ -56,4 +56,3 @@ public interface OWLProperty extends RDFProperty {
 
     void setInverseFunctional(boolean value);
 }
-

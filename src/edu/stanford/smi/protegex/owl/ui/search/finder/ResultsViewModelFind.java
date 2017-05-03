@@ -147,4 +147,3 @@ public class ResultsViewModelFind extends AbstractTableModel
         return true;
     }
 }
-

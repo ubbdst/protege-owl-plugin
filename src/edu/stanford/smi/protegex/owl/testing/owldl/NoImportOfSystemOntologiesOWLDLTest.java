@@ -70,4 +70,3 @@ public class NoImportOfSystemOntologiesOWLDLTest extends AbstractOWLTest impleme
         return results;
     }
 }
-

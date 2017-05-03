@@ -34,4 +34,3 @@ public interface SortableMatrixColumn extends MatrixColumn {
 
     Comparator getSortComparator();
 }
-

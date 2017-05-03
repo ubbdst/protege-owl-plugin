@@ -68,4 +68,3 @@ public class AddSubclassAction extends ResourceAction {
         return false; // component instanceof OWLSubclassPane && resource instanceof RDFSNamedClass;
     }
 }
-

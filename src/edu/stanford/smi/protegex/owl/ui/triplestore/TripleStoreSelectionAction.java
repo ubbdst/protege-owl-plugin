@@ -181,4 +181,3 @@ public class TripleStoreSelectionAction extends AbstractAction {
         }
     }
 }
-

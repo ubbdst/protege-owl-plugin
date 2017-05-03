@@ -85,4 +85,3 @@ public class JavaCodeGeneratorResourceAction extends ResourceAction {
                 component instanceof JTree;
     }
 }
-

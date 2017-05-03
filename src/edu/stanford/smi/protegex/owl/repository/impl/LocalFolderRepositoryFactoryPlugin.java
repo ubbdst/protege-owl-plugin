@@ -72,4 +72,3 @@ public class LocalFolderRepositoryFactoryPlugin implements RepositoryFactoryPlug
     }
 }
 
-

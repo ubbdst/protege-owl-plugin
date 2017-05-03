@@ -425,4 +425,3 @@ public class DefaultRDFSDatatype extends DefaultRDFIndividual implements RDFSDat
         return map;
     }
 }
-

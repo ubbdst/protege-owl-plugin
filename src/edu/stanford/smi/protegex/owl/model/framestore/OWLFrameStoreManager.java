@@ -135,4 +135,3 @@ public class OWLFrameStoreManager extends FrameStoreManager {
         return localClassificationFrameStore;
     }    
 }
-

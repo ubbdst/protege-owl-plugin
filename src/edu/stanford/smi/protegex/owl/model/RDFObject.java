@@ -49,4 +49,3 @@ public interface RDFObject extends Visitable {
     boolean equalsStructurally(RDFObject object);
 
 }
-

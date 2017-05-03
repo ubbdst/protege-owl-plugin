@@ -174,4 +174,3 @@ public abstract class AbstractOWLTestAction extends AbstractAction {
         ResultsPanelManager.addResultsPanel(owlModel, panel, true);
     }
 }
-

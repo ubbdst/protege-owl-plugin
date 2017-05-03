@@ -172,4 +172,3 @@ public class OwlDatabaseCreator extends AbstractOwlDatabaseCreator {
     }
 
 }
-

@@ -73,4 +73,3 @@ public class ClassTreeWithBrowserTextRoot extends LazyTreeRoot {
     }
 
 }
-

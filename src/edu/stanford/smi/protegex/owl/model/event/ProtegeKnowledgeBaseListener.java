@@ -109,4 +109,3 @@ public interface ProtegeKnowledgeBaseListener extends KnowledgeBaseListener {
      */
     void slotDeleted(KnowledgeBaseEvent event);
 }
-

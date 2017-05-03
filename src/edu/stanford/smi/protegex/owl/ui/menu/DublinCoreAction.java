@@ -54,4 +54,3 @@ public class DublinCoreAction extends AbstractOWLModelAction {
 	                                  JOptionPane.WARNING_MESSAGE);
     }
 }
-

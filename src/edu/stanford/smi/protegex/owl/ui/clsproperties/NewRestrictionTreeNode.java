@@ -159,4 +159,3 @@ public class NewRestrictionTreeNode extends RestrictionTreeNode {
         }
     }
 }
-

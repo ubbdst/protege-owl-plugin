@@ -49,4 +49,3 @@ public interface DragClient {
 
     public Rectangle getDropRectangle(JComponent component, Point pt);
 }
-

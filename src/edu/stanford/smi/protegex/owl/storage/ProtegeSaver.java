@@ -247,4 +247,3 @@ public class ProtegeSaver extends KnowledgeBaseCopier {
   
     
 }
-

@@ -135,4 +135,3 @@ public class ValidClassesPanel extends JPanel {
         }
     }
 }
-

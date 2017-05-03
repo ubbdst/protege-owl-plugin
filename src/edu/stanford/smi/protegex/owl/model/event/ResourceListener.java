@@ -48,4 +48,3 @@ public interface ResourceListener extends ProtegeFrameListener {
      */
     void typeRemoved(RDFResource resource, RDFSClass type);
 }
-

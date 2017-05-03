@@ -40,4 +40,3 @@ public interface RDFSClassTest extends OWLTest {
      */
     List test(RDFSClass aClass);
 }
-

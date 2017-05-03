@@ -263,4 +263,3 @@ public class PropertyFormTableModel extends AbstractTableModel implements Dispos
         fireTableDataChanged();
     }
 }
-

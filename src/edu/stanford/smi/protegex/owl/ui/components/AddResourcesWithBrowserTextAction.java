@@ -47,4 +47,3 @@ public class AddResourcesWithBrowserTextAction extends AddResourceAction {
 	
 
 }
-

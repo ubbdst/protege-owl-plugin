@@ -34,4 +34,3 @@ public interface FindAction extends Action {
 
     public void setTextBox(JTextComponent textBox);
 }
-

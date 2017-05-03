@@ -70,4 +70,3 @@ public class LogicalClassDefinitions {
         System.out.println("New expression: " + c.getParsableExpression());
     }
 }
-

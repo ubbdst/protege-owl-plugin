@@ -55,4 +55,3 @@ public interface OWLToolTipGenerator {
 
     String getToolTipText(RDFResource res);
 }
-

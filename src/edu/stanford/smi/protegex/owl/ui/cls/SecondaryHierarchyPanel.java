@@ -87,4 +87,3 @@ public class SecondaryHierarchyPanel extends HierarchyPanel {
         stopSynchronizeAction.setEnabled(false);
     }
 }
-

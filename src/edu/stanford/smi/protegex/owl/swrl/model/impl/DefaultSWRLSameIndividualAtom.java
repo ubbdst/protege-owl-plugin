@@ -37,4 +37,3 @@ public class DefaultSWRLSameIndividualAtom extends AbstractSWRLIndividualsAtom i
 } // DefaultSWRLSameIndivdualAtom
 
 
-

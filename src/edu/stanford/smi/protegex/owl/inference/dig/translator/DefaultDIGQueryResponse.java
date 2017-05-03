@@ -117,4 +117,3 @@ public class DefaultDIGQueryResponse implements DIGQueryResponse {
     }
 }
 
-

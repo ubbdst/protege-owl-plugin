@@ -33,4 +33,3 @@ import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 public interface TestPerson extends RDFIndividual {
 
 }
-

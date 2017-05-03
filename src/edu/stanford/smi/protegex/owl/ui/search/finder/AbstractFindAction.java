@@ -92,4 +92,3 @@ abstract class AbstractFindAction extends AbstractAction implements FindAction {
 
     protected abstract void showResults(AbstractFindResultsView view);
 }
-

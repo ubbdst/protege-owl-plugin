@@ -57,4 +57,3 @@ public interface OWLAnonymousClass extends OWLClass {
      */
     OWLNamedClass getOwner();
 }
-

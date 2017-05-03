@@ -1055,4 +1055,3 @@ public class PropertyRestrictionsTree extends SelectableTree implements Disposab
         }
     }
 }
-

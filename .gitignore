@@ -1,9 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
  build
+nbbuid/
+nbbuild.xml
 /build/classes
 .iml
 logs
 out
 .DS_Store
 protege.properties
+/nbdist/

@@ -788,4 +788,3 @@ public abstract class SymbolTable extends SelectableTable implements TripleSelec
         desktop.add(symbolPanel);
     }
 }
-

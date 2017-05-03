@@ -48,4 +48,3 @@ public class TripleStoreFilterTripleWriter extends DelegatingTripleWriter {
         }
     }
 }
-

@@ -187,4 +187,3 @@ public class TabNavigationHistorySelectable implements Disposable, NavigationHis
         notifySelectionListeners();
     }
 }
-

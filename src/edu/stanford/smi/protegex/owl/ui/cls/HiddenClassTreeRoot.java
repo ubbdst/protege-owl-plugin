@@ -82,4 +82,3 @@ public class HiddenClassTreeRoot extends LazyTreeRoot {
         return new LazyTreeNodeFrameComparator();
     }
 }
-

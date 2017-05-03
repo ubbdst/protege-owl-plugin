@@ -35,4 +35,3 @@ public class OwlMetaProjectConstants {
 
     public final static Operation OPERATION_ONTOLOGY_TAB_WRITE = new UnbackedOperationImpl("OntologyTabWrite", null);
 }
-

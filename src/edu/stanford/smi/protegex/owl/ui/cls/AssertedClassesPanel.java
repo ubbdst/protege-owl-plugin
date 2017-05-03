@@ -405,4 +405,3 @@ public class AssertedClassesPanel extends SelectableContainer implements Hierarc
         }
     }
 }
-

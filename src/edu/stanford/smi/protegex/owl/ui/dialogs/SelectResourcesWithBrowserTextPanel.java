@@ -104,4 +104,3 @@ public class SelectResourcesWithBrowserTextPanel extends SelectResourcesPanel {
 	}
 	
 }
-

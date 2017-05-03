@@ -390,4 +390,3 @@ public interface ProtegeReasoner extends Disposable {
 	
 	
 }
-

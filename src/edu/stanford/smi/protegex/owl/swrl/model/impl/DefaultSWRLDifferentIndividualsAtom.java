@@ -44,4 +44,3 @@ public class DefaultSWRLDifferentIndividualsAtom extends AbstractSWRLIndividuals
 } // DefaultSWRLDifferentIndiivdualsAtom
 
 
-

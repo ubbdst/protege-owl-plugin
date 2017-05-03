@@ -320,4 +320,3 @@ public class OWLRangeWidget extends AbstractPropertyWidget {
     	super.setEnabled(enabled);
     };
 }
-

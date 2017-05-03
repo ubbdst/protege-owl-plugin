@@ -128,4 +128,3 @@ public class OWLWidgetUtil {
                 isFunctionalProperty(cls, property);
     }
 }
-

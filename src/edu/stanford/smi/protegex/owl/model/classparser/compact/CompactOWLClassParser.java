@@ -105,4 +105,3 @@ public class CompactOWLClassParser implements OWLClassParser {
         return e;
     }
 }
-

@@ -48,4 +48,3 @@ class CreateRowAction extends AbstractAction {
         table.createAndEditRow();
     }
 }
-

@@ -157,4 +157,3 @@ public class DefaultOWLEnumeratedClass extends AbstractOWLAnonymousClass
         setOneOf(values);
     }
 }
-

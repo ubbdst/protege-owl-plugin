@@ -61,4 +61,3 @@ public class DropDownOverlayIcon implements Icon {
         g.drawLine(bx + 2, by + 2, bx + 2, by + 2);
     }
 }
-

@@ -36,4 +36,3 @@ import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditor;
 public interface AnnotationsWidgetPlugin extends PropertyValueEditor {
 
 }
-

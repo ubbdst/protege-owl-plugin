@@ -42,4 +42,3 @@ public interface ActionConstants {
     public static final String ACTION_GROUP_DIRECT_REASONER = OWLModelActionConstants.DIRECT_INFERENCE_GROUP;
         
 }
-

@@ -1807,4 +1807,3 @@ public abstract class OWLSystemFrames extends SystemFrames {
         return integerDatatypes;
     }
 }
-

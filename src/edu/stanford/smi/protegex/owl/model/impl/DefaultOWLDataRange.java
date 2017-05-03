@@ -128,4 +128,3 @@ public class DefaultOWLDataRange extends DefaultRDFIndividual implements OWLData
         visitor.visitOWLDataRange(this);
     }
 }
-

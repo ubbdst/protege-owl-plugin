@@ -33,4 +33,3 @@ public class JenaWriterSettings implements WriterSettings {
     public JenaWriterSettings(OWLModel owlModel) {
     }
 }
-

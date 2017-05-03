@@ -161,4 +161,3 @@ public class SPARQLQueryResults implements QueryResults {
         return map;
     }
 }
-

@@ -411,4 +411,3 @@ class TripleProcessorForUntypedResources extends AbstractStatefulTripleProcessor
 
 
 }
-

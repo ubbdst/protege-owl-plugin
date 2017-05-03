@@ -60,4 +60,3 @@ public class GlobalRepositoriesPanel extends AbstractRepositoriesPanel {
     }
 }
 
-

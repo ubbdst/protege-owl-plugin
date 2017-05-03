@@ -99,4 +99,3 @@ public abstract class RestrictionTreeNode extends DefaultMutableTreeNode impleme
 
     public abstract boolean isInherited();
 }
-

@@ -61,4 +61,3 @@ public class InversePropertyMatrixColumn extends AbstractMatrixColumn {
         };
     }
 }
-

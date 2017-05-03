@@ -398,4 +398,3 @@ public abstract class SymbolPanel extends JPanel implements SymbolErrorDisplay {
         }
     }
 }
-

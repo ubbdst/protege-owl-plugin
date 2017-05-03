@@ -64,4 +64,3 @@ public class MultiResourceWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(MultiResourceWidget.class, cls, slot);
     }
 }
-

@@ -105,4 +105,3 @@ public class MyFactory {
         return (GoodCustomer) cls.createInstance(name).as(GoodCustomer.class);
     }
 }
-

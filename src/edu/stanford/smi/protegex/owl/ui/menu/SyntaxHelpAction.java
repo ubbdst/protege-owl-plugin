@@ -70,4 +70,3 @@ public class SyntaxHelpAction extends AbstractAction {
         return dialog;
     }
 }
-

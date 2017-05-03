@@ -135,4 +135,3 @@ public class PropertyFormComponent extends FormComponent {
         lc.setHeaderLabel(property.getBrowserText());
     }
 }
-

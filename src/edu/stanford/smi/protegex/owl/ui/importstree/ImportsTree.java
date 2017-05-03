@@ -124,4 +124,3 @@ public class ImportsTree extends SelectableTree implements HostResourceDisplay {
         return result;
     }
 }
-

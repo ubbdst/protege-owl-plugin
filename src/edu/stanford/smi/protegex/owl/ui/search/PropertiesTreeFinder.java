@@ -45,4 +45,3 @@ public class PropertiesTreeFinder extends SlotsTreeFinder {
         super(owlModel, tree, description);
     }
 }
-

@@ -103,4 +103,3 @@ public interface ClassListener extends ProtegeClsListener {
      */
     void superclassRemoved(RDFSClass cls, RDFSClass superclass);
 }
-

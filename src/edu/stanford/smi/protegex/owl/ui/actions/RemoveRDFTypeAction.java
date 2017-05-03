@@ -59,4 +59,3 @@ public class RemoveRDFTypeAction extends ResourceAction {
                 resource.isEditable();
     }
 }
-

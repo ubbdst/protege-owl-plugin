@@ -75,4 +75,3 @@ abstract class AbstractFindResultsView extends JComponent {
         }
     }
 }
-

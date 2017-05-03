@@ -40,4 +40,3 @@ public interface OWLClass extends RDFSClass {
 	 */	
 	Collection getDisjointClasses();
 }
-

@@ -35,4 +35,3 @@ public interface EditableEMFGeneratorOptions extends EMFGeneratorOptions {
 
     void setPackage(String value);
 }
-

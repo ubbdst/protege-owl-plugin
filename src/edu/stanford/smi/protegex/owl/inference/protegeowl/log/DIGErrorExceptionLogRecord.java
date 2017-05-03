@@ -81,4 +81,3 @@ public class DIGErrorExceptionLogRecord extends ReasonerLogRecord {
     }
 }
 
-

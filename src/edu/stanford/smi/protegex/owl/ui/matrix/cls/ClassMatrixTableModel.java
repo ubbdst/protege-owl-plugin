@@ -54,4 +54,3 @@ public class ClassMatrixTableModel extends MatrixTableModel {
         return super.getNewColumnIndex(col) - 1;
     }
 }
-

@@ -273,4 +273,3 @@ public class OWLSymbolPanel extends SymbolPanel {
         enableActions(enabled, enabled, enabled, enabled);
     }
 }
-

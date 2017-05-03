@@ -81,4 +81,3 @@ public class GetExpressionRootForAnonymousClassJob extends ProtegeJob {
     }
 
 }
-

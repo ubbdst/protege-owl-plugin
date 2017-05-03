@@ -106,4 +106,3 @@ public class StringValueEditor implements PropertyValueEditor {
         return false;
     }
 }
-

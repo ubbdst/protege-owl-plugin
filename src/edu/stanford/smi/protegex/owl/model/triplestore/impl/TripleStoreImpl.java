@@ -531,4 +531,3 @@ public class TripleStoreImpl implements TripleStore {
     }
 
 }
-

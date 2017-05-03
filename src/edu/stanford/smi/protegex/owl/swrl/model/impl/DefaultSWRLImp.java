@@ -444,4 +444,3 @@ public class DefaultSWRLImp extends AbstractSWRLIndividual implements SWRLImp
 	}
 
 }
-

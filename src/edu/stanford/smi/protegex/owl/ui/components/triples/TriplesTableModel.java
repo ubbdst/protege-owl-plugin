@@ -595,4 +595,3 @@ public class TriplesTableModel extends AbstractTableModel {
 		return Collections.emptyList();
 	}
 }
-

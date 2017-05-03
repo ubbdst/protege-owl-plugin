@@ -51,4 +51,3 @@ public interface SWRLDataRangeAtom extends SWRLAtom {
 
     void setDataRange(OWLDataRange dataRange);
 }
-

@@ -133,4 +133,3 @@ public class SWRLTab extends AbstractTabWidget
 		}
 	}
 }
-

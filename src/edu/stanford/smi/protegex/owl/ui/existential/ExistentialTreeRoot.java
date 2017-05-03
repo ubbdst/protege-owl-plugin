@@ -64,4 +64,3 @@ public class ExistentialTreeRoot extends LazyTreeRoot {
         return new LazyTreeNodeFrameComparator();
     }
 }
-

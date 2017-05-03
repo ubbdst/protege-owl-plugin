@@ -66,4 +66,3 @@ public abstract class AbstractTripleAction implements TripleAction {
         return name;
     }
 }
-

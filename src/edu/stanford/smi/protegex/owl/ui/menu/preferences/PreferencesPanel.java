@@ -190,4 +190,3 @@ public class PreferencesPanel extends ValidatableTabComponent {
         configureTabsPanel.saveContents();
     }
 }
-

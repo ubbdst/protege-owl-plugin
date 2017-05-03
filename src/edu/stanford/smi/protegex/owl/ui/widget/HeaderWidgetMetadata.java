@@ -43,4 +43,3 @@ public class HeaderWidgetMetadata implements OWLWidgetMetadata {
         */
     }
 }
-

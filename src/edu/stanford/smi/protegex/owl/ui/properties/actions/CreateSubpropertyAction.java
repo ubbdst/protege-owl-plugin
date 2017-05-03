@@ -114,4 +114,3 @@ public class CreateSubpropertyAction extends ResourceAction {
         pane.extendSelection(subproperty);
     }
 }
-

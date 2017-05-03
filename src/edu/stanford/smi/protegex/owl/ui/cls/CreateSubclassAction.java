@@ -109,4 +109,3 @@ public class CreateSubclassAction extends ResourceAction {
         	classTreePanel.setSelectedClass(cls);
     }
 }
-

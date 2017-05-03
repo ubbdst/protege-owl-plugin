@@ -140,4 +140,3 @@ public abstract class AddTripleStorePanel extends JPanel implements Validatable 
         return false;
     }
 }
-

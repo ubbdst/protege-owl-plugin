@@ -749,4 +749,3 @@ public class JavaCodeGenerator {
     }
 
 }
-

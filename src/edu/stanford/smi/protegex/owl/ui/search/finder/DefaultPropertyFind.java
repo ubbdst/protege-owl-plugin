@@ -45,4 +45,3 @@ public class DefaultPropertyFind extends ResultsViewModelFind {
         return "Find Property";
     }
 }
-

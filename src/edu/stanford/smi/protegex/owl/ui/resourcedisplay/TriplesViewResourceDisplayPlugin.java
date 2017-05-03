@@ -78,4 +78,3 @@ public class TriplesViewResourceDisplayPlugin implements ResourceDisplayPlugin {
         resourceDisplay.setMode(formView, triplesView);
     }
 }
-

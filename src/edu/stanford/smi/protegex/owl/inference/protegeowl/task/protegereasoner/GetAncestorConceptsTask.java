@@ -57,4 +57,3 @@ public class GetAncestorConceptsTask extends AbstractSingleConceptWithConceptCol
 
 }
 
-

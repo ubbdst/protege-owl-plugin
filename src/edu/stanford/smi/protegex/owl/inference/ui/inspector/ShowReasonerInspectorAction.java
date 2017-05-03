@@ -67,4 +67,3 @@ public class ShowReasonerInspectorAction extends AbstractOWLModelAction {
     }
 }
 
-

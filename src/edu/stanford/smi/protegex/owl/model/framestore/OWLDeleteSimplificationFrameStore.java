@@ -58,4 +58,3 @@ public class OWLDeleteSimplificationFrameStore extends DeleteSimplificationFrame
         }
     }
 }
-

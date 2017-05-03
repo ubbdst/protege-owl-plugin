@@ -39,4 +39,3 @@ public class OWLDeleteAction extends DeleteAction {
         putValue(Action.SMALL_ICON, OWLIcons.getDeleteIcon());
     }
 }
-

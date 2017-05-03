@@ -146,4 +146,3 @@ public class DefaultSWRLAtomList extends DefaultRDFList implements SWRLAtomList
   
 } // DefaultSWRLAtomList
 
-

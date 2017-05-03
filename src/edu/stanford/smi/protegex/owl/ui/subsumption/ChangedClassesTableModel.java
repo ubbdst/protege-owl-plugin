@@ -266,4 +266,3 @@ public class ChangedClassesTableModel extends AbstractTableModel implements Disp
         b.removeAll(copyA);
     }
 }
-

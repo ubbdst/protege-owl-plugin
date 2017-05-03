@@ -55,4 +55,3 @@ public interface RestrictionUpdater {
 
     void updateRestrictions(OWLNamedClass cls, RDFProperty property, Facet facet);
 }
-

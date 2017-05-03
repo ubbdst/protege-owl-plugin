@@ -74,4 +74,3 @@ public interface Hierarchy extends NavigationHistorySelectable {
 
     void setSelectedClass(RDFSClass cls);
 }
-

@@ -133,4 +133,3 @@ public class SubsumptionTreeNode extends LazyTreeNode {
         return "SubsumptionTreeNode(" + getCls() + ")";
     }
 }
-

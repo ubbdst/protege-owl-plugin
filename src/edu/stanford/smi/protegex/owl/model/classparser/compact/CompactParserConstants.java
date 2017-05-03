@@ -93,4 +93,3 @@ public interface CompactParserConstants {
   };
 
 }
-

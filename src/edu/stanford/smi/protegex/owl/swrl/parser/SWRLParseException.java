@@ -34,4 +34,4 @@ public class SWRLParseException extends Exception
 	{
 		super(s);
 	}
-}
+}

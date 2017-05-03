@@ -99,4 +99,3 @@ public class ManchesterOWLClassDisplay extends AbstractOWLClassDisplay {
         return "Manchester OWL Syntax";
     }
 }
-

@@ -114,4 +114,3 @@ public class AddClosureAxiomAction extends ResourceAction {
         return ClosureAxiomFactory.addClosureAxiom(namedClass, restriction);
     }
 }
-

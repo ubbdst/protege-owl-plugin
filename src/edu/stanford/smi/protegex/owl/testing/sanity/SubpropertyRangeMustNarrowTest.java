@@ -115,4 +115,3 @@ public class SubpropertyRangeMustNarrowTest extends AbstractOWLTest
         return Collections.EMPTY_LIST;
     }
 }
-

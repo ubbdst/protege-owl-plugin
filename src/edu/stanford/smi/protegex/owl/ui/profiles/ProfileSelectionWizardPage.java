@@ -151,4 +151,3 @@ public class ProfileSelectionWizardPage extends WizardPage {
         }
     }
 }
-

@@ -112,4 +112,3 @@ public class EMFPanel extends JPanel {
         overwriteCheckBox.setSelected(value);
     }
 }
-

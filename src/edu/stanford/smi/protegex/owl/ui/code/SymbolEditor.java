@@ -78,4 +78,3 @@ public interface SymbolEditor {
      */
     void insertText(String text, int caretOffset);
 }
-

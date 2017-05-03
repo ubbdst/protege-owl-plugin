@@ -160,4 +160,3 @@ public class SPARQLQueryPanel extends JPanel {
         textArea.setText(str);
     }
 }
-

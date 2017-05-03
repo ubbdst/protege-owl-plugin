@@ -180,4 +180,3 @@ public class DragPane extends JPanel {
 
 }
 
-

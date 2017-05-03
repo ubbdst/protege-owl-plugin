@@ -357,4 +357,3 @@ public class PrefixesPanel extends JPanel implements Disposable {
         super.setEnabled(enabled);
     }
 }
-

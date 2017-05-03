@@ -106,4 +106,3 @@ public abstract class AbstractSelectionDialogFactory implements SelectionDialogF
         return selectResourcesByType(parent, owlModel, allowedClasses, SELECT_RESOURCES_TITLE);
     }
 }
-

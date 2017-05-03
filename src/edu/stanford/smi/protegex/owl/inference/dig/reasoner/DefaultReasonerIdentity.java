@@ -40,4 +40,3 @@ public class DefaultReasonerIdentity implements ReasonerIdentity {
 	}
 
 }
-

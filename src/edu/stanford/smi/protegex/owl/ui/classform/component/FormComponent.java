@@ -88,4 +88,3 @@ public abstract class FormComponent extends JComponent implements Disposable {
         designTime = b;
     }
 }
-

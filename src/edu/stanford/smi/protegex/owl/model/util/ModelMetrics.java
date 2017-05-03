@@ -512,4 +512,3 @@ public class ModelMetrics extends OWLModelVisitorAdapter {
     }
 }
 
-

@@ -102,4 +102,3 @@ public interface Customer_ extends RDFIndividual {
 
     void setZipCode(int newZipCode);
 }
-

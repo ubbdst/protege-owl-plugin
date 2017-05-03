@@ -336,4 +336,3 @@ public abstract class AbstractOWLTableModel extends AbstractTableModel
     protected abstract void setValueAt(int rowIndex, OWLModel owlModel, String parsableText)
             throws Exception;
 }
-

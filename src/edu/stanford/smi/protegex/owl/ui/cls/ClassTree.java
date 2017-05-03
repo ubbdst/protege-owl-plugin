@@ -124,4 +124,3 @@ public class ClassTree extends TooltippedSelectableTree implements TripleSelecta
     }
 
 }
-

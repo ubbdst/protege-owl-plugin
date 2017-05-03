@@ -37,4 +37,3 @@ interface ClassDescriptionTableModel extends OWLTableModel {
 
     boolean isRemoveEnabledFor(Cls cls);
 }
-

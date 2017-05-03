@@ -43,4 +43,3 @@ public interface ResourceNameMatcher {
     
     public boolean isIdChar(char ch);
 }
-

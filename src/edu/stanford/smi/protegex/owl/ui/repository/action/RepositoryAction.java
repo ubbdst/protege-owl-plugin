@@ -46,4 +46,3 @@ public interface RepositoryAction {
 
     public void actionPerformed(Repository repository, AbstractRepositoriesPanel repositoriesPanel, OWLModel model);
 }
-

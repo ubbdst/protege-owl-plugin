@@ -375,4 +375,3 @@ public class PropertyRestrictionsTreeWidget extends AbstractPropertyWidget {
         }
     }
 }
-

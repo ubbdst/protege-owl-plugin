@@ -263,4 +263,4 @@ public class FindResultsPanel extends JComponent {
 
         return combo;
     }
-}
+}

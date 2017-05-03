@@ -46,4 +46,3 @@ public interface OWLAllValuesFrom extends OWLQuantifierRestriction {
      */
     void setAllValuesFrom(RDFResource allValuesFrom);
 }
-

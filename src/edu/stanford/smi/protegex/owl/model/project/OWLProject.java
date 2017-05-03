@@ -54,4 +54,3 @@ public interface OWLProject {
      */
     void setSessionObject(String key, Object object);
 }
-

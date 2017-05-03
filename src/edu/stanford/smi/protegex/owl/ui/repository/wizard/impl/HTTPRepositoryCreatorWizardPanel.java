@@ -146,4 +146,3 @@ public class HTTPRepositoryCreatorWizardPanel extends RepositoryCreatorWizardPan
             "be downloaded from.</p>";
 }
 
-

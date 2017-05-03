@@ -97,4 +97,3 @@ public class IsSubsumedByTask extends AbstractReasonerTask implements BooleanRes
     }
 }
 
-

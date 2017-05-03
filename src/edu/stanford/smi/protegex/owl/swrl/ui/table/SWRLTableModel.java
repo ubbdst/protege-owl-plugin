@@ -349,4 +349,3 @@ public class SWRLTableModel extends AbstractTableModel implements Disposable, Sy
 		};
 	};
 }
-

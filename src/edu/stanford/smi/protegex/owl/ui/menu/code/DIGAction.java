@@ -94,4 +94,3 @@ public class DIGAction extends AbstractOWLModelAction {
     }
 }
 
-

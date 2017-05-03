@@ -242,4 +242,3 @@ public class PropertiesDefinitionTableModel extends AbstractOWLTableModel implem
         }
     }
 }
-

@@ -222,4 +222,3 @@ public class PrefixesTableModel extends AbstractTableModel  {
         return prefixes.indexOf(prefix);
     }
 }
-

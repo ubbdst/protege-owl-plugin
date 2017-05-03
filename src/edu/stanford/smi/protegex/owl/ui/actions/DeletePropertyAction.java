@@ -56,4 +56,3 @@ public class DeletePropertyAction extends ResourceAction {
         return resource instanceof RDFProperty && resource.isEditable() && component instanceof JTree;
     }
 }
-

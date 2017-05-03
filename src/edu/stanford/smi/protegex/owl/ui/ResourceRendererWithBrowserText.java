@@ -79,4 +79,3 @@ public class ResourceRendererWithBrowserText extends
 		super.setMainText(StringUtilities.unquote(text));
 	}
 }
-

@@ -280,4 +280,3 @@ public class OWLSuperpropertiesPanel extends SelectableContainer {
     }   
     
 }
-

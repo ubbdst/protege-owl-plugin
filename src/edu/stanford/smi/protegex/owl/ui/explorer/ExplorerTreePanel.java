@@ -368,4 +368,3 @@ public class ExplorerTreePanel extends SelectableContainer implements Hierarchy 
     protected void updateActions() {
     }
 }
-

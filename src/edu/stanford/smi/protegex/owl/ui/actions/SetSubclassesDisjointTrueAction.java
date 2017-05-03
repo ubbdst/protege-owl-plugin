@@ -81,4 +81,3 @@ public class SetSubclassesDisjointTrueAction extends RefactorResourceAction {
                 !((OWLNamedClass) resource).getSubclassesDisjoint();
     }
 }
-

@@ -167,4 +167,3 @@ public class OWLDomainTable extends SelectableTable {
         }
     }
 }
-

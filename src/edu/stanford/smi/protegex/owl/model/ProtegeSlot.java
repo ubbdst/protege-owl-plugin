@@ -340,4 +340,3 @@ public interface ProtegeSlot extends ProtegeInstance, Slot {
      */
     void setValueType(ValueType type);
 }
-

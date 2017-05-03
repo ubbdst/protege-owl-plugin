@@ -194,4 +194,3 @@ public class HTTPRepository extends AbstractStreamBasedRepositoryImpl {
     }
 }
 
-

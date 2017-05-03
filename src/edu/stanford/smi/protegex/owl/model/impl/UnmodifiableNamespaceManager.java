@@ -95,4 +95,3 @@ public class UnmodifiableNamespaceManager implements NamespaceManager {
     }
 
 }
-

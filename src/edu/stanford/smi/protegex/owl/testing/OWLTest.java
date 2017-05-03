@@ -43,4 +43,3 @@ public interface OWLTest {
 
     String getName();
 }
-

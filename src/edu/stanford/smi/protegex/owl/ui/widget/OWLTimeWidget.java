@@ -128,4 +128,3 @@ public class OWLTimeWidget extends AbstractPropertyWidget implements TimePanel.L
         return OWLWidgetMapper.isSuitable(OWLTimeWidget.class, cls, slot);
     }
 }
-

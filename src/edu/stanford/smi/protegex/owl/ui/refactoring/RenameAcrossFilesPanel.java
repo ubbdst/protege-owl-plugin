@@ -113,4 +113,3 @@ public class RenameAcrossFilesPanel extends JPanel {
         filesListModel.removeElement(file);
     }
 }
-

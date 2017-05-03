@@ -641,4 +641,3 @@ public abstract class AbstractProtegeReasoner implements ProtegeReasoner {
 	
 	
 }
-

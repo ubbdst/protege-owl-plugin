@@ -89,4 +89,3 @@ public class DLExpressivityTableModel extends AbstractTableModel {
 	}
 }
 
-

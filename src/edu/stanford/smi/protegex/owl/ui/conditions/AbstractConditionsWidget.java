@@ -153,4 +153,3 @@ public abstract class AbstractConditionsWidget extends AbstractPropertyWidget
         }
     }
 }
-

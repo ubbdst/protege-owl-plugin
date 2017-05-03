@@ -54,4 +54,3 @@ public interface ExplorerFilter {
      */
     boolean isValidChild(RDFSClass parentClass, RDFSClass childClass);
 }
-

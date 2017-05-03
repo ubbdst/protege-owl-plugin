@@ -56,4 +56,3 @@ public class EnumeratedClassExample {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

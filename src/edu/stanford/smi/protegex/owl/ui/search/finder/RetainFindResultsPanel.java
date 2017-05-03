@@ -105,4 +105,3 @@ public class RetainFindResultsPanel extends ResultsPanel {
         //ignore
     }
 }
-

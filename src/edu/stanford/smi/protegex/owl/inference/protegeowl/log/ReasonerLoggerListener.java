@@ -36,4 +36,3 @@ public interface ReasonerLoggerListener {
 
     public void logRecordPosted(ReasonerLogRecord logRecord);
 }
-

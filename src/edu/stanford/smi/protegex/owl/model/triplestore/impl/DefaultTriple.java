@@ -86,4 +86,3 @@ public final class DefaultTriple implements Triple {
                 str + ")";
     }
 }
-

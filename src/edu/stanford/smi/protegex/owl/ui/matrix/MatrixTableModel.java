@@ -320,4 +320,3 @@ public class MatrixTableModel extends AbstractTableModel implements Disposable {
         Collections.sort(instances, c.getSortComparator());
     }
 }
-

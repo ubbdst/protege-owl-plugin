@@ -81,4 +81,4 @@ public enum SWRLFrameTypeId {
     public Class<? extends SimpleInstance> getJavaClass() {
         return javaClass;
     }
-}
+}

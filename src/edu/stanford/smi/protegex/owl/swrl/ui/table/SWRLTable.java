@@ -194,4 +194,3 @@ public class SWRLTable extends SymbolTable implements Disposable
 		}
 	}
 }
-

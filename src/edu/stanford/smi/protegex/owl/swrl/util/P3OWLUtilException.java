@@ -36,4 +36,3 @@ public class P3OWLUtilException extends Exception
 		super(message, cause);
 	}
 }
-

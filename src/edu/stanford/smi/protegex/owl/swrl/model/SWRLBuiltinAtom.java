@@ -37,4 +37,3 @@ public interface SWRLBuiltinAtom extends SWRLAtom
   void setBuiltin(SWRLBuiltin swrlBuiltin); 
 } // SWRLBuiltinAtom
 
-

@@ -112,4 +112,3 @@ public class GetSubsumptionRelationshipTask extends AbstractReasonerTask impleme
     }
 }
 
-

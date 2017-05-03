@@ -74,4 +74,3 @@ public class ExInclusiveToggleAction extends AbstractAction {
         void assignInterval();
     }
 }
-

@@ -101,4 +101,3 @@ public class OWLViewWizardPage extends WizardPage {
         }
     }
 }
-

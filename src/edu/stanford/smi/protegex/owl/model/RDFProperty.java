@@ -452,4 +452,3 @@ public interface RDFProperty extends ProtegeSlot, RDFResource, Deprecatable {
 
     void setUnionRangeClasses(Collection classes);
 }
-

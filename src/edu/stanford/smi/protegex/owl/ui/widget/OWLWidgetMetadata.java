@@ -74,4 +74,3 @@ public interface OWLWidgetMetadata {
      */
     int getSuitability(RDFSNamedClass cls, RDFProperty property);
 }
-

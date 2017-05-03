@@ -68,4 +68,3 @@ public class ChangeClosureAxiomButton extends AbstractAction {
         button.setIcon(OWLIcons.getImageIcon(closed ? OWLIcons.CLOSURE_CLOSED : OWLIcons.CLOSURE_OPEN));
     }
 }
-

@@ -379,4 +379,3 @@ public class ExistentialTreePanel extends SelectableContainer implements Hierarc
         void setCls(OWLNamedClass cls);
     }
 }
-

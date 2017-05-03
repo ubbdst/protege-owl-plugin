@@ -41,4 +41,3 @@ public interface Tuple {
 
     RDFProperty getPredicate();
 }
-

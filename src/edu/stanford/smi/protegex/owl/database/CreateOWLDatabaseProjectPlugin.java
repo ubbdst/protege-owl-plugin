@@ -179,4 +179,4 @@ public class CreateOWLDatabaseProjectPlugin extends
     public String getOntologyName() {
         return ontologyName;
     }
-}
+}

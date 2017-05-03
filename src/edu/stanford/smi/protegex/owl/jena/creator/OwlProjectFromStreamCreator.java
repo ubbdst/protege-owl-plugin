@@ -102,4 +102,3 @@ public class OwlProjectFromStreamCreator extends AbstractOwlProjectCreator {
     }
 
 }
-

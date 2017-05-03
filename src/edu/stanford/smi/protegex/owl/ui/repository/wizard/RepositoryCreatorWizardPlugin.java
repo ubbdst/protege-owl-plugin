@@ -51,4 +51,3 @@ public interface RepositoryCreatorWizardPlugin {
 
     public RepositoryCreatorWizardPanel createRepositoryCreatorWizardPanel(WizardPage wizardPage, OWLModel owlModel);
 }
-

@@ -32,4 +32,3 @@ package edu.stanford.smi.protegex.owl.model;
 public interface OWLMinCardinality extends OWLCardinalityBase {
 
 }
-

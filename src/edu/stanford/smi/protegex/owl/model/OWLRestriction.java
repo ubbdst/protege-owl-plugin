@@ -101,4 +101,3 @@ public interface OWLRestriction extends OWLAnonymousClass {
      */
     void setOnProperty(RDFProperty property);
 }
-

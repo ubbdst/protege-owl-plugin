@@ -82,4 +82,3 @@ public class DeleteMatchingPropertyValuesAction extends AbstractAction {
         }
     }
 }
-

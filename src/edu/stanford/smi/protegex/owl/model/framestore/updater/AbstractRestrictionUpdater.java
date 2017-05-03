@@ -97,4 +97,3 @@ public abstract class AbstractRestrictionUpdater implements RestrictionUpdater {
         }
     }
 }
-

@@ -110,4 +110,3 @@ public class OverlayIcon implements Icon {
         new ImageIcon(topImage).paintIcon(c, g, topX + x, topY + y);
     }
 }
-

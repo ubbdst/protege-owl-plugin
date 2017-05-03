@@ -131,4 +131,3 @@ public class OWL2OWLCopier extends KnowledgeBaseCopier {
         }
     }
 }
-

@@ -40,4 +40,3 @@ public interface RDFPropertyTest extends OWLTest {
      */
     List test(RDFProperty property);
 }
-

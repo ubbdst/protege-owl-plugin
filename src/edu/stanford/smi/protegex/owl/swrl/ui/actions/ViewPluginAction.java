@@ -57,4 +57,3 @@ public class ViewPluginAction extends AbstractAction
 			P3SWRLTabPluginManager.showPlugin(this.pluginName, this.swrlTab, this.owlModel);
 	}
 }
-

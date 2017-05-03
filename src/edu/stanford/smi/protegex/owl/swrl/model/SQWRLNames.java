@@ -295,4 +295,3 @@ public class SQWRLNames
 		return collectionOperationBuiltInNames.contains(builtInName);
 	}
 }
-

@@ -62,4 +62,3 @@ public class LoadTravelOntology {
         System.out.println("File saved with " + errors.size() + " errors.");
     }
 }
-

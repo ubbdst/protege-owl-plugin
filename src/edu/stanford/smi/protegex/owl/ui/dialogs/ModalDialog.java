@@ -372,4 +372,3 @@ class ModalDialog extends JDialog implements Disposable {
     }
 
 }
-

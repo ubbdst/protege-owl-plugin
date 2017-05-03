@@ -51,4 +51,3 @@ public interface RDFExternalResource extends Instance, Visitable {
      */
     void setResourceURI(String value);
 }
-

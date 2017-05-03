@@ -39,4 +39,3 @@ public interface DIGLoggerListener {
     public void errorLogged(DIGError error);
 }
 
-

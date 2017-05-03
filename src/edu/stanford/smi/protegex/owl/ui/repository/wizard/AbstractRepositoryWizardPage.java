@@ -46,4 +46,3 @@ public class AbstractRepositoryWizardPage extends OWLWizardPage {
 	}
 }
 
-

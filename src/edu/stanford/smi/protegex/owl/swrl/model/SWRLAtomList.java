@@ -33,4 +33,3 @@ public interface SWRLAtomList extends RDFList, SWRLIndividual {
   void setInHead(boolean isInHead);
 } // SWRLAtomList
 
-

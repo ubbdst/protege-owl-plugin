@@ -79,4 +79,3 @@ public class CheckSetActiveImportAllowedJob extends ProtegeJob {
     }
 
 }
-

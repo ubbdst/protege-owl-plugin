@@ -65,4 +65,3 @@ public class ShowMetricsAction extends AbstractOWLModelAction {
     }
 }
 
-

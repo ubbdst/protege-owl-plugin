@@ -55,4 +55,3 @@ public interface SwitchableType {
 
     boolean isSuitable(OWLModel owlModel);
 }
-

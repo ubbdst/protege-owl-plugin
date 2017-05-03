@@ -146,4 +146,3 @@ public class RDFPropertyCode implements Comparable {
     }
 */
 }
-

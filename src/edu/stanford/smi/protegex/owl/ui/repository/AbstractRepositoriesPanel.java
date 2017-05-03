@@ -122,4 +122,3 @@ public abstract class AbstractRepositoriesPanel extends JPanel {
     }
 }
 
-

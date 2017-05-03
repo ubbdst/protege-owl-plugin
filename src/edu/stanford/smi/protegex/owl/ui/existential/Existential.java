@@ -130,4 +130,3 @@ public class Existential {
         parentClass.removeSuperclass(getDirectExistentialRelation(parentClass, property, childClass));
     }
 }
-

@@ -89,4 +89,3 @@ public class ClassMatrixAction extends AbstractAction {
         ResultsPanelManager.addResultsPanel(owlModel, panel, true);
     }
 }
-

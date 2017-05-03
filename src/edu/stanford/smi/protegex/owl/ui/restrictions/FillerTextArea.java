@@ -67,4 +67,3 @@ public class FillerTextArea extends OWLTextArea {
         ProtegeUI.getModalDialogFactory().attemptDialogClose(ModalDialogFactory.OPTION_OK);
     }
 }
-

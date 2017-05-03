@@ -184,4 +184,3 @@ public class ReasonerInspectorPanel extends JPanel {
     }
 }
 
-

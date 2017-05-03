@@ -94,4 +94,3 @@ public class OWLObjectPropertyTypesWidget extends AbstractPropertyTypesWidget {
         }
     }
 }
-

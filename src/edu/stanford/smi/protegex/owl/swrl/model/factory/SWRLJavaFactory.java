@@ -150,4 +150,3 @@ public class SWRLJavaFactory extends OWLJavaFactory {
     }
 
 } // SWRLJavaFactory
-

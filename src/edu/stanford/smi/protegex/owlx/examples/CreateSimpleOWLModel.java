@@ -65,4 +65,3 @@ public class CreateSimpleOWLModel {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

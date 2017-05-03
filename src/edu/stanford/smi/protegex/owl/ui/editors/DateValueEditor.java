@@ -99,4 +99,3 @@ public class DateValueEditor implements PropertyValueEditor {
         return canEdit(subject, predicate, value);
     }
 }
-

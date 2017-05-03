@@ -207,4 +207,3 @@ public class SWRLTextAreaPanel extends JPanel implements ModalDialogFactory.Clos
 		return frame;
 	}
 }
-

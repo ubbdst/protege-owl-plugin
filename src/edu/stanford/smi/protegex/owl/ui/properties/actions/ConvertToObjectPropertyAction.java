@@ -72,4 +72,3 @@ public class ConvertToObjectPropertyAction extends ResourceAction {
                 !(resource instanceof OWLObjectProperty);
     }
 }
-

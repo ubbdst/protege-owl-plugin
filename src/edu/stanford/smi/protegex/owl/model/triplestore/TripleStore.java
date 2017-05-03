@@ -204,4 +204,3 @@ public interface TripleStore extends NamespaceMap, Disposable {
     void removeIOAddress(String uri);
 
 }
-

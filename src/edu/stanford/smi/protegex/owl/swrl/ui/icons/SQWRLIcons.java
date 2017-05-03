@@ -39,4 +39,4 @@ public class SQWRLIcons
 	{
 		return OWLIcons.getImageIcon(name, SQWRLIcons.class);
 	}
-}
+}

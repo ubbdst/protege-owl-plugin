@@ -150,4 +150,3 @@ public class ProtegeSettingsPanel extends JComponent {
         return result;
     }
 }
-

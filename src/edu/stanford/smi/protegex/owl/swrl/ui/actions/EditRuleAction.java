@@ -59,4 +59,3 @@ public class EditRuleAction extends ResourceAction
 		return resource instanceof SWRLImp;
 	}
 }
-

@@ -56,4 +56,4 @@ public class SubsumptionTreeRoot extends LazyTreeRoot {
     public Comparator getComparator() {
         return new LazyTreeNodeFrameComparator();
     }
-}
+}

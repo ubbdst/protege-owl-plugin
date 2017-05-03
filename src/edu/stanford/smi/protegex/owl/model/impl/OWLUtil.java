@@ -1107,4 +1107,3 @@ public class OWLUtil {
         return true;
     }
 }
-

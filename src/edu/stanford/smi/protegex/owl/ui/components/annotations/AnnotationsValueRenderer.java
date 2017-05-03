@@ -140,4 +140,3 @@ public class AnnotationsValueRenderer implements TableCellRenderer {
 
 }
 
-

@@ -48,4 +48,3 @@ public interface IconOwner {
      */
     String getIconFileName();
 }
-

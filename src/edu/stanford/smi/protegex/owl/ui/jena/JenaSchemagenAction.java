@@ -130,4 +130,3 @@ public class JenaSchemagenAction extends AbstractOWLModelAction {
         file.delete();
     }
 }
-

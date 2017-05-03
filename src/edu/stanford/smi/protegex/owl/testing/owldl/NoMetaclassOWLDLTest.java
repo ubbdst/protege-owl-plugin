@@ -56,4 +56,3 @@ public class NoMetaclassOWLDLTest extends AbstractOWLTest implements OWLDLTest, 
         }
     }
 }
-

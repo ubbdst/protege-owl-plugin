@@ -546,4 +546,3 @@ public class OWLSubpropertyPane extends SelectableContainer implements HostResou
 		super.setEnabled(enabled);
 	};
 }
-

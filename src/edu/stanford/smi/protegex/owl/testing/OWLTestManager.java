@@ -50,4 +50,3 @@ public interface OWLTestManager {
 
     void setOWLTestGroupEnabled(String groupName, boolean value);
 }
-

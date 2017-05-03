@@ -145,4 +145,3 @@ public class OWLModelVisitorAdapter implements OWLModelVisitor {
 	}
 }
 
-

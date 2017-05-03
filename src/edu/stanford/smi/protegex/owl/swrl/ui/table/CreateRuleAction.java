@@ -64,4 +64,3 @@ public class CreateRuleAction extends AbstractAction
 			newImp.delete();
 	}
 }
-

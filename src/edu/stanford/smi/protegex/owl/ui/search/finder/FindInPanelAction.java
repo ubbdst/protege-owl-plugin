@@ -46,4 +46,3 @@ public class FindInPanelAction extends AbstractFindAction {
         ResultsPanelManager.addResultsPanel(findModel.getFind().getModel(), resultsPanel, true);
     }
 }
-

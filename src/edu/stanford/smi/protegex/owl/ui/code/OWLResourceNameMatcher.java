@@ -243,4 +243,3 @@ public class OWLResourceNameMatcher implements ResourceNameMatcher {
     }
     
 }
-

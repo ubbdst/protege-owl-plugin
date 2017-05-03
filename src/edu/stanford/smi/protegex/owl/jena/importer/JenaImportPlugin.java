@@ -107,4 +107,3 @@ public class JenaImportPlugin implements ImportPlugin {
         }
     }
 }
-

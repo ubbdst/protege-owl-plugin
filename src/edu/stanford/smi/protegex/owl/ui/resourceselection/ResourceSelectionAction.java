@@ -192,4 +192,3 @@ public abstract class ResourceSelectionAction extends AbstractAction
         showHiddenResources = value;
     }
 }
-

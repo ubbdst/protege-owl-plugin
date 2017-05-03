@@ -76,4 +76,3 @@ public class DeleteRowAction extends AbstractAction {
         setEnabled(isEnabledFor(selectedRows));
     }
 }
-

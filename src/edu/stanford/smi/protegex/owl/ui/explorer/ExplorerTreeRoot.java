@@ -56,4 +56,3 @@ public class ExplorerTreeRoot extends LazyTreeRoot {
         return new LazyTreeNodeFrameComparator();
     }
 }
-

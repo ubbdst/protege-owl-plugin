@@ -155,4 +155,3 @@ public class ProtegePrefixMapping implements PrefixMapping {
       throw new UnsupportedOperationException("Not implemented yet");
     }
 }
-

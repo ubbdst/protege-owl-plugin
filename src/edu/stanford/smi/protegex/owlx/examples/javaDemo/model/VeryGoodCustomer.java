@@ -33,4 +33,3 @@ package edu.stanford.smi.protegex.owlx.examples.javaDemo.model;
 public interface VeryGoodCustomer extends Customer {
 
 }
-

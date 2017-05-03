@@ -97,4 +97,3 @@ public interface RDFSLiteral extends Comparable<RDFSLiteral>, RDFObject, Visitab
     String getString();
 
 }
-

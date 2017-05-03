@@ -73,4 +73,3 @@ public class SearchNamedClassAction extends ResourceAction {
         }
     }
 }
-

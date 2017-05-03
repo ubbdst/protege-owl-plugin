@@ -65,4 +65,3 @@ public interface OWLDataRange extends RDFResource {
      */
     RDFSDatatype getRDFDatatype();
 }
-

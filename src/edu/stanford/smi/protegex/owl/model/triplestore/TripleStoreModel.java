@@ -265,4 +265,3 @@ public interface TripleStoreModel extends Disposable{
     void dispose();
 
 }
-

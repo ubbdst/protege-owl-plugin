@@ -196,4 +196,3 @@ public abstract class OWLTableTransferHandler extends TransferHandler {
         return false;
     }
 }
-

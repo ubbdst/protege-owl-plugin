@@ -48,4 +48,3 @@ public interface OWLLogicalClass extends OWLAnonymousClass {
      */
     char getOperatorSymbol();
 }
-

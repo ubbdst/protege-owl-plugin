@@ -121,4 +121,3 @@ public class PrimitiveSubclassesDisjointTest extends AbstractOWLTest
         return true;
     }
 }
-

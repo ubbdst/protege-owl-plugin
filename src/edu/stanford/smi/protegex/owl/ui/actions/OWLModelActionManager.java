@@ -131,4 +131,3 @@ public class OWLModelActionManager {
         void addOWLModelAction(OWLModelAction action);
     }
 }
-

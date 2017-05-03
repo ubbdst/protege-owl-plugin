@@ -99,4 +99,3 @@ public class HomeOntologyToolTipGenerator implements OWLToolTipGenerator {
 		return text;
 	}
 }
-

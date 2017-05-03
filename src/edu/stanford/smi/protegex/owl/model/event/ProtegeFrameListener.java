@@ -98,4 +98,3 @@ public interface ProtegeFrameListener extends FrameListener {
      */
     public void visibilityChanged(FrameEvent event);
 }
-

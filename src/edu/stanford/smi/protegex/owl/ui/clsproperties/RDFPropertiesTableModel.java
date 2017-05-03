@@ -218,4 +218,3 @@ public class RDFPropertiesTableModel extends AbstractTableModel
         }
     }
 }
-

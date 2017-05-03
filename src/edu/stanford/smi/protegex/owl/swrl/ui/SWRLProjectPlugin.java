@@ -164,4 +164,3 @@ public class SWRLProjectPlugin extends ProjectPluginAdapter
 		return true;
 	}
 }
-

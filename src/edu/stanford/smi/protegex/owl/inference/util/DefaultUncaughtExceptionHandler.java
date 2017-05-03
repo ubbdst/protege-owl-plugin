@@ -45,4 +45,4 @@ public class DefaultUncaughtExceptionHandler implements UncaughtExceptionHandler
 			Log.getLogger().log(Level.WARNING, "Exception caught by default exception handler", e);
 		}
 	}
-}
+}

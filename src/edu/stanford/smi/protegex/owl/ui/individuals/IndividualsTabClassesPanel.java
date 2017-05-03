@@ -214,4 +214,3 @@ public class IndividualsTabClassesPanel extends SelectableContainer implements C
         }
     }
 }
-

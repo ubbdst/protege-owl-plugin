@@ -52,4 +52,3 @@ public class AllDifferentWidget extends AbstractPropertyWidget {
         return slot.getName().equals(OWLNames.Slot.BACKWARD_COMPATIBLE_WITH);
     }
 }
-

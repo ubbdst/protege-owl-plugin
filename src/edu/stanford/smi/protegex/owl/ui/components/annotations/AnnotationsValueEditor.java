@@ -170,4 +170,3 @@ public class AnnotationsValueEditor extends AbstractCellEditor implements TableC
 
 }
 
-

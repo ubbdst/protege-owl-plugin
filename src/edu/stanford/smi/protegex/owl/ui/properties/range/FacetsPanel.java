@@ -47,4 +47,3 @@ public abstract class FacetsPanel extends JPanel {
 
     public abstract void update(RDFSDatatype datatype);
 }
-

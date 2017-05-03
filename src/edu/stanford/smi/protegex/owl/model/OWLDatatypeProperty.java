@@ -31,4 +31,3 @@ package edu.stanford.smi.protegex.owl.model;
 public interface OWLDatatypeProperty extends OWLProperty {
 
 }
-

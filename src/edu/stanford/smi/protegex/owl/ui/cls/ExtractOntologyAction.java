@@ -117,4 +117,3 @@ public class ExtractOntologyAction extends ResourceAction {
                 resource.getOWLModel() instanceof OWLDatabaseModel;
     }
 }
-

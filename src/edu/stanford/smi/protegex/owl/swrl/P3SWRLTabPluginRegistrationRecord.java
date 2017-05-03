@@ -102,4 +102,3 @@ public class P3SWRLTabPluginRegistrationRecord
 		return this.owlModel != null;
 	}
 }
-

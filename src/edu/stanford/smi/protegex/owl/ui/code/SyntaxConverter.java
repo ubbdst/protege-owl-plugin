@@ -36,4 +36,3 @@ public interface SyntaxConverter {
 
     void convertSyntax(JTextComponent textComponent);
 }
-

@@ -42,4 +42,3 @@ public interface DependentMatrixColumn extends MatrixColumn {
      */
     boolean isDependentOn(RDFResource instance);
 }
-

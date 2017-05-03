@@ -81,4 +81,3 @@ public class ConditionsCellRenderer extends FrameRenderer {
         }
     }
 }
-

@@ -94,4 +94,3 @@ public class ChangeMetaclassAction extends ResourceAction {
                                 ProfilesManager.isFeatureSupported(owlModel, OWLProfiles.CreateRDFSClass)));
     }
 }
-

@@ -144,4 +144,3 @@ public class MetricsPanel extends JPanel {
 
 }
 
-

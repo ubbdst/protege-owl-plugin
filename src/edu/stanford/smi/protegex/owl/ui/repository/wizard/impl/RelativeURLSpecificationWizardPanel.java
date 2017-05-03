@@ -169,4 +169,3 @@ public class  RelativeURLSpecificationWizardPanel extends RepositoryCreatorWizar
             "slash '/', and spaces must be replaced with \"%20\".</p>";
 }
 
-

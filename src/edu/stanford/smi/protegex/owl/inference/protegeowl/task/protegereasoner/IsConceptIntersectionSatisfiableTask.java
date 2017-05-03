@@ -78,4 +78,3 @@ public class IsConceptIntersectionSatisfiableTask extends AbstractReasonerTask i
     }
 }
 
-

@@ -151,4 +151,3 @@ public class MatrixPanel extends ResultsPanel {
         tableModel.refill();
     }
 }
-

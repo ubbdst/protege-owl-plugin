@@ -177,4 +177,3 @@ public class ResourceSelectionComboBox extends JComboBox implements KeyListener 
         }
     }
 }
-

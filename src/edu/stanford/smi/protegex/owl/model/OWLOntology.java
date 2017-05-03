@@ -124,4 +124,3 @@ public interface OWLOntology extends RDFResource {
 
     void removePriorVersion(String resource);
 }
-

@@ -80,4 +80,3 @@ public class PropertyRangeMatrixColumn implements SortableMatrixColumn {
         return 200;
     }
 }
-

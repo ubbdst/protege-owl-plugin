@@ -207,4 +207,3 @@ public class SPARQLResultsPanel extends ResultsPanel {
         queryPanel.setQueryText(str);
     }
 }
-

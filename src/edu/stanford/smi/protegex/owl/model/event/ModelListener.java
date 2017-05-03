@@ -88,4 +88,3 @@ public interface ModelListener extends ProtegeKnowledgeBaseListener {
      */
     void resourceNameChanged(RDFResource resource, String oldName);
 }
-

@@ -73,4 +73,3 @@ public class RDFSNamedClassTreeNode extends ExplorerTreeNode {
         return results;
     }
 }
-

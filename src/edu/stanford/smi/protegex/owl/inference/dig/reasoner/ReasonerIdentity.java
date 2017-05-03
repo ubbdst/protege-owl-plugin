@@ -28,4 +28,3 @@ public interface ReasonerIdentity {
 	
 	
 }
-

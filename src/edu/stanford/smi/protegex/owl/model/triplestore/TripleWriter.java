@@ -89,4 +89,3 @@ public interface TripleWriter {
      */
     void writePrefix(String prefix, String namespace) throws Exception;
 }
-

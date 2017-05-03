@@ -62,4 +62,3 @@ public interface QueryResults {
      */
     Map next();
 }
-

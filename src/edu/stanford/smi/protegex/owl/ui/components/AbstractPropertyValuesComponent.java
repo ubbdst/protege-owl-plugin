@@ -230,4 +230,3 @@ public abstract class AbstractPropertyValuesComponent extends JComponent impleme
 		//TO BE implemented in sublcasses
 	}
 }
-

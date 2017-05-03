@@ -45,4 +45,3 @@ public class ClassDescriptionTextField extends OWLTextField {
         owlModel.getOWLClassDisplay().getParser().checkClass(owlModel, text);
     }
 }
-

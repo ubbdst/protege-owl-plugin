@@ -62,4 +62,3 @@ public class PropertyValueEditorManager {
         return editors.iterator();
     }
 }
-

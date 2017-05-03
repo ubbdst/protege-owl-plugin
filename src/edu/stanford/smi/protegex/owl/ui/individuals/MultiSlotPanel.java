@@ -172,4 +172,3 @@ public class MultiSlotPanel extends JPanel {
         return new OWLBrowserSlotPattern(elements);
     }
 }
-

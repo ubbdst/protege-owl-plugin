@@ -31,4 +31,3 @@ public interface RenamableComponent {
 
     public void rename(String label);
 }
-

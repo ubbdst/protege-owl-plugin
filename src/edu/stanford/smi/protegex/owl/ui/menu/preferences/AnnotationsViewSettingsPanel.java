@@ -102,4 +102,3 @@ public class AnnotationsViewSettingsPanel extends JPanel {
         list.setListData(((AbstractOWLModel)owlModel).getDefaultAnnotationPropertiesInView().toArray());
     }
 }
-

@@ -328,4 +328,3 @@ public interface RDFSClass extends ProtegeCls, RDFResource {
      */
     void removeSuperclass(RDFSClass superclass);
 }
-

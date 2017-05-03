@@ -63,4 +63,3 @@ public class CreateSubClassSuggestion extends CreateClassSuggestion {
     }
 }
 
-

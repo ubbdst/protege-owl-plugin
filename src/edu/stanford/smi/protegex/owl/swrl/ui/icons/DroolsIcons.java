@@ -43,4 +43,3 @@ public class DroolsIcons {
       return OWLIcons.getImageIcon(name, DroolsIcons.class);
     }
 } 
-

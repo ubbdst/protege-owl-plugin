@@ -96,4 +96,3 @@ public interface ProgressManager {
      */
     void setText(String text);
 }
-

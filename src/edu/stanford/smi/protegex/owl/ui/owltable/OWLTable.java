@@ -266,4 +266,3 @@ public abstract class OWLTable extends SymbolTable {
         editAnnotations();
     }
 }
-

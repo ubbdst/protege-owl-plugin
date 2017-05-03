@@ -43,4 +43,3 @@ public class OWLFilesWizardPage extends AbstractOWLFilesWizardPage {
         return new ProfileSelectionWizardPage(getWizard(), getPlugin());
     }
 }
-

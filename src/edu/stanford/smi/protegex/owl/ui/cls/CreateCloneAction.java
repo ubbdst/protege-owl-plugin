@@ -126,4 +126,3 @@ public class CreateCloneAction extends ResourceAction {
                !(resource.equals(resource.getOWLModel().getOWLThingClass()));
     }
 }
-

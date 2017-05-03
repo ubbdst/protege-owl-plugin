@@ -62,4 +62,3 @@ public class ExpressionInfo<E extends OWLAnonymousClass> {
         
 }
 
-

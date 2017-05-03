@@ -466,4 +466,3 @@ public class ClassTreeWithBrowserTextNode extends LazyTreeNode {
  
 	 	 
 }
-

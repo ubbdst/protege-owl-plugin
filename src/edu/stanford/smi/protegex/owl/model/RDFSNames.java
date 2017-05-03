@@ -88,4 +88,3 @@ public interface RDFSNames {
 
     final static String RDFS_PREFIX = "rdfs";
 }
-

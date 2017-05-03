@@ -70,4 +70,3 @@ public class NoSubclassesOfRDFClassesOWLDLTest extends AbstractOWLTest implement
         return results;
     }
 }
-

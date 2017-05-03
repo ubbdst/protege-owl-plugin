@@ -97,4 +97,3 @@ public class ModalProgressBarManager implements ProgressDisplay {
         });
     }
 }
-

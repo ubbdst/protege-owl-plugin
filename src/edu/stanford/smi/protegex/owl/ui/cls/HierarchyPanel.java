@@ -172,4 +172,3 @@ public class HierarchyPanel extends JPanel implements Disposable {
         hierarchyManager.spawnHierarchy(clonedHierarchy);
     }
 }
-

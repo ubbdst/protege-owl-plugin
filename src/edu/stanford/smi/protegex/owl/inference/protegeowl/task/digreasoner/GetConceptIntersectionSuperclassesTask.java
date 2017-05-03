@@ -87,4 +87,3 @@ public class GetConceptIntersectionSuperclassesTask extends AbstractReasonerTask
     }
 }
 
-

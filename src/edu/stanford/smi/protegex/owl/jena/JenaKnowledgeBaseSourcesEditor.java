@@ -196,4 +196,3 @@ public class JenaKnowledgeBaseSourcesEditor extends KnowledgeBaseSourcesEditor {
         }
     }
 }
-

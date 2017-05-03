@@ -104,4 +104,3 @@ class IndividualsClassesTreeTarget extends TreeTarget {
         return succeeded;
     }
 }
-

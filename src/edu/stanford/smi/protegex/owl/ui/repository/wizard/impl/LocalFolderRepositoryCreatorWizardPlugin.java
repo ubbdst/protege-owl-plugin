@@ -79,4 +79,3 @@ public class LocalFolderRepositoryCreatorWizardPlugin implements RepositoryCreat
     }
 }
 
-

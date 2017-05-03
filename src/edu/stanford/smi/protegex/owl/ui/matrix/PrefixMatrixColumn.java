@@ -65,4 +65,3 @@ public class PrefixMatrixColumn extends AbstractMatrixColumn implements Sortable
         };
     }
 }
-

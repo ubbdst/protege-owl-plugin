@@ -74,4 +74,3 @@ public class DefaultOWLCardinality extends AbstractOWLCardinalityBase
         return OPERATOR;
     }
 }
-

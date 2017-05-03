@@ -80,4 +80,3 @@ public class TriplePath implements TripleDescriptor {
         return triples.iterator();
     }
 }
-

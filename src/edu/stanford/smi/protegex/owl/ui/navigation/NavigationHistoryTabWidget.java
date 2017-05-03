@@ -33,4 +33,3 @@ public interface NavigationHistoryTabWidget extends HostResourceDisplay {
 
     Selectable getNestedSelectable();
 }
-

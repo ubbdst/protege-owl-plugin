@@ -48,4 +48,3 @@ public interface OWLAllDifferent extends OWLIndividual {
 
     void setDistinctMembers(List values);
 }
-

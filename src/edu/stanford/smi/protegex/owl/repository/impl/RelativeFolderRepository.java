@@ -85,4 +85,3 @@ public class RelativeFolderRepository extends LocalFolderRepository {
     }
 }
 
-

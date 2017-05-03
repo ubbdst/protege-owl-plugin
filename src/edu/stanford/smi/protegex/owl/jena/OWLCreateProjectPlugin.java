@@ -38,4 +38,3 @@ public interface OWLCreateProjectPlugin {
 
     void setProfile(String profileURI);
 }
-

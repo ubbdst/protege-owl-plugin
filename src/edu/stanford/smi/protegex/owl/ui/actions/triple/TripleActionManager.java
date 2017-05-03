@@ -112,4 +112,3 @@ public class TripleActionManager {
         void addTripleAction(TripleAction action);
     }
 }
-

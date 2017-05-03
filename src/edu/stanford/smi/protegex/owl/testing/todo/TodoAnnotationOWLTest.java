@@ -102,4 +102,3 @@ public class TodoAnnotationOWLTest extends AbstractOWLTest implements RDFResourc
         }
     }
 }
-

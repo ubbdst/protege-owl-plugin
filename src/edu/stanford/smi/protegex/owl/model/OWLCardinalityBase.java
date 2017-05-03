@@ -76,4 +76,3 @@ public interface OWLCardinalityBase extends OWLRestriction {
 
     void setValuesFrom(RDFSClass value);
 }
-

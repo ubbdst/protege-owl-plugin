@@ -72,4 +72,4 @@ public class GetSingleIndividualPropertyValuesAction extends ResourceAction impl
         ReasonerActionRunner runner = new ReasonerActionRunner(this, false);
         runner.execute();
     }
-}
+}

@@ -379,4 +379,3 @@ public class DefaultSelectionDialogFactory extends AbstractSelectionDialogFactor
         return modifiedVis;
     }
 }
-

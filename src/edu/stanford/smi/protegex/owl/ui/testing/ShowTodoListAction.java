@@ -82,4 +82,3 @@ public class ShowTodoListAction extends AbstractOWLModelTestAction {
         // JOptionPane.showMessageDialog(null, "No to-do list items found.");
     }
 }
-

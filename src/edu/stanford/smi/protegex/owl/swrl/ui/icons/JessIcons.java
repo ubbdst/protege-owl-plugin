@@ -46,4 +46,3 @@ public class JessIcons
 		return OWLIcons.getImageIcon(name, JessIcons.class);
 	}
 }
-

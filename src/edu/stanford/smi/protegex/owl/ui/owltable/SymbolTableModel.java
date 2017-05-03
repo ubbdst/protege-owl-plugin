@@ -48,4 +48,3 @@ public interface SymbolTableModel extends TableModel {
 
     Icon getIcon(RDFResource resource);
 }
-

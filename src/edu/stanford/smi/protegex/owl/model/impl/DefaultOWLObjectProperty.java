@@ -124,4 +124,3 @@ public class DefaultOWLObjectProperty extends AbstractOWLProperty implements OWL
     }
 
 }
-

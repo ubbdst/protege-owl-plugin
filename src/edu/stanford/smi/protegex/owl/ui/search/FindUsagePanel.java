@@ -213,4 +213,3 @@ public class FindUsagePanel extends ResultsPanel
         }
     }
 }
-

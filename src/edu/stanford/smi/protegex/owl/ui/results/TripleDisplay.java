@@ -42,4 +42,3 @@ public interface TripleDisplay {
      */
     boolean displayTriple(Triple triple);
 }
-

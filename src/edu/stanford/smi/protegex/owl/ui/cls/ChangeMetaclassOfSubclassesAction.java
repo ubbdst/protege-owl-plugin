@@ -91,4 +91,3 @@ public class ChangeMetaclassOfSubclassesAction extends ResourceAction {
         return false;
     }
 }
-

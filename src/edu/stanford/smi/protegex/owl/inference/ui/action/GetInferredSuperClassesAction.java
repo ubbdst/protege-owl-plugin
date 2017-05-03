@@ -104,4 +104,3 @@ public class GetInferredSuperClassesAction extends ResourceAction {
     }
 }
 
-

@@ -85,4 +85,3 @@ public class ReasonerErrorExceptionLogRecord extends ReasonerLogRecord {
     }
 }
 
-

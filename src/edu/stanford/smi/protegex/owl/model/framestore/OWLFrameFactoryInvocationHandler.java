@@ -227,4 +227,3 @@ public class OWLFrameFactoryInvocationHandler extends AbstractFrameStoreInvocati
         recentInstance.ff = ff;
     }
 }
-

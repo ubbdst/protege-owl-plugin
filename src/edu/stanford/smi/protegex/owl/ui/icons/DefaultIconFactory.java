@@ -38,4 +38,3 @@ public class DefaultIconFactory implements IconFactory {
         return resource.getIcon();
     }
 }
-

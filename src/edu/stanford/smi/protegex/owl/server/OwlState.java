@@ -53,4 +53,3 @@ public enum OwlState implements ServerCachedState {
       }
   }
 }
-

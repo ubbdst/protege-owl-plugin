@@ -194,4 +194,3 @@ public class FindUsageTableModel extends AbstractTableModel
         });
     }
 }
-

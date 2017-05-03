@@ -52,4 +52,3 @@ public class DefaultOWLIndividual extends DefaultRDFIndividual implements OWLInd
         return false;
     }
 }
-

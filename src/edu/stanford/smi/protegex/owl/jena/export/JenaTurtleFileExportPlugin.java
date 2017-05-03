@@ -34,4 +34,3 @@ public class JenaTurtleFileExportPlugin extends AbstractJenaFileExportPlugin {
         super(FileUtils.langTurtle);
     }
 }
-

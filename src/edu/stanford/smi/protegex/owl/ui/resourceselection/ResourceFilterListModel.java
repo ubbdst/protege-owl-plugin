@@ -166,4 +166,3 @@ public class ResourceFilterListModel extends AbstractListModel implements ComboB
         fireIntervalAdded(this, 0, validCount);
     }
 }
-

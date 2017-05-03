@@ -120,4 +120,3 @@ public abstract class AbstractOWLAnonymousClass extends AbstractRDFSClass
         return false;
     }
 }
-

@@ -235,4 +235,3 @@ public class SWRLRuleSlotWidget extends AbstractSlotWidget
 	}
 
 }
-

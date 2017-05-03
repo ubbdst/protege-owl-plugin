@@ -325,4 +325,3 @@ public class ProgressDisplayDialog extends JDialog implements TaskProgressDispla
     }
 }
 
-

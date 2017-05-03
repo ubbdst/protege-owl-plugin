@@ -226,4 +226,3 @@ public class OWLMetadataTab extends AbstractTabWidget implements HostResourceDis
 
 
 }
-

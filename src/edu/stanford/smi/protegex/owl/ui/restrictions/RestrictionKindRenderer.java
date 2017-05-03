@@ -93,4 +93,3 @@ public class RestrictionKindRenderer extends FrameRenderer {
         setMainText(typeName);
     }
 }
-

@@ -70,4 +70,3 @@ public class DefaultProtegeOWLParserLogger implements ProtegeOWLParserLogger {
         log.warning(PREFIX + "Warning: " + message);
     }
 }
-

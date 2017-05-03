@@ -32,4 +32,3 @@ package edu.stanford.smi.protegex.owl.testing;
 public interface AutoRepairableOWLTest extends RepairableOWLTest {
 
 }
-

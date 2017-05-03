@@ -72,4 +72,3 @@ public class PropertiesClassDefinitionWidget extends AbstractClassDefinitionWidg
         allPanel.add(BorderLayout.CENTER, mainPanel);
     }
 }
-

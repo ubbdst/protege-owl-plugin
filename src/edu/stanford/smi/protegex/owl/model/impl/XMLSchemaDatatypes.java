@@ -402,4 +402,3 @@ public class XMLSchemaDatatypes {
         }
     }
 }
-

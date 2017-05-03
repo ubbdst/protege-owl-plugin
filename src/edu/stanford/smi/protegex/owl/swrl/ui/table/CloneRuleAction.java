@@ -70,4 +70,3 @@ public class CloneRuleAction extends AbstractAction
 		setEnabled(this.table.getSelectedRowCount() == 1);
 	}
 }
-

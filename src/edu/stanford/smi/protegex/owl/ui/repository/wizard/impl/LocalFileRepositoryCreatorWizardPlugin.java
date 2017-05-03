@@ -71,4 +71,3 @@ public class LocalFileRepositoryCreatorWizardPlugin implements RepositoryCreator
     }
 }
 
-

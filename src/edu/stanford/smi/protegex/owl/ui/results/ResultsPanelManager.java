@@ -243,4 +243,3 @@ public class ResultsPanelManager {
         return null;
     }
 }
-

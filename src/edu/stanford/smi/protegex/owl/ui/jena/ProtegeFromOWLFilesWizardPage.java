@@ -37,4 +37,3 @@ public class ProtegeFromOWLFilesWizardPage extends AbstractOWLFilesWizardPage {
         super(wizard, plugin, "OWL Files (to Protege Project)");
     }
 }
-

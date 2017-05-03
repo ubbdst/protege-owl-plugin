@@ -69,4 +69,3 @@ public class CreateClassUsingMetaclassAction extends ResourceAction {
                 ChangeMetaclassAction.getRootMetaCls(resource).getSubclassCount() > 0;
     }
 }
-

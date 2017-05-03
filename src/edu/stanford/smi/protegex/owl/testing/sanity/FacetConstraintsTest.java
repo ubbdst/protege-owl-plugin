@@ -73,4 +73,3 @@ public class FacetConstraintsTest extends AbstractOWLTest implements RDFResource
     }
 
 }
-

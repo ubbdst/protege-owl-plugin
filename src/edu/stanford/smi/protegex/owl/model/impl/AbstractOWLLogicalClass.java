@@ -71,4 +71,3 @@ public abstract class AbstractOWLLogicalClass extends AbstractOWLAnonymousClass
 
     public abstract Collection getOperands();
 }
-

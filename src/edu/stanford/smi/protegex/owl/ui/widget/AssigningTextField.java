@@ -58,4 +58,3 @@ public class AssigningTextField extends JTextField {
         void assign(String value);
     }
 }
-

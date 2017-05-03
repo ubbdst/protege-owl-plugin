@@ -86,4 +86,3 @@ public interface PropertyValueEditor {
      */
     public boolean mustEdit(RDFResource subject, RDFProperty predicate, Object value);
 }
-

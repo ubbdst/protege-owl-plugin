@@ -321,4 +321,3 @@ public class DatabaseRepository implements Repository {
 		return new HashMap<String, URI>(tableToOntology);
 	}
 }
-

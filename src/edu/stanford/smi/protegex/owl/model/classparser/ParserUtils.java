@@ -354,4 +354,3 @@ public class ParserUtils {
       return Character.isJavaIdentifierPart(ch) || ch == ':' || ch == '-';
   }
 }
-

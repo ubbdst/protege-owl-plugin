@@ -106,4 +106,3 @@ public class ExistentialMatrixColumn implements DependentMatrixColumn, MatrixCol
         return property.equals(instance);
     }
 }
-

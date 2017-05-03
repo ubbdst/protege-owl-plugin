@@ -195,4 +195,3 @@ public class UpdateInferredTypesTask extends AbstractReasonerTask {
     }
 }
 
-

@@ -123,4 +123,3 @@ public interface RDFNames {
      */
     final static String RDF = "rdf:RDF";
 }
-

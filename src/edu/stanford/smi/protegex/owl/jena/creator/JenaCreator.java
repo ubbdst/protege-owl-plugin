@@ -1064,4 +1064,3 @@ public class JenaCreator {
         } */
     }
 }
-

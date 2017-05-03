@@ -87,4 +87,3 @@ public class TooltippedSelectableTree extends SelectableTree {
         return null;
     }
 }
-

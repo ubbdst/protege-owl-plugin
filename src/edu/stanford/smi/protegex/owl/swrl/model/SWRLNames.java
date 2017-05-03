@@ -188,4 +188,3 @@ public interface SWRLNames extends OWLNames {
   } // Annotations
 
 } // SWRLNames
-

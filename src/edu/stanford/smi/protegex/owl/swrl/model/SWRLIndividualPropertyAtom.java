@@ -50,4 +50,3 @@ public interface SWRLIndividualPropertyAtom extends SWRLAtom {
     void setPropertyPredicate(OWLObjectProperty objectSlot);
 
 } // SWRLIndividualPropertyAtom
-

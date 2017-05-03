@@ -221,4 +221,3 @@ public class OWLDataRangeComponent extends JComponent {
 		super.setEnabled(enabled);
 	};
 }
-

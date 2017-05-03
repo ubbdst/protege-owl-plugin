@@ -30,4 +30,3 @@ package edu.stanford.smi.protegex.owl.swrl.model;
 public interface SWRLSameIndividualAtom extends SWRLIndividualsAtom {
 
 } // SWRLSameIndividualAtom
-

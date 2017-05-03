@@ -60,4 +60,3 @@ public class MultiLiteralWidgetMetadata implements OWLWidgetMetadata {
                 !OWLWidgetUtil.isFunctionalProperty(cls, property));
     }
 }
-

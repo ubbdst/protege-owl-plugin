@@ -41,4 +41,3 @@ public interface ConditionsTableConstants {
 
     int TYPE_INHERITED = -2;
 }
-

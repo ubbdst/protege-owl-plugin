@@ -58,4 +58,3 @@ public class SingleLiteralAreaComponent extends AbstractSingleLiteralComponent {
         return new JScrollPane(textComponent);
     }
 }
-

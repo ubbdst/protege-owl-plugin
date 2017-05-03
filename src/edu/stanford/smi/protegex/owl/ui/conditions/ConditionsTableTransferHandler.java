@@ -198,4 +198,3 @@ public class ConditionsTableTransferHandler extends OWLTableTransferHandler
         return result;
     }
 }
-

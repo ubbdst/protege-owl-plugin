@@ -50,4 +50,3 @@ public interface ImportEntry {
 	public Collection getErrors();
 }
 
-

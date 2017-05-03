@@ -226,4 +226,3 @@ public class OWLTestSettingsTableModel extends AbstractTableModel {
         return (String) testClasses.get(rowIndex);
     }
 }
-

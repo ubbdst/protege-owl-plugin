@@ -57,4 +57,3 @@ public class QueryTripleAction extends AbstractTripleAction {
         resultsPanel.setQueryText(str);
     }
 }
-

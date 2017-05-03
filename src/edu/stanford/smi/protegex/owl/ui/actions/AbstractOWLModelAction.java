@@ -100,4 +100,3 @@ public abstract class AbstractOWLModelAction implements OWLModelAction {
         listeners.remove(listener);
     }
 }
-

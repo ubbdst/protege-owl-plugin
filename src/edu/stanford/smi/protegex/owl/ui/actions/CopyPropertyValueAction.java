@@ -94,4 +94,3 @@ public class CopyPropertyValueAction extends AbstractAction {
         }
     }
 }
-

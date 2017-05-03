@@ -59,4 +59,3 @@ public class ExplorerFilterPanel extends JPanel {
                 ModalDialogFactory.MODE_OK_CANCEL) == ModalDialogFactory.OPTION_OK;
     }
 }
-

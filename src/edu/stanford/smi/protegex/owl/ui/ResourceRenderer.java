@@ -349,4 +349,3 @@ public class ResourceRenderer extends FrameRenderer {
         focusedFrame = frame;
     }
 }
-

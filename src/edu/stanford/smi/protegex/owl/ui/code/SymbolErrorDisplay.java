@@ -37,4 +37,3 @@ public interface SymbolErrorDisplay {
     void setErrorFlag(boolean error);
 
 }
-

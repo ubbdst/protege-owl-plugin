@@ -229,4 +229,3 @@ public class EMFGenerator {
         return name;
     }
 }
-

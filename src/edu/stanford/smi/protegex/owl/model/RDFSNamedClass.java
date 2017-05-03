@@ -112,4 +112,3 @@ public interface RDFSNamedClass extends RDFSClass, Deprecatable {
      */
     boolean isVisibleFromOWLThing();
 }
-

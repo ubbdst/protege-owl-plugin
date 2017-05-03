@@ -39,4 +39,3 @@ public interface SymbolEditorHandler {
 
     void cancelEditing();
 }
-

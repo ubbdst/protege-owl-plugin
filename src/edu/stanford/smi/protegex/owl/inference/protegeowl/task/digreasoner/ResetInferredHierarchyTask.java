@@ -81,4 +81,3 @@ public class ResetInferredHierarchyTask extends AbstractReasonerTask {
     }
 }
 
-

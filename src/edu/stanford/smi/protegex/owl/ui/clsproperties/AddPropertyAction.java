@@ -105,4 +105,3 @@ public class AddPropertyAction extends ResourceSelectionAction {
                 owlModel, getSelectableResources(), label);
     }
 }
-

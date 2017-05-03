@@ -40,4 +40,3 @@ public interface RDFXMLContentWriter {
 
     public void writeContent(XMLWriter writer) throws IOException;
 }
-

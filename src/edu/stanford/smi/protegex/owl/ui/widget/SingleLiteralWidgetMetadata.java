@@ -54,4 +54,3 @@ public class SingleLiteralWidgetMetadata implements OWLWidgetMetadata {
         return property.isPureAnnotationProperty() || OWLWidgetUtil.isDatatypeProperty(cls, property);
     }
 }
-

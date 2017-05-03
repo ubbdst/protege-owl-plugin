@@ -141,4 +141,3 @@ public class DefaultOWLTestResult implements OWLTestResult {
         return getTypeString() + hostStr + ": " + getMessage();
     }
 }
-

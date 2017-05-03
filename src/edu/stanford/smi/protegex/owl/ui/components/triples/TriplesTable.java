@@ -233,4 +233,3 @@ public class TriplesTable extends JTable implements TripleDisplay {
         }
     }
 }
-

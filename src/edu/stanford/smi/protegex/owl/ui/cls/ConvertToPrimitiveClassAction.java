@@ -106,4 +106,3 @@ public class ConvertToPrimitiveClassAction extends ResourceAction {
         }
     }
 }
-

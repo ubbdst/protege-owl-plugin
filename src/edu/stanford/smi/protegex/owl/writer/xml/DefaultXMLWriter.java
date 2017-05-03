@@ -395,4 +395,3 @@ public class DefaultXMLWriter implements XMLWriter {
     }
 }
 
-

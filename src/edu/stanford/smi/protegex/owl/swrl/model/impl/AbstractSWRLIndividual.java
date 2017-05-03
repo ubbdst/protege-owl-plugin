@@ -47,4 +47,3 @@ public abstract class AbstractSWRLIndividual extends DefaultOWLIndividual implem
       visitor.visitSWRLIndividual(this);
   }
 }
-

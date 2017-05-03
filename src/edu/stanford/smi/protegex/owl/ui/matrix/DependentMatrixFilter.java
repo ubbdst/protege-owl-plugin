@@ -38,4 +38,3 @@ public interface DependentMatrixFilter extends MatrixFilter {
      */
     boolean isDependentOn(RDFResource instance);
 }
-

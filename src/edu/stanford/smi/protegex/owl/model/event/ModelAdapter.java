@@ -209,4 +209,3 @@ public class ModelAdapter implements ModelListener {
     }
     
 }
-

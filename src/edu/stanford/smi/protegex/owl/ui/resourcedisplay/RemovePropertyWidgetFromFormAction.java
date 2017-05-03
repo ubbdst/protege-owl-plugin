@@ -90,4 +90,3 @@ public class RemovePropertyWidgetFromFormAction extends ResourceSelectionAction 
                 getSelectableResources(), label);
     }
 }
-

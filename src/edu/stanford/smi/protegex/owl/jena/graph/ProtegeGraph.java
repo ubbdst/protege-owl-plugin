@@ -418,4 +418,3 @@ public class ProtegeGraph extends GraphBase implements Graph {
        return count;
    } */
 }
-

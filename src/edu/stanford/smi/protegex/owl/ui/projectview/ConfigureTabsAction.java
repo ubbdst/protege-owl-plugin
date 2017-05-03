@@ -55,4 +55,3 @@ public class ConfigureTabsAction extends AbstractAction {
         }
     }
 }
-

@@ -59,4 +59,3 @@ public class PropertyDomainEmptyTest extends AbstractOWLTest
         return Collections.EMPTY_LIST;
     }
 }
-

@@ -60,4 +60,3 @@ public class CreateDatatypePropertySuggestion extends AbstractNamedObjectCreatio
     }
 }
 
-

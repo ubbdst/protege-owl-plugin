@@ -58,4 +58,3 @@ public class AddRDFTypeAction extends ResourceAction {
         return resource instanceof RDFIndividual && resource.isEditable();
     }
 }
-

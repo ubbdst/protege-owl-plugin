@@ -32,4 +32,3 @@ public interface SWRLVariable extends SWRLIndividual {
 
 } // SWRLVariable
 
-

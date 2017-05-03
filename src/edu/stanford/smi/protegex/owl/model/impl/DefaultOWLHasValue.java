@@ -184,4 +184,3 @@ public class DefaultOWLHasValue extends AbstractOWLRestriction
         setDirectOwnSlotValue(getFillerProperty(), value);
     }
 }
-

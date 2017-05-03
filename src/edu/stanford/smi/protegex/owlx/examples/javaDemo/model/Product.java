@@ -48,4 +48,3 @@ public interface Product extends OWLIndividual {
 
     void setPrice(float newPrice);
 }
-

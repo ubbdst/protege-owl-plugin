@@ -53,4 +53,3 @@ public class ShowAboutProtegeOWLAction extends ProjectAction {
         ModalDialog.showDialog(pane, aboutProtegeOWL, "About " + OWLText.getName(), ModalDialog.MODE_CLOSE);
 	}
 }
-

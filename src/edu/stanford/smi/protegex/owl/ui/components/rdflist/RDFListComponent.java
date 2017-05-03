@@ -564,4 +564,3 @@ public class RDFListComponent extends AbstractPropertyValuesComponent implements
         updateActions();
     }
 }
-

@@ -82,4 +82,3 @@ public class OWLNamespacesWidget extends AbstractPropertyWidget {
     	super.setEnabled(enabled);
     };
 }
-

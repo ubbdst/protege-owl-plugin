@@ -36,4 +36,3 @@ interface OWLTestResultsTableModelColumns {
 
     final static int COL_COUNT = 3;
 }
-

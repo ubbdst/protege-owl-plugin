@@ -89,4 +89,3 @@ public interface PropertyListener extends ProtegeSlotListener {
      */
     void unionDomainClassRemoved(RDFProperty property, RDFSClass rdfsClass);
 }
-

@@ -65,4 +65,3 @@ public class ProjectRepositoriesPanel extends AbstractRepositoriesPanel {
     }
 }
 
-

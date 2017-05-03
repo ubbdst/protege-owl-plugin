@@ -559,4 +559,3 @@ class TripleProcessorForResourceObjects extends AbstractStatefulTripleProcessor 
 	} // end InternalProcessorForResourceObjects class
 
 }
-

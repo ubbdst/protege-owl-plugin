@@ -70,4 +70,3 @@ public class ObjectPropertyExamples {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

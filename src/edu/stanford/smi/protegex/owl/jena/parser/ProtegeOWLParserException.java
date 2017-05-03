@@ -33,4 +33,3 @@ public class ProtegeOWLParserException extends OntologyLoadException {
 	}
 
 }
-

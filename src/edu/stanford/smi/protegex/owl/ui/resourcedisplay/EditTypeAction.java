@@ -53,4 +53,3 @@ public class EditTypeAction extends AbstractAction {
         }
     }
 }
-

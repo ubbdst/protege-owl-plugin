@@ -674,4 +674,4 @@ public class ProtegeOWLParser {
 		isMergeImportMode = isMergingImport;
 	}
 
-}
+}

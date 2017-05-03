@@ -71,4 +71,3 @@ public abstract class FileSelectionWizardPanel extends RepositoryCreatorWizardPa
     }
 }
 
-

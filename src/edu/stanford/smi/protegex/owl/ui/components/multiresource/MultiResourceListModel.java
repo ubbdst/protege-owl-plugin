@@ -233,4 +233,3 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     }
     
 }
-

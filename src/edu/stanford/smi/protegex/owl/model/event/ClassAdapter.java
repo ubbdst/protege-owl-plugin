@@ -204,4 +204,3 @@ public class ClassAdapter implements ClassListener {
     }
 
 }
-

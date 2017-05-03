@@ -58,4 +58,3 @@ public class CreateDefinedClass {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

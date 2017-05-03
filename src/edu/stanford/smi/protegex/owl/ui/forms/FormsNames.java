@@ -84,4 +84,3 @@ public class FormsNames {
     public static final OntClass Property = m_model.createClass( "http://www.owl-ontologies.com/forms/forms.owl#Property" );
     
 }
-

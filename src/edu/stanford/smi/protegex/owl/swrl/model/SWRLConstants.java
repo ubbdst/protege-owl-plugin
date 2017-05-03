@@ -196,4 +196,3 @@ public interface SWRLConstants {
     } // BuiltIns
 
 } // SWRLConstants
-

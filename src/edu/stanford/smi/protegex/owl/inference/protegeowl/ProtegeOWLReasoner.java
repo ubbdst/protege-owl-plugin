@@ -426,4 +426,3 @@ public interface ProtegeOWLReasoner {
     public Collection getIndividualTypes(OWLIndividual individual, ReasonerTaskListener taskListener) throws DIGReasonerException;
 }
 
-

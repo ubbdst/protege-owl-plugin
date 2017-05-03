@@ -488,4 +488,3 @@ public abstract class SymbolTextField extends JTextField
         OWLTextFormatter.updateSyntax(this, owlModel);
     }
 }
-

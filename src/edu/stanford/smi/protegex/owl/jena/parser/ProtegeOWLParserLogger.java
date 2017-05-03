@@ -39,4 +39,3 @@ public interface ProtegeOWLParserLogger {
 
     void logWarning(String message);
 }
-

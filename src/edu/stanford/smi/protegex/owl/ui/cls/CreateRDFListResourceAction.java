@@ -66,4 +66,3 @@ public class CreateRDFListResourceAction extends ResourceAction {
         return resource.getName().equals(RDFNames.Cls.LIST);
     }
 }
-

@@ -306,4 +306,3 @@ public class FTPRepository extends AbstractStreamBasedRepositoryImpl {
     }
 }
 
-

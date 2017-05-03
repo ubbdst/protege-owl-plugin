@@ -86,4 +86,3 @@ public class PropertyDomainMatrixColumn implements SortableMatrixColumn {
         return 200;
     }
 }
-

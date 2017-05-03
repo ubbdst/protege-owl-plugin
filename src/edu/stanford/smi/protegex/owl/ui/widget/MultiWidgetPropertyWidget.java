@@ -351,4 +351,3 @@ public abstract class MultiWidgetPropertyWidget extends AbstractPropertyWidget {
     	return instance;
     }
 }
-

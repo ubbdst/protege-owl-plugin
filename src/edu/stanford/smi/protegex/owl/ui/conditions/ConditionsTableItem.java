@@ -293,4 +293,3 @@ public class ConditionsTableItem implements ConditionsTableConstants, Comparable
         return aClass.getBrowserText();
     }
 }
-

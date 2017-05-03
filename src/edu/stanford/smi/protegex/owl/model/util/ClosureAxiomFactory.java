@@ -254,4 +254,3 @@ public class ClosureAxiomFactory {
         return results;
     }
 }
-

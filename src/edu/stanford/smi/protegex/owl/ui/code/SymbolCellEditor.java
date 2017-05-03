@@ -96,4 +96,3 @@ public class SymbolCellEditor extends AbstractCellEditor implements TableCellEdi
     }
 }
 
-

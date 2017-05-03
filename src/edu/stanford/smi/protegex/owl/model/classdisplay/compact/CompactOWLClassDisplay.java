@@ -97,4 +97,3 @@ public class CompactOWLClassDisplay extends AbstractOWLClassDisplay {
         return parser;
     }
 }
-

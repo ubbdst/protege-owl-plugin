@@ -194,4 +194,3 @@ public class SubsumptionTreeFinder extends Finder {
         return "SubsumptionTreeFinder";
     }
 }
-

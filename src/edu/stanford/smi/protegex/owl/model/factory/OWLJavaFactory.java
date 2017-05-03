@@ -419,4 +419,3 @@ public class OWLJavaFactory extends DefaultFrameFactory {
         return clas.equals(DefaultRDFIndividual.class);
     }
 }
-

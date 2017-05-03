@@ -624,4 +624,3 @@ public class DefaultProtegeDIGReasoner extends AbstractProtegeReasoner implement
 
 }
 
-

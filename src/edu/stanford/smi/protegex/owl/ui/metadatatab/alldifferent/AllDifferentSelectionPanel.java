@@ -182,4 +182,3 @@ public class AllDifferentSelectionPanel extends JPanel
         list.updateUI();
     }
 }
-

@@ -78,4 +78,3 @@ public class ClassTreeComponent extends JPanel {
         return tree;
     }
 }
-

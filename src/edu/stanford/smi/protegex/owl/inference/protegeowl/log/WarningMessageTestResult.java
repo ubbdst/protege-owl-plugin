@@ -94,4 +94,3 @@ public class WarningMessageTestResult implements OWLTestResult {
     }
 }
 
-

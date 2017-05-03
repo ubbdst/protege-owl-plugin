@@ -122,4 +122,3 @@ public interface XMLWriter {
     public void writeTextContent(String text) throws IOException;
 }
 
-

@@ -984,4 +984,3 @@ public class Jena {
         i.close();
     }
 }
-

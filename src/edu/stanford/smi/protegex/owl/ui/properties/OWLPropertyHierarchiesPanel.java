@@ -214,4 +214,3 @@ public class OWLPropertyHierarchiesPanel extends JPanel
     }
 }
 
-

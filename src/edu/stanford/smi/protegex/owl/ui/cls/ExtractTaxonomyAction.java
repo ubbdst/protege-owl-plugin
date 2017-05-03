@@ -109,4 +109,3 @@ public class ExtractTaxonomyAction extends ResourceAction {
         }
     }
 }
-

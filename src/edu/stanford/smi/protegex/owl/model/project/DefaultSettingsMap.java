@@ -102,4 +102,3 @@ public class DefaultSettingsMap extends AbstractSettingsMap {
         }
     }
 }
-

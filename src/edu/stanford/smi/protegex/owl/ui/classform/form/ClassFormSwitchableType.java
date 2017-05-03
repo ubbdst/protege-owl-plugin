@@ -131,4 +131,3 @@ public class ClassFormSwitchableType implements SwitchableType {
         return true;
     }
 }
-

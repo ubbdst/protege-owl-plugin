@@ -111,4 +111,3 @@ public class FindInDialogAction extends AbstractFindAction {
     
     
 }
-

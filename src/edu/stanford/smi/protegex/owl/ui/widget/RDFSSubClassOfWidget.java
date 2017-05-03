@@ -44,4 +44,3 @@ public class RDFSSubClassOfWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(RDFSSubClassOfWidget.class, cls, slot);
     }
 }
-

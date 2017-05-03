@@ -91,4 +91,3 @@ public class DeleteTripleAction extends AbstractTripleAction {
         triple.getSubject().removePropertyValue(triple.getPredicate(), triple.getObject());
     }
 }
-

@@ -86,4 +86,3 @@ public interface SWRLImp extends SWRLIndividual
 
 	void disable(Set<String> ruleGroupNames);
 }
-

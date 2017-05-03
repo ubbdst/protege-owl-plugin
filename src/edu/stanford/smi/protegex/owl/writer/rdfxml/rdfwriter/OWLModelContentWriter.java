@@ -160,4 +160,3 @@ public class OWLModelContentWriter implements RDFXMLContentWriter {
     }
 }
 
-

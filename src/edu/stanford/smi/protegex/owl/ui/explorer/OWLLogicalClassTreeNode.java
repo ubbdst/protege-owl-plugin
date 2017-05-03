@@ -63,4 +63,3 @@ public class OWLLogicalClassTreeNode extends ExplorerTreeNode {
         }
     }
 }
-

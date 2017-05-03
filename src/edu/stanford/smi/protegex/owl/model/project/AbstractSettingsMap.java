@@ -48,4 +48,3 @@ public abstract class AbstractSettingsMap implements SettingsMap {
         setInteger(key, new Integer(value));
     }
 }
-

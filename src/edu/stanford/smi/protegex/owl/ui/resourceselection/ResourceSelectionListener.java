@@ -35,4 +35,3 @@ public interface ResourceSelectionListener {
 
     void resourceSelected(RDFResource resource);
 }
-

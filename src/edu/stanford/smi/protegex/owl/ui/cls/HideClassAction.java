@@ -55,4 +55,3 @@ public class HideClassAction extends ResourceAction {
                 resource.isVisible();
     }
 }
-

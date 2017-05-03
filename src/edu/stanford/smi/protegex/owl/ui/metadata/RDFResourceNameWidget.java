@@ -103,4 +103,3 @@ public class RDFResourceNameWidget extends InstanceNameWidget {
         renameAcrossFilesAction.setEnabled(renameAcrossFilesAction.isSuitable(this, (RDFResource) instance));
     }
 }
-

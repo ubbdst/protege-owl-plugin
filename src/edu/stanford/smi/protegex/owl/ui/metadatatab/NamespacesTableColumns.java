@@ -38,4 +38,3 @@ public interface NamespacesTableColumns {
 
     final static int COL_COUNT = 4;
 }
-

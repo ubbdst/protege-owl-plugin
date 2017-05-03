@@ -121,4 +121,3 @@ public class URLImportPage extends AbstractImportStartWizardPage {
             "for example.</p>";
 }
 
-

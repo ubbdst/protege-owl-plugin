@@ -139,4 +139,3 @@ public class XSPNames {
      */
     public final static String TOTAL_DIGITS = PREFIX + ":totalDigits";
 }
-

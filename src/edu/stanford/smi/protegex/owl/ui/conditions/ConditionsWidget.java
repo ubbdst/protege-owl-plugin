@@ -184,4 +184,3 @@ public class ConditionsWidget extends AbstractPropertyWidget implements Inferred
         setBorder(null);
     }
 }
-

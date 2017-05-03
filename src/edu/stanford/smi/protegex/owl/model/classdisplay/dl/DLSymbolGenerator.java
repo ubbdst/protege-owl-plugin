@@ -164,4 +164,3 @@ public class DLSymbolGenerator implements OWLModelVisitor {
 	}
 
 }
-

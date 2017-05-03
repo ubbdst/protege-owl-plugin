@@ -401,4 +401,3 @@ public abstract class SubsumptionTreePanel extends SelectableContainer implement
         void setCls(OWLNamedClass cls);
     }
 }
-

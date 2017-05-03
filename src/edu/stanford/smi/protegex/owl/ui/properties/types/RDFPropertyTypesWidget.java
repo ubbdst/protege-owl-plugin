@@ -66,4 +66,3 @@ public class RDFPropertyTypesWidget extends AbstractPropertyTypesWidget {
         super.setEditable(b);
     }
 }
-

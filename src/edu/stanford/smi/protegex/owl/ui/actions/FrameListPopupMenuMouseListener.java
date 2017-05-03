@@ -71,4 +71,3 @@ public class FrameListPopupMenuMouseListener extends PopupMenuMouseListener {
         }
     }
 }
-

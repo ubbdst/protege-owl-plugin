@@ -240,4 +240,3 @@ public class OWLPropertySubpropertyRoot extends LazyTreeRoot {
 	}
 
 }
-

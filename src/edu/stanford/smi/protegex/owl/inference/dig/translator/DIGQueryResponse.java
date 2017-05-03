@@ -69,4 +69,3 @@ public interface DIGQueryResponse {
      */
     public boolean getBoolean();
 }
-

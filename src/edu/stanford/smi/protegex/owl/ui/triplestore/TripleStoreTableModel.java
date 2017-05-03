@@ -173,4 +173,3 @@ class TripleStoreTableModel extends AbstractTableModel {
         }
     }
 }
-

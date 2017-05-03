@@ -123,4 +123,3 @@ public class RepositoryManagerPanel extends JPanel {
 
 }
 
-

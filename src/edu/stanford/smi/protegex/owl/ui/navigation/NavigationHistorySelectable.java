@@ -41,4 +41,3 @@ public interface NavigationHistorySelectable extends Selectable, Disposable {
      */
     void navigateToResource(RDFResource resource);
 }
-

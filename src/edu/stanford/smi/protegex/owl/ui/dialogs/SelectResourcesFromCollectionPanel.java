@@ -60,4 +60,3 @@ public class SelectResourcesFromCollectionPanel extends JPanel {
         return ComponentUtilities.getSelection(list);
     }
 }
-

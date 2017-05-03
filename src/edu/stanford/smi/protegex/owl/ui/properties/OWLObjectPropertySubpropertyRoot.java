@@ -76,4 +76,3 @@ public class OWLObjectPropertySubpropertyRoot extends OWLPropertySubpropertyRoot
 
 }
 
-

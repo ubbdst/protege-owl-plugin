@@ -64,4 +64,3 @@ public class LogicClassDefinitionWidget extends AbstractClassDefinitionWidget {
         allPanel.add(BorderLayout.CENTER, mainPanel);
     }
 }
-

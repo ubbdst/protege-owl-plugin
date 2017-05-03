@@ -43,4 +43,3 @@ public interface SWRLIndividual extends OWLIndividual {
      */
     void getReferencedInstances(Set<RDFResource> set);
 }
-

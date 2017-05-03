@@ -297,4 +297,3 @@ public class DefaultRDFSNamedClass extends AbstractRDFSClass implements RDFSName
         visitor.visitRDFSNamedClass(this);
     }
 }
-

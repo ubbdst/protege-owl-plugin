@@ -49,4 +49,3 @@ public interface RunnableReasonerAction {
 
     OWLModel getOWLModel();
 }
-

@@ -114,4 +114,3 @@ public class ValidatorAction extends AbstractOWLModelAction {
         return sublanguage;
     }
 }
-

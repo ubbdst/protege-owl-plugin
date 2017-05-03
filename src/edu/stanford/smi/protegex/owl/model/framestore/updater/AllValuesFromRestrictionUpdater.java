@@ -259,4 +259,3 @@ public class AllValuesFromRestrictionUpdater extends QuantifierRestrictionUpdate
         }
     }
 }
-

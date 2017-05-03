@@ -72,4 +72,3 @@ public class DefaultOWLIntersectionClass extends AbstractOWLNAryLogicalClass
         return OPERATOR;
     }
 }
-

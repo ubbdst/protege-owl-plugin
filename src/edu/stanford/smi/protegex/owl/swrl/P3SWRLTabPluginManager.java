@@ -240,4 +240,3 @@ public class P3SWRLTabPluginManager {
 		swrlTab.add(panel);
 	}
 }
-

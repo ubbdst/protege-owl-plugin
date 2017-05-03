@@ -160,4 +160,3 @@ public class NumericFacetsPanel extends FacetsPanel implements ExInclusiveToggle
         }
     }
 }
-

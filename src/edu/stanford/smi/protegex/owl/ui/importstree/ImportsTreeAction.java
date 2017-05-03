@@ -47,4 +47,3 @@ public class ImportsTreeAction extends AbstractOWLModelAction {
         ImportsTreePanel.showDialog(owlModel);
     }
 }
-

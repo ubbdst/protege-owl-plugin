@@ -43,4 +43,3 @@ class AssertedInstancesListDragSourceListener extends ListDragSourceListener {
     public void doMove(final JComponent c, int[] indices, Collection draggedObjects) {
     }
 }
-

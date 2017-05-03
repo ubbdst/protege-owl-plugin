@@ -71,4 +71,3 @@ public class OWLObjectPropertySubpropertyPane extends OWLSubpropertyPane {
 	}
 }
 
-

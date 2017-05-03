@@ -102,4 +102,3 @@ public class SubpropertyDomainMustNarrowTest extends AbstractOWLTest
         return Collections.EMPTY_LIST;
     }
 }
-

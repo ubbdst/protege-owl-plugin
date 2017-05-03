@@ -53,4 +53,3 @@ public class DataRangeFieldWidgetMetadata implements OWLWidgetMetadata {
         }
     }
 }
-

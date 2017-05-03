@@ -155,4 +155,3 @@ public class OWLPropertiesTab extends AbstractTabWidget implements NavigationHis
     	super.setEnabled(enabled);
     }
 }
-

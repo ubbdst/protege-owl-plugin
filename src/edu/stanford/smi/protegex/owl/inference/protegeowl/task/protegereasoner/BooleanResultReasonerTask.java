@@ -40,4 +40,3 @@ public interface BooleanResultReasonerTask extends ReasonerTask {
 
     public boolean getResult();
 }
-

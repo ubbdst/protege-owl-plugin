@@ -30,4 +30,3 @@ public interface DeleteAnonymousClassHook {
     void delete(OWLAnonymousClass root, OWLAnonymousClass cls);
     
 }
-

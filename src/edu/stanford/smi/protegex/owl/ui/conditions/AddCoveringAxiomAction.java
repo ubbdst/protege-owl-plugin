@@ -152,4 +152,3 @@ public class AddCoveringAxiomAction extends ResourceAction {
         }
     }
 }
-

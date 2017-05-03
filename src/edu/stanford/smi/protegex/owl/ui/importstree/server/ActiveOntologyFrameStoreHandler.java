@@ -115,4 +115,3 @@ public class ActiveOntologyFrameStoreHandler extends
     }
 
 }
-

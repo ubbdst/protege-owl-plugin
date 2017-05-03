@@ -102,4 +102,3 @@ public class FormsSettingsPanel extends JPanel {
         map.setString(AbsoluteFormsGenerator.SAVE_FORMS_KEY, value);
     }
 }
-

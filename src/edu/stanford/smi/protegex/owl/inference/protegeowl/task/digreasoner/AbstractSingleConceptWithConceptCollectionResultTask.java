@@ -140,4 +140,3 @@ public abstract class AbstractSingleConceptWithConceptCollectionResultTask exten
     }
 }
 
-

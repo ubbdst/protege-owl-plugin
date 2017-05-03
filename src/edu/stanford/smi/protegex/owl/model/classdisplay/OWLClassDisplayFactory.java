@@ -87,4 +87,3 @@ public class OWLClassDisplayFactory {
         ApplicationProperties.setString(APPLICATION_PROPERTY, renderer.getClass().getName());
     }
 }
-

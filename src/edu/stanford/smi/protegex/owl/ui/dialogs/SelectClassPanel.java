@@ -255,4 +255,3 @@ public class SelectClassPanel extends SelectableContainer{
         }
     }
 }
-

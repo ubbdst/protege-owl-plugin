@@ -57,4 +57,3 @@ public class CreatePropertyForTypeAction extends AbstractAction {
         directType.getProject().show(property);
     }
 }
-

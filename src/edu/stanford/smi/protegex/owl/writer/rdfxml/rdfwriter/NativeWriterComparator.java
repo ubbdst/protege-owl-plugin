@@ -65,4 +65,3 @@ public class NativeWriterComparator extends FrameComparator<RDFResource> impleme
         }
     }
 }
-

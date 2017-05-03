@@ -270,4 +270,3 @@ public class RenderingPanel extends JPanel {
         }
     }
 }
-

@@ -35,4 +35,3 @@ public class SWRLFactoryException extends Exception
 		super(message, cause);
 	}
 }
-

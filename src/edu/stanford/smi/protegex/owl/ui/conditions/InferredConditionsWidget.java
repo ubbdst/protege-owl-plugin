@@ -50,4 +50,3 @@ public class InferredConditionsWidget extends AbstractConditionsWidget {
                 slot.getName().equals(ProtegeNames.Slot.INFERRED_SUPERCLASSES);
     }
 }
-

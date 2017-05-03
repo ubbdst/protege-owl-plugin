@@ -535,4 +535,3 @@ public interface DIGTranslator {
     public void setReasonerIdentity(DIGReasonerIdentity reasonerIdentity);
 }
 
-

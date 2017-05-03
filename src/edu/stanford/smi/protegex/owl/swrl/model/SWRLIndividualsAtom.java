@@ -41,4 +41,3 @@ public interface SWRLIndividualsAtom extends SWRLAtom {
 
     void setArgument2(RDFResource iObject);
 }
-

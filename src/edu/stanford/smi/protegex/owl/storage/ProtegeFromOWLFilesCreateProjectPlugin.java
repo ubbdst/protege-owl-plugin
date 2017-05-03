@@ -140,4 +140,3 @@ public class ProtegeFromOWLFilesCreateProjectPlugin
     public void setProfile(String profileURI) {
     }
 }
-

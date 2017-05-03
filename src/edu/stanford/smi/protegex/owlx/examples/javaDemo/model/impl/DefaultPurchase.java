@@ -121,4 +121,3 @@ public class DefaultPurchase extends DefaultRDFIndividual
         setPropertyValue(getProductProperty(), newProduct);
     }
 }
-

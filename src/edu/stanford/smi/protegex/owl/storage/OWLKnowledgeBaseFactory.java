@@ -33,4 +33,3 @@ import edu.stanford.smi.protege.model.KnowledgeBaseFactory;
 public interface OWLKnowledgeBaseFactory extends KnowledgeBaseFactory {
 
 }
-

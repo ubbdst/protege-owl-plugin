@@ -335,4 +335,3 @@ public class TripleStoreModelImpl implements TripleStoreModel {
     }
 
 }
-

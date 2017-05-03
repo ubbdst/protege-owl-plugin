@@ -87,4 +87,3 @@ public class OWLTestAction extends AbstractOWLModelTestAction {
         return results;
     }
 }
-

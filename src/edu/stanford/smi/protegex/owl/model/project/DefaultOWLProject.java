@@ -47,4 +47,3 @@ public class DefaultOWLProject extends AbstractOWLProject {
         return settingsMap;
     }
 }
-

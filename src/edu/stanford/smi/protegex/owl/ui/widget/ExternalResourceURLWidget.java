@@ -91,4 +91,3 @@ public class ExternalResourceURLWidget extends URLWidget {
         }
     }
 }
-

@@ -34,4 +34,3 @@ public class DefaultResourcePanelFactory implements ResourcePanelFactory{
         return new ResourceDisplay(owlModel.getProject(), defaultType);
     }
 }
-

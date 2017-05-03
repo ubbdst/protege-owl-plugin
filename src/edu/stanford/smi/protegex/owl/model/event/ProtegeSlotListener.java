@@ -82,4 +82,3 @@ public interface ProtegeSlotListener extends SlotListener {
      */
     void directSuperslotRemoved(SlotEvent event);
 }
-

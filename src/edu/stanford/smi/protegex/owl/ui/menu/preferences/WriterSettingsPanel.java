@@ -156,4 +156,3 @@ public class WriterSettingsPanel extends JComponent {
         useXMLEntitiesBox.setEnabled(enabled);
     }
 }
-

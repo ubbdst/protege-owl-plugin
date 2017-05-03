@@ -34,4 +34,3 @@ package edu.stanford.smi.protegex.owl.swrl.model;
 public interface SWRLBuiltin extends SWRLIndividual {
 
 } // SWRLBuiltin
-

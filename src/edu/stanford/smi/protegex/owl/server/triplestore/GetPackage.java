@@ -77,4 +77,3 @@ public class GetPackage extends ProtegeJob {
         }
     }
 }
-

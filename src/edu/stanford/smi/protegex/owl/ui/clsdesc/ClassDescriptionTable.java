@@ -144,4 +144,3 @@ public class ClassDescriptionTable extends OWLTable {
         OWLUtil.convertSuperClsIntoEquivalentCls(cls, superClass);
     }
 }
-

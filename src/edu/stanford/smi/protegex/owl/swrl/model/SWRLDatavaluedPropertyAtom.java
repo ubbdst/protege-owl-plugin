@@ -51,4 +51,3 @@ public interface SWRLDatavaluedPropertyAtom extends SWRLAtom {
     void setPropertyPredicate(OWLDatatypeProperty datatypeSlot);
 
 } // SWRLDatavaluedPropertyAtom
-

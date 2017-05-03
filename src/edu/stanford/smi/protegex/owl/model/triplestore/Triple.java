@@ -34,4 +34,3 @@ public interface Triple extends Tuple, TripleDescriptor {
 
     Object getObject();
 }
-

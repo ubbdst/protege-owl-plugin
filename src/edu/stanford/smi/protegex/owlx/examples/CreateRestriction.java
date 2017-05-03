@@ -56,4 +56,3 @@ public class CreateRestriction {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

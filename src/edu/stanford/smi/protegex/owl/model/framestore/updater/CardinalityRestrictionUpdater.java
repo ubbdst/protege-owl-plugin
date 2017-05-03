@@ -255,4 +255,3 @@ public class CardinalityRestrictionUpdater extends AbstractRestrictionUpdater {
         }
     }
 }
-

@@ -41,4 +41,3 @@ public class ClassConditionsMatrixColumn extends AbstractMatrixColumn {
         return new ConditionsCellRenderer();
     }
 }
-

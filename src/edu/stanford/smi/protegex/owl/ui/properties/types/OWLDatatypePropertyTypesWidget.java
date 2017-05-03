@@ -64,4 +64,3 @@ public class OWLDatatypePropertyTypesWidget extends AbstractPropertyTypesWidget 
         return false;
     }
 }
-

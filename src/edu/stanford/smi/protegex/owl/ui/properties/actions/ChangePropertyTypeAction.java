@@ -125,4 +125,3 @@ public class ChangePropertyTypeAction extends ResourceAction {
         return false;
     }
 }
-

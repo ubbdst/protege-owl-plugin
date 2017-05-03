@@ -84,4 +84,3 @@ public class AnnotationsLangEditor extends AbstractCellEditor implements TableCe
     }
 }
 
-

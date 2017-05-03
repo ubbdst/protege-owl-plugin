@@ -59,4 +59,3 @@ public class DefaultCustomer extends DefaultCustomer_
         return sum;
     }
 }
-

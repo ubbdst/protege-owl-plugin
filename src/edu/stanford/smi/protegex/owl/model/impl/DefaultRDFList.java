@@ -249,4 +249,3 @@ public class DefaultRDFList extends DefaultRDFIndividual implements RDFList {
         return getValues().size();
     }
 }
-

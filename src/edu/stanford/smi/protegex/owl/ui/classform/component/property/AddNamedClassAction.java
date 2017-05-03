@@ -73,4 +73,3 @@ public class AddNamedClassAction extends ResourceSelectionAction {
                                                                  ranges);
     }
 }
-

@@ -61,4 +61,3 @@ public class RDFListWidgetMetadata implements OWLWidgetMetadata {
         return false;
     }
 }
-

@@ -50,4 +50,3 @@ public class PropertiesClassDefinitionWidgetType implements SwitchableType {
         return true;
     }
 }
-

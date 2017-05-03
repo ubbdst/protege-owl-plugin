@@ -76,4 +76,3 @@ public class InverseOfInverseFunctionalMustBeFunctionalTest extends AbstractOWLT
         }
     }
 }
-

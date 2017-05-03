@@ -80,4 +80,3 @@ public class PropertyMatrixAction extends AbstractAction {
         ResultsPanelManager.addResultsPanel(owlModel, panel, true);
     }
 }
-

@@ -39,4 +39,3 @@ public class ClassFormSeparator extends SeparatorCellRenderer {
         setText(text);
     }
 }
-

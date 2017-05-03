@@ -57,4 +57,3 @@ public class DefaultIndividualFind extends ResultsViewModelFind {
         return "Find Individual Of Any Class";
     }
 }
-

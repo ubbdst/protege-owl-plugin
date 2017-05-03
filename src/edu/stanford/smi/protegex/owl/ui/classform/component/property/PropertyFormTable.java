@@ -127,4 +127,3 @@ public class PropertyFormTable extends SymbolTable implements Disposable {
         // TODO
     }
 }
-

@@ -86,4 +86,3 @@ public class ComputeInferredTypesAction extends AbstractOWLModelAction {
     }
 }
 
-

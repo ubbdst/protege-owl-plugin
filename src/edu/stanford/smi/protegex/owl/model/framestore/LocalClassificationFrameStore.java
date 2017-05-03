@@ -219,4 +219,3 @@ public class LocalClassificationFrameStore extends FrameStoreAdapter {
         }
     }
 }
-

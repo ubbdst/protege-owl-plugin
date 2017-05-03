@@ -344,4 +344,3 @@ public class OWLSubclassPane extends SelectableContainer implements ClassTreePan
         return "SubclassPane";
     }
 }
-

@@ -66,4 +66,3 @@ public class SWRLResourceNameMatcher extends OWLResourceNameMatcher
   @Override
   protected boolean couldBeDatatype(OWLModel owlModel, String prefix) { return true; }
 } 
-

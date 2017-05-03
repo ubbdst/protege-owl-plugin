@@ -116,4 +116,3 @@ public class DefaultRDFSDatatypeFactory implements RDFSDatatypeFactory {
         datatype.setPropertyValue(property, value);
     }
 }
-

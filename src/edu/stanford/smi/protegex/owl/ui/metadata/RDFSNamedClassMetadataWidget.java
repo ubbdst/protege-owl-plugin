@@ -55,4 +55,3 @@ public class RDFSNamedClassMetadataWidget extends OWLMetadataWidget {
         super.setupSubWidgets(slot, cls, isDesignTime, project);
     }
 }
-

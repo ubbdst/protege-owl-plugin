@@ -57,4 +57,3 @@ public class PropertyMatrixTableModel extends MatrixTableModel {
         return super.getNewColumnIndex(col) - 4;
     }
 }
-

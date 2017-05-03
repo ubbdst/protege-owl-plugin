@@ -121,4 +121,3 @@ public class RDFPropertiesComponent extends JPanel {
         removePropertiesAction.setEnabled(enabled);
     }
 }
-

@@ -73,4 +73,3 @@ public class OWLLabeledComponent extends LabeledComponent {
         toolBar.add(component, index);
     }
 }
-

@@ -61,4 +61,3 @@ public interface RDFSDatatypeFactory {
 
     void setPattern(RDFSDatatype datatype, String value);
 }
-

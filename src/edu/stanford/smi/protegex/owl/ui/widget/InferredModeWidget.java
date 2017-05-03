@@ -39,4 +39,3 @@ public interface InferredModeWidget {
      */
     void setInferredMode(boolean value);
 }
-

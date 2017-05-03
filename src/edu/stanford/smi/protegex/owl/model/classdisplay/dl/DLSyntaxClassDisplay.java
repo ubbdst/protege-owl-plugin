@@ -101,4 +101,3 @@ public class DLSyntaxClassDisplay implements OWLClassDisplay {
         return new DLSyntaxClassParser();
     }
 }
-

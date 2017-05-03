@@ -137,4 +137,3 @@ public interface ModalDialogFactory {
 
     void showThrowable(OWLModel owlModel, Throwable t);
 }
-

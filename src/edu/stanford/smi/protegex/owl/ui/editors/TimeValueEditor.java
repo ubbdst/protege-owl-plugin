@@ -97,4 +97,3 @@ public class TimeValueEditor implements PropertyValueEditor {
         return canEdit(subject, predicate, value);
     }
 }
-

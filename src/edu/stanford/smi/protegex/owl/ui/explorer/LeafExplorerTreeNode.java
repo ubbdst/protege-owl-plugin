@@ -43,4 +43,3 @@ public class LeafExplorerTreeNode extends ExplorerTreeNode {
         return Collections.EMPTY_LIST;
     }
 }
-

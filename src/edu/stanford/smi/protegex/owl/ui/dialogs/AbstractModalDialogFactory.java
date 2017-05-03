@@ -81,4 +81,3 @@ public abstract class AbstractModalDialogFactory implements ModalDialogFactory {
         showErrorMessageDialog(owlModel, "Unexpected Error - please see console for stack trace.\n" + t.getMessage(), "Unexpected Error");
     }
 }
-

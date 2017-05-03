@@ -37,4 +37,3 @@ public abstract class AbstractOWLTableAction extends AbstractAction
         super(name, icon);
     }
 }
-

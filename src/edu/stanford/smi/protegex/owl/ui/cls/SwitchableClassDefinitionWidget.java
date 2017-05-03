@@ -208,4 +208,3 @@ public class SwitchableClassDefinitionWidget extends MultiWidgetPropertyWidget {
     
     
 }
-

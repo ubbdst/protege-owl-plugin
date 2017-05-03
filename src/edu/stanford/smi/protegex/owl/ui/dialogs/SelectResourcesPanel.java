@@ -187,4 +187,3 @@ public class SelectResourcesPanel extends SelectInstancesPanel {
     }
     
 }
-

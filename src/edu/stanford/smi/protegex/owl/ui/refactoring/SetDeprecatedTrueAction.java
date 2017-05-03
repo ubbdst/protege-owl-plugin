@@ -63,4 +63,3 @@ public class SetDeprecatedTrueAction extends RefactorResourceAction {
                         !((Deprecatable) resource).isDeprecated();
     }
 }
-

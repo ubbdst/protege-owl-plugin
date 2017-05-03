@@ -231,4 +231,3 @@ public class ClassTreeNode extends LazyTreeNode {
         return "ParentChildNode(" + getCls() + ")";
     }
 }
-

@@ -86,4 +86,3 @@ public class NewOwlProjectCreator extends AbstractOwlProjectCreator {
     
 
 }
-

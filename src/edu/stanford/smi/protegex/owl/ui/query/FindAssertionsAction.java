@@ -87,4 +87,3 @@ public class FindAssertionsAction extends AbstractOWLModelTestAction {
     }
 
 }
-

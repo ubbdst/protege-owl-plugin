@@ -37,4 +37,3 @@ package edu.stanford.smi.protegex.owl.model;
 public interface RDFUntypedResource extends RDFIndividual {
 
 }
-

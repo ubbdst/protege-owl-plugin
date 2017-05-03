@@ -1628,4 +1628,3 @@ void TokenLexicalActions(Token matchedToken)
    }
 }
 }
-

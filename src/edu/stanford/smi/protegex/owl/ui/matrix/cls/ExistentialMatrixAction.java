@@ -85,4 +85,3 @@ public class ExistentialMatrixAction extends ResourceAction {
                 properties, "Select properties to show");
     }
 }
-

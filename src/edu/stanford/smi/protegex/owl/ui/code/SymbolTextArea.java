@@ -453,4 +453,3 @@ public abstract class SymbolTextArea extends JTextArea
   public SymbolErrorDisplay getErrorSymbolDisplay() { return errorDisplay; }
 
 } // SymbolTextArea
-

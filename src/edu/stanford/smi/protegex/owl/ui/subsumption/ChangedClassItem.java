@@ -135,4 +135,3 @@ class ChangedClassItem implements Comparable<ChangedClassItem> {
         return base + " " + str;
     }
 }
-

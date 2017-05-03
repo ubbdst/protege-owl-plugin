@@ -42,4 +42,3 @@ public interface Deprecatable {
 
     void setDeprecated(boolean value);
 }
-

@@ -55,4 +55,3 @@ public class UnhideClassAction extends ResourceAction {
                 !resource.isVisible();
     }
 }
-

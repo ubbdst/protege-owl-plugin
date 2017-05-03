@@ -99,4 +99,3 @@ public interface OWLClassDisplay {
      */
     OWLClassParser getParser();
 }
-

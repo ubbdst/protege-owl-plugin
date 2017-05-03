@@ -183,4 +183,3 @@ public abstract class ResultsPanel extends JPanel implements Disposable {
         ResultsPanelManager.showTriple(triple);
     }
 }
-

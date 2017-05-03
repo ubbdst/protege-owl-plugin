@@ -92,4 +92,3 @@ class AddRowAction extends ResourceSelectionAction {
                 "Select named class(es) to add");
     }
 }
-

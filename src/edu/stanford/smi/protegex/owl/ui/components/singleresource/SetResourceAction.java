@@ -145,4 +145,3 @@ public class SetResourceAction extends ResourceSelectionAction {
         component.getSubject().setPropertyValue(component.getPredicate(), resource);
     }
 }
-

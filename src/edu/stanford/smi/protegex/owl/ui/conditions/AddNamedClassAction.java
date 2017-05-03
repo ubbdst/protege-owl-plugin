@@ -84,4 +84,3 @@ class AddNamedClassAction extends ResourceSelectionAction
                 "Select a named class to add");
     }
 }
-

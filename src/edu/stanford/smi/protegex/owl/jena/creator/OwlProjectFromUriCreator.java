@@ -175,4 +175,3 @@ public class OwlProjectFromUriCreator extends AbstractOwlProjectCreator {
 	}
 
 }
-

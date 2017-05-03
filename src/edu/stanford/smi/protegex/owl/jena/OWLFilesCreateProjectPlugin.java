@@ -160,4 +160,3 @@ public class OWLFilesCreateProjectPlugin extends AbstractCreateProjectPlugin imp
     public void addImport(String uri, String prefix) {
     }
 }
-

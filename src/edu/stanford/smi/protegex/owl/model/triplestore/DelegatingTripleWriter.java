@@ -77,4 +77,3 @@ public class DelegatingTripleWriter implements TripleWriter {
         delegate.writePrefix(prefix, namespace);
     }
 }
-

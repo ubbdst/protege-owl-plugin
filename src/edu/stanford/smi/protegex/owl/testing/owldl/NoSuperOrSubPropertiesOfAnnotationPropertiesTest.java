@@ -62,4 +62,3 @@ public class NoSuperOrSubPropertiesOfAnnotationPropertiesTest extends AbstractOW
         }
     }
 }
-

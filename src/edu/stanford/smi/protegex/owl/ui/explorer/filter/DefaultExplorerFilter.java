@@ -135,4 +135,3 @@ public class DefaultExplorerFilter implements ExplorerFilter {
         this.validProperty = property;
     }
 }
-

@@ -45,4 +45,3 @@ public interface ProgressDisplay {
 
     void stop();
 }
-

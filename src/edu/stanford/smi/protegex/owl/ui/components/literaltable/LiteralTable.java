@@ -178,4 +178,3 @@ public class LiteralTable extends JTable {
     }
     
 }
-

@@ -54,4 +54,3 @@ public class SortSubclassesAction extends ResourceAction {
         return component instanceof OWLSubclassPane;
     }
 }
-

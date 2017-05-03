@@ -131,4 +131,3 @@ class TripleProcessorForLiteralObjects extends AbstractStatefulTripleProcessor {
 	}
 
 }
-

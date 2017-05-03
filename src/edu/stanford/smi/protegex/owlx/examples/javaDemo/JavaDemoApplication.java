@@ -92,4 +92,3 @@ public class JavaDemoApplication {
         return sum;
     }
 }
-

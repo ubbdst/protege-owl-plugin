@@ -40,4 +40,3 @@ public interface NamespaceManagerListener {
 
     void prefixRemoved(String prefix);
 }
-

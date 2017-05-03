@@ -36,4 +36,3 @@ public interface IntegerResultReasonerTask {
 
     public int getResult();
 }
-

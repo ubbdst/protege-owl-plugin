@@ -68,4 +68,3 @@ public class ComponentDragger extends MouseAdapter implements MouseMotionListene
         baseY = e.getY();
     }
 }
-

@@ -62,4 +62,3 @@ public class ProtegeWriterSettings implements WriterSettings {
         owlModel.getOWLProject().getSettingsMap().setBoolean(USE_XML_ENTITIES_PROPERTY, Boolean.valueOf(value));
     }
 }
-

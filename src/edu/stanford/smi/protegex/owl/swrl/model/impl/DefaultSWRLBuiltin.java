@@ -52,4 +52,3 @@ public class DefaultSWRLBuiltin extends AbstractSWRLIndividual implements SWRLBu
     public void getReferencedInstances(Set<RDFResource> set) {
     }
 }
-

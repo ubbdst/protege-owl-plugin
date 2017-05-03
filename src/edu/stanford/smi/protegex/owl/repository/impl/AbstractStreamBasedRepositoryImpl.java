@@ -80,4 +80,3 @@ public abstract class AbstractStreamBasedRepositoryImpl implements Repository {
     }
 
 }
-

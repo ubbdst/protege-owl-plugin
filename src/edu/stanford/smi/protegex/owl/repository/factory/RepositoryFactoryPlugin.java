@@ -63,4 +63,3 @@ public interface RepositoryFactoryPlugin {
      */
     public Repository createRepository(OWLModel model, String repositoryDescriptor);
 }
-

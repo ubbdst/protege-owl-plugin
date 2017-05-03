@@ -75,4 +75,3 @@ public class FTPRepositoryFactoryPlugin implements RepositoryFactoryPlugin {
     }
 }
 
-

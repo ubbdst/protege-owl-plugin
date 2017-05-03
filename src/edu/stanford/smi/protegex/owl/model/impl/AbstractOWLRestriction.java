@@ -118,4 +118,3 @@ public abstract class AbstractOWLRestriction extends AbstractOWLAnonymousClass i
         setDirectOwnSlotValue(onPropertySlot, property);
     }
 }
-

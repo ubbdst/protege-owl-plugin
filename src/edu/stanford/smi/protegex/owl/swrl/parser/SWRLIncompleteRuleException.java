@@ -34,4 +34,3 @@ public class SWRLIncompleteRuleException extends SWRLParseException
 		super(message);
 	}
 }
-

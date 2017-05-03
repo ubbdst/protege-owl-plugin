@@ -66,4 +66,3 @@ public class ListenerExample {
         owlModel.createOWLDatatypeProperty("Datatype-Property");
     }
 }
-

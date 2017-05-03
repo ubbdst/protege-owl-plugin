@@ -179,4 +179,3 @@ public abstract class AbstractStatefulTripleProcessor {
 
 
 }
-

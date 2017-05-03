@@ -95,4 +95,3 @@ public class FindResultsTableView extends AbstractFindResultsView {
         table.requestFocus();
     }
 }
-

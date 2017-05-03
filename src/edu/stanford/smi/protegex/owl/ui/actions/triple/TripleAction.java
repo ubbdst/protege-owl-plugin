@@ -67,4 +67,3 @@ public interface TripleAction extends IconOwner {
      */
     void run(Triple triple);
 }
-

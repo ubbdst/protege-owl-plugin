@@ -41,4 +41,3 @@ public class ResourceListFinder extends ListFinder {
         super(list, description, icon);
     }
 }
-

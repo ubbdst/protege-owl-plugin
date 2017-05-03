@@ -98,4 +98,3 @@ public abstract class AbstractSWRLIndividualsAtom extends DefaultSWRLAtom implem
 } // AbstractSWRLIndividualsAtom
 
 
-

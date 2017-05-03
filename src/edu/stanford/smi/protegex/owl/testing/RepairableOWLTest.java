@@ -38,4 +38,3 @@ public interface RepairableOWLTest extends OWLTest {
      */
     boolean repair(OWLTestResult testResult);
 }
-

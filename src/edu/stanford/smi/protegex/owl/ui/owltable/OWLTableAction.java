@@ -37,4 +37,3 @@ public interface OWLTableAction extends Action {
 
     boolean isEnabledFor(RDFSClass cls, int rowIndex);
 }
-

@@ -75,4 +75,3 @@ public class SubclassesMatrixFilter implements DependentMatrixFilter {
                 ((RDFSNamedClass) instance).isSubclassOf(parentClass);
     }
 }
-

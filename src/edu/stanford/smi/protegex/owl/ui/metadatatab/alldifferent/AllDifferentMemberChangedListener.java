@@ -34,4 +34,3 @@ public interface AllDifferentMemberChangedListener {
     void allDifferentMemberChanged();
 
 }
-

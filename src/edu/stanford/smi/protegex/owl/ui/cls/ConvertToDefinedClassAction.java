@@ -93,4 +93,3 @@ public class ConvertToDefinedClassAction extends ResourceAction {
         }
     }
 }
-

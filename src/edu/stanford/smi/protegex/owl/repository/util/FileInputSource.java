@@ -50,4 +50,3 @@ public class FileInputSource implements InputStreamSource {
     }
 
 }
-

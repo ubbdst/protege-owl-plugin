@@ -133,4 +133,3 @@ public class AnnotationPropertyMatrixColumn implements EditableMatrixColumn, Sor
         instance.setPropertyValue(property, value);
     }
 }
-

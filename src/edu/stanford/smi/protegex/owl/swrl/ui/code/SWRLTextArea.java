@@ -97,4 +97,3 @@ public class SWRLTextArea extends SymbolTextArea
     closeComboBox();
   }
 } 
-

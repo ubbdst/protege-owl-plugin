@@ -165,4 +165,3 @@ public class FindResult {
         return "Result [" + res + ", " + prop + ", " + matchValue + ", " + lang + "]";
     }
 }
-

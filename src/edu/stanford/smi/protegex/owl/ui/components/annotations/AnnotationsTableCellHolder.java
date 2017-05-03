@@ -73,4 +73,3 @@ public class AnnotationsTableCellHolder extends JPanel {
         }
     }
 }
-

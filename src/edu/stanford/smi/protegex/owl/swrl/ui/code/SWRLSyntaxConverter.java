@@ -56,4 +56,3 @@ public class SWRLSyntaxConverter implements SyntaxConverter
 		OWLTextFormatter.updateSyntax(textComponent, owlModel, map);
 	}
 }
-

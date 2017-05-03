@@ -91,4 +91,3 @@ public interface ManchesterOWLParserConstants {
   };
 
 }
-

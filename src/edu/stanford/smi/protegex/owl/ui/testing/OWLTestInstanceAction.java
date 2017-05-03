@@ -93,4 +93,3 @@ public class OWLTestInstanceAction extends AbstractOWLTestAction {
         setEnabled(selection.size() > 0);
     }
 }
-

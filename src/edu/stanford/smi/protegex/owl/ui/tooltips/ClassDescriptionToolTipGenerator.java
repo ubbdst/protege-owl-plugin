@@ -50,4 +50,3 @@ public class ClassDescriptionToolTipGenerator implements OWLToolTipGenerator {
         return null;
     }
 }
-

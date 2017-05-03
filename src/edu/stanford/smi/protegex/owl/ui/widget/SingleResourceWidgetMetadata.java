@@ -49,4 +49,3 @@ public class SingleResourceWidgetMetadata implements OWLWidgetMetadata {
         return NOT_SUITABLE;
     }
 }
-

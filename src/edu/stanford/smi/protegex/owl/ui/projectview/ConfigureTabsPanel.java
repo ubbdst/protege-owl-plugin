@@ -332,4 +332,3 @@ public class ConfigureTabsPanel extends AbstractValidatableComponent {
         }
     }
 }
-

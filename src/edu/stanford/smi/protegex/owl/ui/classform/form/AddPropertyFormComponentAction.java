@@ -58,4 +58,3 @@ public class AddPropertyFormComponentAction extends ResourceSelectionAction {
         // TODO
     }
 }
-

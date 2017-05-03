@@ -121,4 +121,3 @@ public class SynchronizeReasonerTask extends AbstractReasonerTask {
 
 }
 
-

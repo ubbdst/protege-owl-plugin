@@ -36,4 +36,3 @@ public interface RDFPropertiesTableColumns {
 
     final static int COLCOUNT = 3;
 }
-

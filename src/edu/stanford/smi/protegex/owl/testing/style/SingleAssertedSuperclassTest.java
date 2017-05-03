@@ -61,4 +61,3 @@ public class SingleAssertedSuperclassTest extends AbstractOWLTest implements RDF
 		return Collections.EMPTY_LIST;
 	}
 }
-

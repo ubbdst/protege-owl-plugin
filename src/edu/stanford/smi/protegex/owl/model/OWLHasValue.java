@@ -48,4 +48,3 @@ public interface OWLHasValue extends OWLExistentialRestriction {
      */
     void setHasValue(Object value);
 }
-

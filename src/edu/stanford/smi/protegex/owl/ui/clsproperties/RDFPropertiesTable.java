@@ -149,4 +149,3 @@ public class RDFPropertiesTable extends JTable implements Disposable, RDFPropert
         tableModel.setClass(cls);
     }
 }
-

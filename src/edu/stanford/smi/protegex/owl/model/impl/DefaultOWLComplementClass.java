@@ -122,4 +122,3 @@ public class DefaultOWLComplementClass extends AbstractOWLLogicalClass
         setPropertyValues(getOperandsProperty(), clses);
     }
 }
-

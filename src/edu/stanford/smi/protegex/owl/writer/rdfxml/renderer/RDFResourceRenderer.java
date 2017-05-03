@@ -544,4 +544,3 @@ public class RDFResourceRenderer extends OWLModelVisitorAdapter {
     }
 }
 
-

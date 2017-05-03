@@ -99,4 +99,3 @@ public class ResourceFinder extends JComponent {
         return textEdit;
     }
 }
-

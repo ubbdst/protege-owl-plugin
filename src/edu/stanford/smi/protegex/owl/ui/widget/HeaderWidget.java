@@ -143,4 +143,3 @@ public class HeaderWidget extends AbstractSlotWidget {
 	}
 
 }
-

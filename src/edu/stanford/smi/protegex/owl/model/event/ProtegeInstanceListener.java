@@ -44,4 +44,3 @@ public interface ProtegeInstanceListener extends InstanceListener {
      */
     void directTypeRemoved(InstanceEvent event);
 }
-

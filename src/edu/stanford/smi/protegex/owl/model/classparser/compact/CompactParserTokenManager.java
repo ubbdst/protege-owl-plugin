@@ -1306,4 +1306,3 @@ void TokenLexicalActions(Token matchedToken)
    }
 }
 }
-

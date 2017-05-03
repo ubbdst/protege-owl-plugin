@@ -183,4 +183,3 @@ public abstract class AbstractOWLQuantifierRestriction extends AbstractOWLRestri
        throw ex;
    } */
 }
-

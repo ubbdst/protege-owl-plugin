@@ -39,4 +39,3 @@ public interface SearchListener {
 
     void searchEvent(Find source);
 }
-

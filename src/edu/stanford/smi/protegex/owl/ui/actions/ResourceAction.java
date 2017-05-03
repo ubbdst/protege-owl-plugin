@@ -147,4 +147,3 @@ public abstract class ResourceAction extends AbstractAction implements Comparabl
 
     public abstract boolean isSuitable(Component component, RDFResource resource);
 }
-

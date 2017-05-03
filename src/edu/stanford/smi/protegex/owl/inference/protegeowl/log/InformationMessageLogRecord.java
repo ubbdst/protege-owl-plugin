@@ -54,4 +54,3 @@ public class InformationMessageLogRecord extends MessageLogRecord {
     }
 }
 
-

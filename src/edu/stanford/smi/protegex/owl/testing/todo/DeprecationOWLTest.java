@@ -75,4 +75,3 @@ public class DeprecationOWLTest extends AbstractOWLTest implements RDFSClassTest
         return Collections.EMPTY_LIST;
     }
 }
-

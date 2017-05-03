@@ -288,4 +288,3 @@ public class DefaultOWLOntology extends DefaultRDFIndividual implements OWLOntol
     	return "OWLOntology(" + getName() + ")";
     }
 }
-

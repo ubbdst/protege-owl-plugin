@@ -66,4 +66,3 @@ public class OWLQuantifierRestrictionTreeNode extends ExplorerTreeNode {
         }
     }
 }
-

@@ -92,4 +92,3 @@ public class TransitivePropertiesCannotBeFunctionalOWLDLTest extends AbstractOWL
         return Collections.EMPTY_LIST;
     }
 }
-

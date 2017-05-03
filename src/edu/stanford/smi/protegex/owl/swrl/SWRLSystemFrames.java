@@ -461,4 +461,3 @@ public class SWRLSystemFrames extends OWLSystemFrames {
     
 
 }
-

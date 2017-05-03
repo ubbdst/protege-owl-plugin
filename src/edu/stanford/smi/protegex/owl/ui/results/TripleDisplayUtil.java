@@ -57,4 +57,3 @@ public class TripleDisplayUtil {
         return null;
     }
 }
-

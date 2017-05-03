@@ -47,4 +47,3 @@ public interface OWLDatabasePlugin extends DatabasePlugin {
     String getPassword();
 
 }
-

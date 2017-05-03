@@ -157,4 +157,3 @@ public abstract class ClassDescriptionWidget extends AbstractPropertyWidget {
         }
     }
 }
-

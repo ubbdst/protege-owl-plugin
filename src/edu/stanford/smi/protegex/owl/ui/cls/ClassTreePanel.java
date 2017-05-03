@@ -41,4 +41,3 @@ public interface ClassTreePanel extends TreePanel {
      */
     void setSelectedClass(RDFSClass cls);
 }
-

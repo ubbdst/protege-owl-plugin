@@ -75,4 +75,3 @@ public class InitOWLDatabaseFromFileWizardPage extends WizardPage {
         plugin.setOntologyInputSource(uriField.getAbsoluteURI());
     }
 }
-

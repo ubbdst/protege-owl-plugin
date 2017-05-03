@@ -41,4 +41,3 @@ public class DefaultTestPerson extends DefaultRDFIndividual implements TestPerso
     public DefaultTestPerson() {
     }
 }
-

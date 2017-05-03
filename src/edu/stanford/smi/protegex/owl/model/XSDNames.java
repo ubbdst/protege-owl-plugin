@@ -88,4 +88,3 @@ public interface XSDNames {
         final static String PATTERN = (XSD_NAMESPACE + "pattern").intern();
     }
 }
-

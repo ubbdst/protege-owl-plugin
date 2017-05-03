@@ -3290,4 +3290,3 @@ public class P3OWLUtil
 		throw new P3OWLUtilException(message);
 	}
 }
-

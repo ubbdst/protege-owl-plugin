@@ -129,4 +129,3 @@ public class ExistentialTreeNode extends LazyTreeNode {
         return "ExistentialTreeNode(" + getOWLClass() + ")";
     }
 }
-

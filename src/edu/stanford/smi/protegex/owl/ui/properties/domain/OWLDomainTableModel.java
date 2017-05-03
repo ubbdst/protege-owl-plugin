@@ -191,4 +191,3 @@ public class OWLDomainTableModel extends AbstractTableModel implements Disposabl
         fireTableDataChanged();
     }
 }
-

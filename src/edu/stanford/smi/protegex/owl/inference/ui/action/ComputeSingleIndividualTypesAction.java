@@ -98,4 +98,3 @@ public class ComputeSingleIndividualTypesAction extends ResourceAction implement
     }
 }
 
-

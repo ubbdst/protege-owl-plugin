@@ -57,4 +57,3 @@ public class DefaultPropertyValueValidator implements PropertyValueValidator {
         return true;
     }
 }
-

@@ -59,4 +59,3 @@ public class CreateClassSuggestion extends AbstractNamedObjectCreationSuggestion
     }
 }
 
-

@@ -62,4 +62,3 @@ public class DeleteRuleAction extends AbstractAction
 		setEnabled(this.table.getSelectedRowCount() == 1);
 	}
 }
-

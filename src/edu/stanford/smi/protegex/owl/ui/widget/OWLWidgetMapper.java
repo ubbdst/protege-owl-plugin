@@ -234,4 +234,3 @@ public class OWLWidgetMapper extends DefaultWidgetMapper {
         return false;
     }
 }
-

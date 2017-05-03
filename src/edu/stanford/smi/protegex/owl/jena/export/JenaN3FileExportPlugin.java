@@ -34,4 +34,3 @@ public class JenaN3FileExportPlugin extends AbstractJenaFileExportPlugin {
         super(FileUtils.langN3);
     }
 }
-

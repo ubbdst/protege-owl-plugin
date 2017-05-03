@@ -166,4 +166,3 @@ public abstract class AbstractOWLFilesWizardPage extends WizardPage {
         setPageComplete(owlFileURIField.getRelativeURI() != null);
     }
 }
-

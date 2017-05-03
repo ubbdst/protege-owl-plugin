@@ -143,4 +143,3 @@ public class DefaultConceptConsistencyLogRecord extends ReasonerLogRecord {
     }
 }
 
-

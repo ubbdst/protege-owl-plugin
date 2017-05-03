@@ -38,4 +38,3 @@ public interface OWLFilesPlugin extends OWLCreateProjectPlugin {
 
     void setLanguage(String lang);
 }
-

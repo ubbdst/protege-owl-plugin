@@ -122,4 +122,3 @@ public class ConvertIndividualToClassAction extends ResourceAction {
         return cls;
     }
 }
-

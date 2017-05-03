@@ -208,4 +208,3 @@ public class RenameAcrossFilesAction extends RefactorResourceAction {
         }
     }
 }
-

@@ -39,4 +39,3 @@ public interface FTPRepositoryPasswordProvider {
 
     public String getPassword();
 }
-

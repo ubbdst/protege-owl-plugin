@@ -96,4 +96,3 @@ public class AddPropertyWidgetToFormAction extends ResourceSelectionAction {
                 getSelectableResources(), label);
     }
 }
-

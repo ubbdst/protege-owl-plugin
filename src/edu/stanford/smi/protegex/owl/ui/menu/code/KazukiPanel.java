@@ -122,4 +122,3 @@ public class KazukiPanel extends JPanel {
         rootFolderTextField.setText(folder);
     }
 }
-

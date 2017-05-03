@@ -83,4 +83,3 @@ public abstract class AbstractNamedObjectCreationSuggestion implements Suggestio
     public abstract String getObjectType();
 }
 
-

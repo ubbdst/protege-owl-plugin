@@ -118,4 +118,3 @@ public class SelectOWLClsesPanel extends JComponent implements Validatable {
 
 	
 }
-

@@ -218,4 +218,3 @@ public class HierarchiesPanel extends JPanel implements HierarchyManager {
         }
     }
 }
-

@@ -58,4 +58,3 @@ public interface PropertyWidget extends SlotWidget {
      */
     Slot getSlot();
 }
-

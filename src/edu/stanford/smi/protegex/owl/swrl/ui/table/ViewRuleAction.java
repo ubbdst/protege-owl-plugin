@@ -73,4 +73,3 @@ public class ViewRuleAction extends AbstractAction
 		setEnabled(this.table.getSelectedImp() != null && this.table.getSelectedImp().isEditable());
 	}
 }
-

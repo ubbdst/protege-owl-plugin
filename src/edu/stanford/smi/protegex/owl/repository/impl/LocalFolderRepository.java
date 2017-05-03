@@ -123,4 +123,3 @@ public class LocalFolderRepository extends AbstractLocalRepository {
 
 }
 
-

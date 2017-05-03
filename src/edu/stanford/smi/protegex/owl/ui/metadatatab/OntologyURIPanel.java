@@ -180,4 +180,3 @@ public class OntologyURIPanel extends JPanel {
 
 }
 
-

@@ -217,4 +217,3 @@ public class UpdateInconsistentClassesTask extends AbstractReasonerTask {
 
 }
 
-

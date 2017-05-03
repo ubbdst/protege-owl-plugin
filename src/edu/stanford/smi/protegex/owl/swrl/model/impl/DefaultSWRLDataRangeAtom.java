@@ -105,4 +105,3 @@ public class DefaultSWRLDataRangeAtom extends DefaultSWRLAtom implements SWRLDat
   } 
   
 }
-

@@ -34,4 +34,3 @@ public interface OWLProperties {
      */
     final static String LAST_CLASSIFICATION = "LastClassification";
 }
-

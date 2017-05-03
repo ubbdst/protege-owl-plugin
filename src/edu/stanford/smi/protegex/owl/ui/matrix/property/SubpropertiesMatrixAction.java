@@ -91,4 +91,3 @@ public class SubpropertiesMatrixAction extends ResourceAction {
         return resource instanceof RDFProperty;
     }
 }
-

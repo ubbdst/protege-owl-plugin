@@ -81,4 +81,3 @@ public abstract class AbstractOWLTest implements OWLTest {
         return documenation;
     }
 }
-

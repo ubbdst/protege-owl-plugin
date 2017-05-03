@@ -309,4 +309,3 @@ public interface OWLNamedClass extends RDFSNamedClass, OWLClass {
      */
     void setSubclassesDisjoint(boolean value);
 }
-

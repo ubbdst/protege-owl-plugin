@@ -48,4 +48,3 @@ public interface PropertyValuesComponent extends Disposable {
 
     void valuesChanged();
 }
-

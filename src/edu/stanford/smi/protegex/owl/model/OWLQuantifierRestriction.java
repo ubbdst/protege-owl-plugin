@@ -48,4 +48,3 @@ public interface OWLQuantifierRestriction extends OWLRestriction {
      */
     void setFiller(RDFResource filler);
 }
-

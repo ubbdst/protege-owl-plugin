@@ -67,4 +67,3 @@ public class ExplorerAction extends ResourceAction {
                 OWLClassesTab.getOWLClassesTab(component) != null;
     }
 }
-

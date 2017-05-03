@@ -93,4 +93,3 @@ public class DefaultSWRLClassAtom extends DefaultSWRLAtom implements SWRLClassAt
 } // DefaultSWRLClassAtom
 
 
-

@@ -53,4 +53,3 @@ public class AllDifferentAction extends AbstractOWLModelAction {
         ProtegeUI.getModalDialogFactory().showDialog(projectView, panel, getName(), ModalDialogFactory.MODE_CLOSE);
     }
 }
-

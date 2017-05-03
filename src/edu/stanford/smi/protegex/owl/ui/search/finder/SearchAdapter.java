@@ -44,4 +44,3 @@ public abstract class SearchAdapter implements SearchListener {
     public void searchEvent(Find source) {
     }
 }
-

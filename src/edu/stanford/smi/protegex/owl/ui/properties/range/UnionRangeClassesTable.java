@@ -88,4 +88,3 @@ class UnionRangeClassesTable extends OWLTable {
        return super.prepareEditor(editor, row, column);
    } */
 }
-

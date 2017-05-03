@@ -67,4 +67,3 @@ public class SWRLSymbolEditor extends SymbolEditorComponent
 		this.textField.setSymbolEditorHandler(symbolEditorHandler);
 	}
 }
-

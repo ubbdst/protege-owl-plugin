@@ -46,4 +46,3 @@ public class DefaultClassFind extends ResultsViewModelFind {
         return "Find Named Class";
     }
 }
-

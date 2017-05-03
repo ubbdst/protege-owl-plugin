@@ -53,4 +53,3 @@ public class OWLTestSettingsAction extends AbstractOWLModelAction {
         OWLTestSettingsPanel.showOWLTestSettingsDialog(owlModel);
     }
 }
-

@@ -46,4 +46,3 @@ public interface HostResourceDisplay {
      */
     boolean displayHostResource(RDFResource resource);
 }
-

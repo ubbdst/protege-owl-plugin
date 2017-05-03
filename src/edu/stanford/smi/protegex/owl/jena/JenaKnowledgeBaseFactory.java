@@ -369,4 +369,3 @@ public class JenaKnowledgeBaseFactory implements OWLKnowledgeBaseFactory {
 		JenaKnowledgeBaseFactory.isMergingImportMode = isMergingImportMode;
 	}
 }
-

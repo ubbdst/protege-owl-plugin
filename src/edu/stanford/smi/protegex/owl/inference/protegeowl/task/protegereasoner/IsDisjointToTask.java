@@ -86,4 +86,3 @@ public class IsDisjointToTask extends AbstractReasonerTask implements BooleanRes
     }
 }
 
-

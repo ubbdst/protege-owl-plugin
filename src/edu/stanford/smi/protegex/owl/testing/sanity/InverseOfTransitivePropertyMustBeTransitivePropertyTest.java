@@ -76,4 +76,3 @@ public class InverseOfTransitivePropertyMustBeTransitivePropertyTest extends Abs
         }
     }
 }
-

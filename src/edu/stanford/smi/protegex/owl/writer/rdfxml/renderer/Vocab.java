@@ -38,4 +38,3 @@ public interface Vocab {
 
     public static final String INT_DATATYPE = "http://www.w3.org/2001/XMLSchema#int";
 }
-

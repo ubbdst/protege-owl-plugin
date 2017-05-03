@@ -41,4 +41,3 @@ public abstract class RepositoryCreatorWizardPanel extends JComponent {
     public abstract Repository createRepository();
 }
 
-

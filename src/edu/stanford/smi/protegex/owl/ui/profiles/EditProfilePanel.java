@@ -381,4 +381,3 @@ public class EditProfilePanel extends JPanel {
         }
     }
 }
-

@@ -47,4 +47,3 @@ public abstract class AbstractImportStartWizardPage extends AbstractImportWizard
 	}
 }
 
-

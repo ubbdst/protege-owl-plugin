@@ -92,4 +92,3 @@ public class SWRLTablePanel extends JPanel implements Disposable
 		return lc;
 	}
 }
-

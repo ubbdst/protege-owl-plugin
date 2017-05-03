@@ -38,4 +38,3 @@ public interface TreePanel {
 
     JTree getTree();
 }
-

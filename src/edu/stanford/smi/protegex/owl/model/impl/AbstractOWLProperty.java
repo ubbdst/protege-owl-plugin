@@ -119,4 +119,3 @@ public abstract class AbstractOWLProperty extends DefaultRDFProperty implements 
         updateRDFType(value, metaclass);
     }
 }
-

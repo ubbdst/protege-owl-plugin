@@ -49,4 +49,3 @@ public class NamespaceManagerAdapter implements NamespaceManagerListener {
     public void prefixRemoved(String prefix) {
     }
 }
-

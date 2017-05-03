@@ -31,4 +31,3 @@ import edu.stanford.smi.protegex.owl.ui.editors.DateTimeValueEditor;
 public class DateTimeAnnotationsWidgetPlugin extends DateTimeValueEditor implements AnnotationsWidgetPlugin {
 
 }
-

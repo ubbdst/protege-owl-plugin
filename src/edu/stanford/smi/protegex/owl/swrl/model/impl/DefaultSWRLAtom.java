@@ -46,4 +46,3 @@ public String getBrowserText()
 } // DefaultSWRLAtom
 
 
-

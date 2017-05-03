@@ -115,4 +115,3 @@ public interface DIGRenderer {
      */
     void setReasonerIdentity(DIGReasonerIdentity reasonerIdentity);
 }
-

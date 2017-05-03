@@ -36,4 +36,3 @@ interface FindUsageTableModelColumns {
 
     final static int COL_COUNT = 3;
 }
-

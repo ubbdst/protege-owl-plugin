@@ -54,4 +54,3 @@ public class GetDescendantConceptsTask extends AbstractSingleConceptWithConceptC
     }
 }
 
-

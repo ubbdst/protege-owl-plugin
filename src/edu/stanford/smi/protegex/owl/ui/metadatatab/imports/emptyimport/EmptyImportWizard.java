@@ -112,4 +112,3 @@ public class EmptyImportWizard extends OWLWizard {
     }
 }
 
-

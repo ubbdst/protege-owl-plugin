@@ -656,4 +656,3 @@ public class SWRLFactory
 		}
 	}
 }
-

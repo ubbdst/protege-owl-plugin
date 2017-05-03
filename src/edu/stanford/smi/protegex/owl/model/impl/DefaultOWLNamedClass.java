@@ -600,4 +600,3 @@ public class DefaultOWLNamedClass extends DefaultRDFSNamedClass implements OWLNa
         visitor.visitOWLNamedClass(this);
     }
 }
-

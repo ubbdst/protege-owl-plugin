@@ -832,4 +832,3 @@ public abstract class AbstractRDFSClass extends DefaultCls implements RDFSClass 
     }
 
 }
-

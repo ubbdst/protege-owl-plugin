@@ -116,4 +116,3 @@ public class OWLTextAreaPanel extends JPanel implements ModalDialogFactory.Close
         }
     }
 }
-

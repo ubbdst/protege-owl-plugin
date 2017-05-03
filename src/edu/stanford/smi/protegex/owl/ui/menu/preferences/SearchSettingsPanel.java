@@ -114,4 +114,3 @@ public class SearchSettingsPanel extends JPanel {
         list.setListData(owlModel.getSearchSynonymProperties().toArray());
     }
 }
-

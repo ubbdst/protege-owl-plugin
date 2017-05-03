@@ -51,4 +51,3 @@ public class UntypedResourcesExample {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

@@ -98,4 +98,3 @@ public class PropertyDomainRedundancyTest extends AbstractOWLTest
         return Collections.EMPTY_LIST;
     }
 }
-

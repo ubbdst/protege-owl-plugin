@@ -105,4 +105,3 @@ public class DefaultSWRLBuiltinAtom extends DefaultSWRLAtom implements SWRLBuilt
   } // getBrowserText
 
 } // DefaultSWRLBuiltinAtom
-

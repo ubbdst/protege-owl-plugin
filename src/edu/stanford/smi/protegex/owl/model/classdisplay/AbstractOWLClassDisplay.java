@@ -205,4 +205,3 @@ public abstract class AbstractOWLClassDisplay implements OWLClassDisplay {
         }
     }
 }
-

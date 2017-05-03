@@ -253,4 +253,3 @@ public class AssertedConditionsWidget extends AbstractConditionsWidget {
         }
     }
 }
-

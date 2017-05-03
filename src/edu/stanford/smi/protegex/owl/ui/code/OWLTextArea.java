@@ -66,4 +66,3 @@ public abstract class OWLTextArea extends SymbolTextArea {
         setText(str);
     }
 }
-

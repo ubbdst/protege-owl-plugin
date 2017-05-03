@@ -822,4 +822,3 @@ public class SWRLParser
 		}
 	}
 }
-

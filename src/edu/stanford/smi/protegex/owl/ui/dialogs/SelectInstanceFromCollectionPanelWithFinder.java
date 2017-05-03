@@ -142,4 +142,3 @@ public class SelectInstanceFromCollectionPanelWithFinder extends JComponent {
         });
     }
 }
-

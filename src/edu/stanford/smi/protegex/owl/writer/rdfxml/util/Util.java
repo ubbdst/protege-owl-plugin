@@ -426,4 +426,3 @@ public class Util {
         return NamespaceUtil.getPrefixedName(tripleStore.getNamespaceManager(), fullName);
     }
 }
-

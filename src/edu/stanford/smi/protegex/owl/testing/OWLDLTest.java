@@ -33,4 +33,3 @@ public interface OWLDLTest extends OWLTest {
 
     final static String GROUP = "OWL-DL Tests";
 }
-

@@ -35,4 +35,3 @@ public interface OWLComplementClass extends OWLLogicalClass {
 
     void setComplement(RDFSClass complement);
 }
-

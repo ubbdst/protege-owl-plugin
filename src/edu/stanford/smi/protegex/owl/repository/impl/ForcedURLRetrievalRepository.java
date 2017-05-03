@@ -142,4 +142,3 @@ public class ForcedURLRetrievalRepository extends AbstractStreamBasedRepositoryI
 
 }
 
-

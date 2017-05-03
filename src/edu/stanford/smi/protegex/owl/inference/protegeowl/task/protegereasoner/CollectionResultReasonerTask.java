@@ -43,4 +43,3 @@ public interface CollectionResultReasonerTask extends ReasonerTask {
 
     public Collection getResult();
 }
-

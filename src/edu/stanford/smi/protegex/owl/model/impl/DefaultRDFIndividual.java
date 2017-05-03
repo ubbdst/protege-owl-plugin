@@ -500,4 +500,3 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         return buffer.toString();
     }
 }
-

@@ -73,4 +73,3 @@ public abstract class AbstractPropertyWidget extends AbstractSlotWidget
         // Don't do anything to avoid facet testing
     }
 }
-

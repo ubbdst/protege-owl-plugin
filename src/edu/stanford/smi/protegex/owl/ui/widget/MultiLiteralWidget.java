@@ -57,4 +57,3 @@ public class MultiLiteralWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(MultiLiteralWidget.class, cls, slot);
     }
 }
-

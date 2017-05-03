@@ -45,4 +45,3 @@ public interface NamespaceManager extends NamespaceMap {
     
     void addImport(TripleStore imported);
 }
-

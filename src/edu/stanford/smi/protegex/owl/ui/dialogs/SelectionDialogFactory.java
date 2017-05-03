@@ -107,4 +107,3 @@ public interface SelectionDialogFactory {
 
     Set selectResourcesFromCollection(Component parent, OWLModel owlModel, Collection resources, String title);
 }
-

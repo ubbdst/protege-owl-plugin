@@ -85,4 +85,3 @@ public class OWLMetadataWidget extends MultiWidgetPropertyWidget {
                 slot.getName().equals(Model.Slot.NAME);
     }
 }
-

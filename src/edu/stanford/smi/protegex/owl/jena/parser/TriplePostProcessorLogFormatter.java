@@ -37,4 +37,3 @@ public class TriplePostProcessorLogFormatter extends AbstractFormatter {
 	}
 
 }
-

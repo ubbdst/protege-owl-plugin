@@ -82,4 +82,3 @@ public class ClassTreeRoot extends LazyTreeRoot {
     	return new ParentChildNodeComparator();
     }
 }
-

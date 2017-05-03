@@ -319,4 +319,3 @@ public class DefaultDIGReasoner implements DIGReasoner {
     }
 }
 
-

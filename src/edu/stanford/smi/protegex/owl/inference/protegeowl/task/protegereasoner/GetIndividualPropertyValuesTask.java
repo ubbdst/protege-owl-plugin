@@ -106,4 +106,3 @@ public class GetIndividualPropertyValuesTask extends AbstractReasonerTask{
 	}
 
 }
-

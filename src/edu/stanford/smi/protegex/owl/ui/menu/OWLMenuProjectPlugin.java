@@ -597,4 +597,3 @@ public class OWLMenuProjectPlugin extends ProjectPluginAdapter {
 	    		ApplicationProperties.getHowToCiteProtegeURLString()));
     }
 }
-

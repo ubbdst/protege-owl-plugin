@@ -68,4 +68,3 @@ public class SourceCodeAction extends AbstractOWLModelAction {
                 "RDF/XML Source Code", ModalDialogFactory.MODE_CLOSE);
     }
 }
-

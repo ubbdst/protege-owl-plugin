@@ -40,4 +40,3 @@ public class ProgrammaticSelectionEvent extends SelectionEvent {
         super(selectable, SelectionEvent.SELECTION_CHANGED);
     }
 }
-

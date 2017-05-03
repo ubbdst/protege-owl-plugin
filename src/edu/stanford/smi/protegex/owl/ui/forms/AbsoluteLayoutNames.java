@@ -58,4 +58,3 @@ public class AbsoluteLayoutNames {
     public static final OntClass AbsoluteLayoutData = m_model.createClass( "http://www.owl-ontologies.com/forms/absolute.owl#AbsoluteLayoutData" );
     
 }
-

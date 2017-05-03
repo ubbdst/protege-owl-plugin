@@ -143,4 +143,3 @@ public class ClassTypeConverterWidget extends AbstractPropertyWidget implements 
         }
     }
 }
-

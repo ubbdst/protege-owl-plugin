@@ -50,4 +50,3 @@ public class CreateImportedTripleStorePanel extends CreateTripleStorePanel {
         }
     }
 }
-

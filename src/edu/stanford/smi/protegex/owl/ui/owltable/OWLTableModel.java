@@ -80,4 +80,3 @@ public interface OWLTableModel extends SymbolTableModel {
 
     void setCls(OWLNamedClass cls);
 }
-

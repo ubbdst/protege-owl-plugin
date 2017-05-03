@@ -61,4 +61,3 @@ public class OWLNamespacesPanel extends JPanel implements Disposable {
         super.setEnabled(enabled);
     }
 }
-

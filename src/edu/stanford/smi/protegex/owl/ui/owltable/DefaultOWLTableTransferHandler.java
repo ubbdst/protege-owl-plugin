@@ -77,4 +77,3 @@ public class DefaultOWLTableTransferHandler extends OWLTableTransferHandler {
         return addIndex;
     }
 }
-

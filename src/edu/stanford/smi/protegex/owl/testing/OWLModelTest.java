@@ -40,4 +40,3 @@ public interface OWLModelTest extends OWLTest {
      */
     List test(OWLModel owlModel);
 }
-

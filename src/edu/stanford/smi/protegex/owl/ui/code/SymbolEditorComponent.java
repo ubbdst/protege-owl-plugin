@@ -169,4 +169,3 @@ public abstract class SymbolEditorComponent extends JComponent implements Symbol
     }
 }
 
-

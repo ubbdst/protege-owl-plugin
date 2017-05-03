@@ -75,4 +75,3 @@ public class ProtegeCapabilities implements Capabilities {
       return false;
     }
 }
-

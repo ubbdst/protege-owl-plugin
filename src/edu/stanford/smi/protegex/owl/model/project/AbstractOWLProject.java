@@ -48,4 +48,3 @@ public abstract class AbstractOWLProject implements OWLProject {
         }
     }
 }
-

@@ -138,4 +138,3 @@ public interface RDFSDatatype extends RDFResource {
      */
     boolean isValidValue(RDFSLiteral object);
 }
-

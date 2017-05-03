@@ -87,4 +87,3 @@ public class NameDocumentationWidget extends MultiWidgetPropertyWidget {
                         slot.getName().equals(RDFSNames.Slot.COMMENT));
     }
 }
-

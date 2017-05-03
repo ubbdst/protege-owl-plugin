@@ -56,4 +56,3 @@ public class JenaOntModelExample {
         // Do anything what you like with the OntModel resources...
     }
 }
-

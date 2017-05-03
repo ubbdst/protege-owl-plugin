@@ -45,4 +45,3 @@ public class ClassTreeFinder extends ClsTreeFinder {
         super(owlModel, tree, description);
     }
 }
-

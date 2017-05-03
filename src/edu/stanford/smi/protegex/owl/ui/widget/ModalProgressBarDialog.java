@@ -103,4 +103,3 @@ public class ModalProgressBarDialog extends JDialog implements Runnable {
         return setValue(v);
     }
 }
-

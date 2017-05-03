@@ -59,4 +59,3 @@ public class DuplicateValuesFrameStore extends FrameStoreAdapter {
     }
 
 }
-

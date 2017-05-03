@@ -263,4 +263,3 @@ public class OWLDomainWidget extends AbstractPropertyWidget {
     	super.dispose();
     }
 }
-

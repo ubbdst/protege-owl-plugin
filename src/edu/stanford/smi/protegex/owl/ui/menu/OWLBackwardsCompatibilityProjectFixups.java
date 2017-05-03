@@ -411,4 +411,3 @@ public class OWLBackwardsCompatibilityProjectFixups implements ProjectFixupPlugi
     }
 
 }
-

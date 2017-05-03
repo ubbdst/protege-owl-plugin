@@ -61,4 +61,3 @@ public interface MatrixFilter {
      */
     boolean isSuitable(RDFResource instance);
 }
-

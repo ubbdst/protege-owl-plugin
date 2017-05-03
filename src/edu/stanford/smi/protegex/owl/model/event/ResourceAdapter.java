@@ -90,4 +90,3 @@ public class ResourceAdapter extends FrameAdapter implements ResourceListener {
 		}
 	}
 }
-

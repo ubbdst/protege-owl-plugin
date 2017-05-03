@@ -249,4 +249,3 @@ public interface DIGVocabulary {
         public static final String SYNONYMS = "synonyms";
     }
 }
-

@@ -1013,4 +1013,3 @@ public class DefaultRDFProperty extends DefaultSlot implements RDFProperty {
     }
     
 }
-

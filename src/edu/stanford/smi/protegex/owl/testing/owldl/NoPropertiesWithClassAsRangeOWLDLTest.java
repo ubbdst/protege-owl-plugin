@@ -59,4 +59,3 @@ public class NoPropertiesWithClassAsRangeOWLDLTest extends AbstractOWLTest imple
         }
     }
 }
-

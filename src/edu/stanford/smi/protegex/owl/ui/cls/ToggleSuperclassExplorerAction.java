@@ -109,4 +109,3 @@ public class ToggleSuperclassExplorerAction extends AbstractAction {
         return selectedClass;
     }
 }
-

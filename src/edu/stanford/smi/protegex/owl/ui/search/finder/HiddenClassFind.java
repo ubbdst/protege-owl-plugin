@@ -45,4 +45,3 @@ public class HiddenClassFind extends ResultsViewModelFind {
         return "Find Hidden Class";
     }
 }
-

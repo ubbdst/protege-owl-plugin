@@ -84,4 +84,3 @@ public class DefaultOWLSomeValuesFrom extends AbstractOWLQuantifierRestriction
         setFiller(someValuesFrom);
     }
 }
-

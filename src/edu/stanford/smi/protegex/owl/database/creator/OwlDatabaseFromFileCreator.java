@@ -138,4 +138,3 @@ public class OwlDatabaseFromFileCreator extends AbstractOwlDatabaseCreator {
 	}
 
 }
-

@@ -183,4 +183,3 @@ public class TimePanel extends JPanel {
     	super.setEnabled(enabled);
     }
 }
-

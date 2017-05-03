@@ -99,4 +99,3 @@ public class OWLTestSettingsPanel extends JPanel {
                 "Test Settings", ModalDialogFactory.MODE_CLOSE);
     }
 }
-

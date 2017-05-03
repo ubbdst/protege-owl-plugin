@@ -91,4 +91,3 @@ public class ExistentialTreeModel implements TreeModel {
     public void removeTreeModelListener(TreeModelListener treeModelListener) {
     }
 }
-

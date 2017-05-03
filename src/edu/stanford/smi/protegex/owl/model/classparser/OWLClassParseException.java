@@ -64,4 +64,3 @@ public class OWLClassParseException extends Exception {
         return recentInstance;
     }
 }
-

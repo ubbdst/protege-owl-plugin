@@ -38,4 +38,3 @@ public interface HierarchiesHost {
 
     void showInferredHierarchy();
 }
-

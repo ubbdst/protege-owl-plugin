@@ -84,4 +84,3 @@ public class RDFSDatatypeExamples {
         Assert.assertTrue(result.getString().equals("Wert"));
     }
 }
-

@@ -183,4 +183,3 @@ public abstract class AbstractOWLCardinalityBase extends AbstractOWLRestriction
         return Collections.EMPTY_LIST;
     }
 }
-

@@ -34,4 +34,3 @@ public class ProtegeReasonerException extends Exception {
 	}
 	
 }
-

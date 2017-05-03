@@ -93,4 +93,3 @@ public class ExistentialAction extends ResourceSelectionAction {
         this.cls = cls;
     }
 }
-

@@ -102,4 +102,3 @@ public class GetIndividualInferredTypesTask extends AbstractReasonerTask impleme
     }
 }
 
-

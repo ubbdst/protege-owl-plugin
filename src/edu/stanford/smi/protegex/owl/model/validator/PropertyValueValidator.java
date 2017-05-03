@@ -36,4 +36,3 @@ public interface PropertyValueValidator {
 
     boolean isValidPropertyValue(RDFResource subject, RDFProperty predicate, Object object);
 }
-

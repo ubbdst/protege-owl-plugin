@@ -97,4 +97,3 @@ public class ClassAnnotationsAndDescriptionWidget extends MultiWidgetPropertyWid
         return false;
     }
 }
-

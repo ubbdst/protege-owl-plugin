@@ -55,4 +55,3 @@ public interface ReasonerTaskListener {
 
     public void taskCompleted(ReasonerTaskEvent event);
 }
-

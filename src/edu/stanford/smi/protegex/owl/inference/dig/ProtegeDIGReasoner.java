@@ -28,4 +28,3 @@ import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
 public interface ProtegeDIGReasoner extends ProtegeReasoner {
 
 }
-

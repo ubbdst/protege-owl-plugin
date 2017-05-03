@@ -47,4 +47,3 @@ public class OWLDatabaseWizardPageExistingSources extends OWLDatabaseWizardPage 
         this.fileToDatabase = sourcesAreFileSource;
     }
 }
-

@@ -329,4 +329,3 @@ public class DLExpressivityChecker extends OWLModelVisitorAdapter {
 	}
 }
 
-

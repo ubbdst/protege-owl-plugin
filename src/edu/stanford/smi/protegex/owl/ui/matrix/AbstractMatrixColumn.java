@@ -56,4 +56,3 @@ public abstract class AbstractMatrixColumn implements MatrixColumn {
         return width;
     }
 }
-

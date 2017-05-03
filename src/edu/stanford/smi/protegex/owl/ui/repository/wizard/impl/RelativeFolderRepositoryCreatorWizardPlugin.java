@@ -72,4 +72,3 @@ public class RelativeFolderRepositoryCreatorWizardPlugin implements RepositoryCr
     }
 }
 
-

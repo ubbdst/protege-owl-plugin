@@ -148,4 +148,3 @@ public class InlineResourceChecker extends OWLModelVisitorAdapter {
     }
 }
 
-

@@ -438,4 +438,3 @@ public class JenaOWLModel extends AbstractOWLModel implements OntModelProvider {
 
 
 }
-

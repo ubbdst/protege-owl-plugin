@@ -61,4 +61,3 @@ public class DefaultSWRLVariable extends AbstractSWRLIndividual implements SWRLV
     public void getReferencedInstances(Set<RDFResource> set) {
     }
 }
-

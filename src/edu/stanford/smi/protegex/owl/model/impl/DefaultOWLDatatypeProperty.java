@@ -74,4 +74,3 @@ public class DefaultOWLDatatypeProperty extends AbstractOWLProperty implements O
         visitor.visitOWLDatatypeProperty(this);
     }
 }
-

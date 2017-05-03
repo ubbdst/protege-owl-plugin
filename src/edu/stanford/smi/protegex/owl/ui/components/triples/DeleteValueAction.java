@@ -51,4 +51,3 @@ public class DeleteValueAction extends AbstractAction {
         table.getTableModel().deleteRow(row);
     }
 }
-

@@ -399,4 +399,3 @@ public class DisjointClassesTableModel extends AbstractTableModel
         }
     }
 }
-

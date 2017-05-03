@@ -98,4 +98,3 @@ public interface Find {
 
     void reset();
 }
-

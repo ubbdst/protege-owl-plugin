@@ -109,4 +109,3 @@ public class ClassMatrixPanel extends MatrixPanel {
         addExistentialAction.setEnabled(enabled);
     }
 }
-

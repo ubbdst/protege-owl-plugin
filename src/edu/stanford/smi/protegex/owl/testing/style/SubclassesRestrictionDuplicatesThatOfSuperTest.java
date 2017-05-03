@@ -150,4 +150,3 @@ public class SubclassesRestrictionDuplicatesThatOfSuperTest extends AbstractOWLT
         return duplicateRestrictions.iterator();
     }
 }
-

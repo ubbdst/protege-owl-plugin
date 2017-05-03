@@ -73,4 +73,3 @@ public class FindRulesAction extends AllowableAction
 		}
 	}
 }
-

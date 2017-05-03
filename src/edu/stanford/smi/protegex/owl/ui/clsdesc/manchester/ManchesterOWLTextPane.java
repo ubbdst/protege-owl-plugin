@@ -778,4 +778,3 @@ public class ManchesterOWLTextPane extends JTextPane implements KeyListener {
     }
 }
 
-

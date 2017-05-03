@@ -114,4 +114,3 @@ public class GetIndividualsBelongingToConceptTask extends AbstractReasonerTask i
     }
 }
 
-

@@ -72,4 +72,3 @@ public class DefaultOWLUnionClass extends AbstractOWLNAryLogicalClass
         return OPERATOR;
     }
 }
-

@@ -208,4 +208,3 @@ public class ClassForm extends JComponent implements InferredModeWidget {
         refill();
     }
 }
-

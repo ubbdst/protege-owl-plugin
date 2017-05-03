@@ -320,4 +320,3 @@ public class UnionRangeClassesComponent extends JComponent {
     	super.setEnabled(enabled);
     };
 }
-

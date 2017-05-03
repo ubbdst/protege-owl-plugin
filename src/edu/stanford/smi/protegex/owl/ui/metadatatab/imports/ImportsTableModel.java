@@ -144,4 +144,3 @@ public class ImportsTableModel extends AbstractTableModel implements Disposable 
         fireTableDataChanged();
     }
 }
-

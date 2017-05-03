@@ -173,4 +173,3 @@ public class JenaMemoryTripleWriter implements TripleWriter {
         ontModel.setNsPrefix(prefix, namespace);
     }
 }
-

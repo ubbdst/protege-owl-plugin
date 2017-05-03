@@ -111,4 +111,3 @@ public class AnnotationsWidget extends AbstractPropertyValuesWidget {
         return OWLWidgetMapper.isSuitable(AnnotationsWidget.class, cls, slot);
     }
 }
-

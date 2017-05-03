@@ -51,4 +51,3 @@ public class GetEquivalentConceptsTask extends AbstractSingleConceptWithConceptC
     }
 }
 
-

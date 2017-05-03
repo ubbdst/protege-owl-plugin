@@ -70,4 +70,3 @@ public class DeleteRowAction extends AbstractOWLTableAction {
                 tableModel.isDeleteEnabledFor(cls);
     }
 }
-

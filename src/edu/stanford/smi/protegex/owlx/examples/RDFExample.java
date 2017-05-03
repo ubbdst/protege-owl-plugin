@@ -51,4 +51,3 @@ public class RDFExample {
         Jena.dumpRDF(owlModel.getOntModel());
     }
 }
-

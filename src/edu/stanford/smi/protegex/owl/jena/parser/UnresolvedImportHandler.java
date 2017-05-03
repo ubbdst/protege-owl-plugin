@@ -54,4 +54,3 @@ public interface UnresolvedImportHandler {
      */
     Repository handleUnresolvableImport(OWLModel model, TripleStore tripleStore, URI ontologyName);
 }
-

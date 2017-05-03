@@ -53,4 +53,3 @@ public class ExpandTreeAction extends ResourceAction {
         return component instanceof TreePanel;
     }
 }
-

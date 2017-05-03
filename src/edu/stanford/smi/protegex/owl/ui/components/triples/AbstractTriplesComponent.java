@@ -332,4 +332,3 @@ public abstract class AbstractTriplesComponent extends AbstractPropertyValuesCom
     
     
 }
-

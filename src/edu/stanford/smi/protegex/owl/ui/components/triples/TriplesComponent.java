@@ -145,4 +145,3 @@ public class TriplesComponent extends AbstractTriplesComponent {
     	super.setEnabled(enabled);
     };
 }
-

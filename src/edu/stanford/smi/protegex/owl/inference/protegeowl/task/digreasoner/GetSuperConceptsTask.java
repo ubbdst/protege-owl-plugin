@@ -51,4 +51,3 @@ public class GetSuperConceptsTask extends AbstractSingleConceptWithConceptCollec
     }
 }
 
-

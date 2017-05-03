@@ -126,4 +126,3 @@ public class DefaultModalDialogFactory extends AbstractModalDialogFactory {
         JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }
-

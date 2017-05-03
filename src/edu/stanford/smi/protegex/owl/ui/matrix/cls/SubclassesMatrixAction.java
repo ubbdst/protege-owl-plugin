@@ -58,4 +58,3 @@ public class SubclassesMatrixAction extends ResourceAction {
         return resource instanceof RDFSNamedClass;
     }
 }
-

@@ -38,4 +38,3 @@ public interface Customer extends Customer_ {
      */
     public float getPurchasesSum();
 }
-

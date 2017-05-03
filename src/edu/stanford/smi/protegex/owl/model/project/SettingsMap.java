@@ -76,4 +76,3 @@ public interface SettingsMap {
 
     void setString(String key, String value);
 }
-

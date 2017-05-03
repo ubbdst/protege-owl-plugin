@@ -247,4 +247,3 @@ public class ReasonerProgressModalDialog extends JDialog {
     }
 }
 
-

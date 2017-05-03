@@ -116,4 +116,3 @@ public class SPARQLAssertTest extends AbstractOWLTest implements RDFSClassTest, 
         }
     }
 }
-

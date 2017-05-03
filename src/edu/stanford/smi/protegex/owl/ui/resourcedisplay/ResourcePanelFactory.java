@@ -39,4 +39,3 @@ public interface ResourcePanelFactory {
      */
     ResourcePanel createResourcePanel(OWLModel owlModel, int defaultType);
 }
-

@@ -103,4 +103,3 @@ public class FindSPARQLAssertsTest extends AbstractOWLTest implements RDFResourc
         return results;
     }
 }
-

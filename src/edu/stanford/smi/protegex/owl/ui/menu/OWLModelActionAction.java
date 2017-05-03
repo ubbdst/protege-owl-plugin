@@ -87,4 +87,3 @@ public class OWLModelActionAction extends AbstractAction implements Disposable {
         return icon;
     }
 }
-

@@ -495,4 +495,3 @@ public class RDFAxiomRenderer extends OWLModelVisitorAdapter {
 
 }
 
-

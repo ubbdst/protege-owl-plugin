@@ -97,4 +97,3 @@ public class PropertyRangeRedundancyTest extends AbstractOWLTest
         return Collections.EMPTY_LIST;
     }
 }
-

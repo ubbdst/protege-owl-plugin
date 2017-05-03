@@ -51,4 +51,3 @@ public abstract class AddablePropertyValuesComponent extends AbstractPropertyVal
         }
     }
 }
-

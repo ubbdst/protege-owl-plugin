@@ -439,4 +439,3 @@ public class Protege2Jena {
         Log.getLogger().info("... saving successful to: " + file.getAbsolutePath());
     }
 }
-

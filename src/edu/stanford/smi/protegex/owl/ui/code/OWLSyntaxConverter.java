@@ -44,4 +44,3 @@ public class OWLSyntaxConverter implements SyntaxConverter {
         OWLTextFormatter.updateSyntax(textComponent, owlModel);
     }
 }
-

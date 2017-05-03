@@ -77,4 +77,3 @@ public class DefaultRDFUntypedResource extends DefaultRDFIndividual implements R
         return getName();
     }
 }
-

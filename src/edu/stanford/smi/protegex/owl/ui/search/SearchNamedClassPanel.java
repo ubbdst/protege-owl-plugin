@@ -113,4 +113,3 @@ public class SearchNamedClassPanel extends JPanel {
         }
     }
 }
-

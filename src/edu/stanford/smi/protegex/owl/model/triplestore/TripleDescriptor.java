@@ -32,4 +32,3 @@ package edu.stanford.smi.protegex.owl.model.triplestore;
 public interface TripleDescriptor {
 
 }
-

@@ -292,4 +292,3 @@ public class SuggestionPopup extends JWindow {
         }
     }
 }
-

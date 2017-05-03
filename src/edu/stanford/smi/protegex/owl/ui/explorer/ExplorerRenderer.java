@@ -60,4 +60,3 @@ public class ExplorerRenderer extends FrameRenderer {
         setBackgroundSelectionColor(Colors.getClsSelectionColor());
     }
 }
-

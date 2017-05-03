@@ -39,4 +39,3 @@ public abstract class RefactorResourceAction extends ResourceAction {
         super(name, icon, GROUP);
     }
 }
-

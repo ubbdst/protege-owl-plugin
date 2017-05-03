@@ -77,4 +77,3 @@ public interface Purchase extends OWLIndividual {
 
     void setProduct(Product newProduct);
 }
-

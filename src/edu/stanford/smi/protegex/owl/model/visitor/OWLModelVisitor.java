@@ -147,4 +147,3 @@ public interface OWLModelVisitor {
     
     void visitSWRLAtomListIndividual(SWRLAtomList swrlAtomList);
 }
-

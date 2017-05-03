@@ -308,4 +308,3 @@ public class ImportsTreePanel extends JPanel implements HostResourceDisplay, Dis
     	super.setEnabled(enabled);
     };
 }
-

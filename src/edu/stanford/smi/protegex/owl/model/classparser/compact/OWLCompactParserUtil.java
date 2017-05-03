@@ -82,4 +82,3 @@ public class OWLCompactParserUtil {
         return text;
     }
 }
-

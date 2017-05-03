@@ -113,4 +113,3 @@ public interface ReasonerTask {
 
     public boolean isRequestAbort();
 }
-

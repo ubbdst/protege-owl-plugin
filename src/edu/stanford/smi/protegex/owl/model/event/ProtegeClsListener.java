@@ -116,4 +116,3 @@ public interface ProtegeClsListener extends ClsListener {
      */
     void templateSlotValueChanged(ClsEvent event);
 }
-

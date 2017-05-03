@@ -69,4 +69,3 @@ public class AnnotationsTableModel extends TriplesTableModel {
 		return ((AbstractOWLModel)owlModel).getDefaultAnnotationPropertiesInView();
 	}
 }
-

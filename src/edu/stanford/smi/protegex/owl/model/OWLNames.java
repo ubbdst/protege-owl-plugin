@@ -194,4 +194,3 @@ public interface OWLNames {
         FrameID THING = new FrameID(Cls.THING);
     }
 }
-

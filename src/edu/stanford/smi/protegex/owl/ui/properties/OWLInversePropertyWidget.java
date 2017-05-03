@@ -360,4 +360,3 @@ public class OWLInversePropertyWidget extends AbstractPropertyWidget {
     	super.dispose();
     }
 }
-

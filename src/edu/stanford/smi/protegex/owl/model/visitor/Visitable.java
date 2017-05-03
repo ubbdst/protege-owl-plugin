@@ -44,4 +44,3 @@ public interface Visitable {
      */
     void accept(OWLModelVisitor visitor);
 }
-

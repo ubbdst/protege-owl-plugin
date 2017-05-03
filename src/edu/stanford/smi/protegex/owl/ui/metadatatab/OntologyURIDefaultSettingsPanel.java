@@ -193,4 +193,3 @@ public class OntologyURIDefaultSettingsPanel extends JPanel {
     }
 }
 
-

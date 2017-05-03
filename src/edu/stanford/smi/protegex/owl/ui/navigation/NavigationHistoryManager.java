@@ -339,4 +339,3 @@ public class NavigationHistoryManager extends DefaultListModel implements ComboB
         }
     }
 }
-

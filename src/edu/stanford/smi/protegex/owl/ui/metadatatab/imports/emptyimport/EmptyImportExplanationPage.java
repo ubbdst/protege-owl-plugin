@@ -72,4 +72,3 @@ public class EmptyImportExplanationPage extends OWLWizardPage {
 
 }
 
-

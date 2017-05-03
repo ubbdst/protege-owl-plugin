@@ -93,4 +93,3 @@ public class ComputeIndividualsBelongingToClassAction extends ResourceAction imp
     }
 }
 
-

@@ -371,4 +371,3 @@ public class LiteralTableModel extends AbstractTableModel {
         }
     }
 }
-

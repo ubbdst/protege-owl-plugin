@@ -103,4 +103,3 @@ public abstract class EditableSubsumptionTreePanel extends SubsumptionTreePanel 
         return action;
     }
 }
-

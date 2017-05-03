@@ -74,4 +74,3 @@ public class ClassDescriptionEditorComponent extends SymbolEditorComponent {
     }
 }
 
-

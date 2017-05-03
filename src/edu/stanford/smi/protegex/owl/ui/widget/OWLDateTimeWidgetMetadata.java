@@ -53,4 +53,3 @@ public class OWLDateTimeWidgetMetadata implements OWLWidgetMetadata {
         return OWLWidgetUtil.isRangelessDatatypeProperty(cls, property);
     }
 }
-

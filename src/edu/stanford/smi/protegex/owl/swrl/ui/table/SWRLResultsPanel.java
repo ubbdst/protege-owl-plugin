@@ -95,4 +95,3 @@ public class SWRLResultsPanel extends ResultsPanel
 		return "SWRL Rules about " + instance.getBrowserText();
 	}
 }
-

@@ -75,4 +75,3 @@ public class SPARQLOWLModelAction extends AbstractOWLModelAction {
         return resultsPanel;
     }
 }
-

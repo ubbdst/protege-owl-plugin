@@ -62,4 +62,3 @@ public class AllDifferentPanel extends JPanel {
         setPreferredSize(new Dimension(400, 500));
     }
 }
-

@@ -238,4 +238,3 @@ public abstract class AbstractPropertyTypesWidget extends AbstractPropertyWidget
     	super.setEnabled(enabled);
     };
 }
-

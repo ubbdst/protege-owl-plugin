@@ -75,4 +75,3 @@ public class ConvertToDatatypePropertyAction extends ResourceAction {
                 !(resource instanceof OWLDatatypeProperty);
     }
 }
-

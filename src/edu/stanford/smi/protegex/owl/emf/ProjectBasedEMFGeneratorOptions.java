@@ -80,4 +80,3 @@ public class ProjectBasedEMFGeneratorOptions implements EditableEMFGeneratorOpti
         }
     }
 }
-

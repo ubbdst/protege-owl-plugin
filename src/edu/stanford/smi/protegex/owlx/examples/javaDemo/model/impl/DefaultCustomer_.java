@@ -161,4 +161,3 @@ public class DefaultCustomer_ extends DefaultRDFIndividual
         setPropertyValue(getZipCodeProperty(), new Integer(newZipCode));
     }
 }
-

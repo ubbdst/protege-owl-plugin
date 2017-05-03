@@ -157,4 +157,3 @@ public class FileBrowserPanel extends JPanel {
 
 }
 
-

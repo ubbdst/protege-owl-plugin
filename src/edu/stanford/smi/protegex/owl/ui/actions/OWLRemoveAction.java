@@ -44,4 +44,3 @@ public class OWLRemoveAction extends RemoveAction {
         putValue(Action.SMALL_ICON, icon);
     }
 }
-

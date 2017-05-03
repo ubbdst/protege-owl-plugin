@@ -92,4 +92,3 @@ public class ValidPropertyPanel extends JPanel {
         }
     }
 }
-

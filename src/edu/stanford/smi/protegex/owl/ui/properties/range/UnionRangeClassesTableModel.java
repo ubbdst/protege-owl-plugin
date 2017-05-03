@@ -373,4 +373,3 @@ class UnionRangeClassesTableModel extends AbstractTableModel
         }
     }
 }
-

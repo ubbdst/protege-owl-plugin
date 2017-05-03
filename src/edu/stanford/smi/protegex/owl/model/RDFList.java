@@ -114,4 +114,3 @@ public interface RDFList extends RDFResource {
 
     int size();
 }
-

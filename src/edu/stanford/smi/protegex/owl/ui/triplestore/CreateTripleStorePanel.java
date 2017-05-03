@@ -46,4 +46,3 @@ public abstract class CreateTripleStorePanel extends AddTripleStorePanel {
         return false;
     }
 }
-

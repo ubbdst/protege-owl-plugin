@@ -51,4 +51,3 @@ public interface ResourcePanel extends InferredModeWidget, Selectable, Disposabl
 
     void dispose();
 }
-

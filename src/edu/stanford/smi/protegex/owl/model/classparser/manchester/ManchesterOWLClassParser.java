@@ -123,4 +123,3 @@ public class ManchesterOWLClassParser implements OWLClassParser {
         return e;
     }
 }
-

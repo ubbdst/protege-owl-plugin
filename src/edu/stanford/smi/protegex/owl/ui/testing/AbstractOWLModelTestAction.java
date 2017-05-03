@@ -74,4 +74,3 @@ public abstract class AbstractOWLModelTestAction extends AbstractOWLTestAction i
         actionPerformed(null);
     }
 }
-

@@ -52,4 +52,3 @@ public abstract class OWLTextField extends SymbolTextField {
         checkExpression(uniCodeText);
     }
 }
-

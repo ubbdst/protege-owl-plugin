@@ -73,4 +73,3 @@ public interface OntModelProvider {
      */
     OntModel getReasonerOntModel(String classifierURL);
 }
-

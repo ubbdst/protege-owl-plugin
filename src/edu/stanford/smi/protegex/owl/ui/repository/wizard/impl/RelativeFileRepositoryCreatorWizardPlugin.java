@@ -64,4 +64,3 @@ public class RelativeFileRepositoryCreatorWizardPlugin implements RepositoryCrea
     }
 }
 
-

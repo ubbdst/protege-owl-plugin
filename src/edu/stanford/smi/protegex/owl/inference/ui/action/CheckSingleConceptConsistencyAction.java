@@ -86,4 +86,3 @@ public class CheckSingleConceptConsistencyAction extends ResourceAction implemen
     }
 }
 
-

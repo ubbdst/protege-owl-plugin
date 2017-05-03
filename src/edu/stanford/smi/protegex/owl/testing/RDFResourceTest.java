@@ -40,4 +40,3 @@ public interface RDFResourceTest extends OWLTest {
      */
     List test(RDFResource instance);
 }
-

@@ -69,4 +69,3 @@ public interface PropertyValueListener extends FrameListener {
      */
     void visibilityChanged(RDFResource resource);
 }
-

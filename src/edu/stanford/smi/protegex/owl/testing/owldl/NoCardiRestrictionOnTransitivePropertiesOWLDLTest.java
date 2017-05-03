@@ -85,4 +85,3 @@ public class NoCardiRestrictionOnTransitivePropertiesOWLDLTest extends AbstractO
         return Collections.EMPTY_LIST;
     }
 }
-

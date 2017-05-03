@@ -97,4 +97,3 @@ public class EnableSWRLTabAction extends AbstractOWLModelAction
 	}
 
 }
-

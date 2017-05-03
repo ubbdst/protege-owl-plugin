@@ -68,4 +68,3 @@ public class HiddenClassTreeNode extends ClassTreeNode {
         return result;
     }
 }
-

@@ -66,4 +66,3 @@ public class GetOwnerForAnonymousClassJob extends ProtegeJob {
     }
 
 }
-

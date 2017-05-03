@@ -60,4 +60,3 @@ public class CreateIndividualSuggestion extends AbstractNamedObjectCreationSugge
     }
 }
 
-

@@ -76,4 +76,3 @@ public class FindResultsListView extends AbstractFindResultsView {
         list.setSelectedIndex(0);
     }
 }
-

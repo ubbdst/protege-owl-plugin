@@ -242,4 +242,3 @@ public class AllDifferentEditorPanel extends JPanel implements Disposable {
         }
     }
 }
-

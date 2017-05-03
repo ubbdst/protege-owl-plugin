@@ -588,4 +588,3 @@ public interface ProtegeCls extends ProtegeInstance, Cls {
      */
     void setTemplateSlotValueType(Slot slot, ValueType valueType);
 }
-

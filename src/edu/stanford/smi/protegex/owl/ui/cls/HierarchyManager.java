@@ -36,4 +36,3 @@ public interface HierarchyManager {
 
     void spawnHierarchy(Hierarchy hierarchy);
 }
-

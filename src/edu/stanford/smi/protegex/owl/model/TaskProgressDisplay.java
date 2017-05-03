@@ -78,4 +78,3 @@ public interface TaskProgressDisplay {
      */
     public void end(Task task);
 }
-

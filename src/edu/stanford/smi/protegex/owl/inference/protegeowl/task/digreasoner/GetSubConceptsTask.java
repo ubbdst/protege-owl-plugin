@@ -51,4 +51,3 @@ public class GetSubConceptsTask extends AbstractSingleConceptWithConceptCollecti
     }
 }
 
-

@@ -69,4 +69,3 @@ public class EMFAction extends AbstractOWLModelAction {
         }
     }
 }
-

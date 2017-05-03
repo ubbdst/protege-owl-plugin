@@ -99,4 +99,3 @@ public class DLSyntaxClassParser implements OWLClassParser {
     }
 
 }
-

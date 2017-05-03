@@ -76,4 +76,3 @@ class RemoveRowAction extends AbstractOWLTableAction {
         return cls != null && tableModel.isRemoveEnabledFor(cls);
     }
 }
-

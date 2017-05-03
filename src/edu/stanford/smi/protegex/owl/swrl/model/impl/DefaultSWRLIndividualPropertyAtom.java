@@ -115,4 +115,3 @@ public class DefaultSWRLIndividualPropertyAtom extends DefaultSWRLAtom implement
 } // DefaultSWRLIndividualPropertyAtom
 
 
-

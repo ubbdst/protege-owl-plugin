@@ -31,4 +31,3 @@ package edu.stanford.smi.protegex.owl.jena.writersettings;
 public interface WriterSettings {
 
 }
-

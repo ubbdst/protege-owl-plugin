@@ -119,4 +119,3 @@ public class NameMatrixColumn extends AbstractMatrixColumn implements EditableMa
         }
     }
 }
-

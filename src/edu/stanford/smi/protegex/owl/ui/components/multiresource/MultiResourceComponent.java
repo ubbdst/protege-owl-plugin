@@ -150,4 +150,3 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
     
     
 }
-

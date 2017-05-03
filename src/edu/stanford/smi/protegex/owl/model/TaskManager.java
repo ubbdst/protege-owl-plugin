@@ -56,4 +56,3 @@ public interface TaskManager {
     void setProgressDisplay(TaskProgressDisplay taskProgressDisplay);
 }
 
-

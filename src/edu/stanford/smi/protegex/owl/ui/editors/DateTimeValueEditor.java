@@ -115,4 +115,3 @@ public class DateTimeValueEditor implements PropertyValueEditor {
         return canEdit(subject, predicate, value);
     }
 }
-

@@ -141,4 +141,3 @@ public abstract class MessageLogRecord extends ReasonerLogRecord {
     }
 }
 
-

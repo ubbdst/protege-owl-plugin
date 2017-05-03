@@ -118,4 +118,3 @@ public abstract class QuantifierRestrictionUpdater extends AbstractRestrictionUp
         return copy;
     }
 }
-
