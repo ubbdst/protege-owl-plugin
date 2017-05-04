@@ -38,10 +38,7 @@ import edu.stanford.smi.protege.ui.ConfigureAction;
 import edu.stanford.smi.protege.ui.FrameRenderer;
 import edu.stanford.smi.protege.ui.HeaderComponent;
 import edu.stanford.smi.protege.util.*;
-import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
@@ -415,9 +412,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
 
     /**
-     * Act upon copying the instance.
-     *
-     * When instance is copied, delete it's identifier property,
+     * Act upon copying the instance. When instance is copied, delete it's identifier property,
      * and replace classHierarchyURI with UUID
      *
      * Modified by Hemed, 2017-05-02
@@ -438,12 +433,12 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 String classHierarchyURI = InstanceUtil.getClassURIPrefix(copy).toLowerCase()  + uuid ;
 
                 //Build properties that need to be modified before instance is displaced
-                Map<RDFProperty, Optional<?>> properties = new HashMap<>();
-                properties.put(owlModel.getRDFProperty("http://purl.org/dc/terms/identifier"), Optional.empty());
-                properties.put(owlModel.getRDFProperty("http://data.ub.uib.no/ontology/uuid"), Optional.of(uuid));
-                properties.put(owlModel.getRDFProperty("http://data.ub.uib.no/ontology/classHierarchyURI"), Optional.of(classHierarchyURI));
+                Map<RDFProperty, Object> properties = new HashMap<RDFProperty, Object>();
+                properties.put(owlModel.getRDFProperty(UBBSlotNames.IDENTIFIER), null);
+                properties.put(owlModel.getRDFProperty(UBBSlotNames.UUID), uuid);
+                properties.put(owlModel.getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI), classHierarchyURI);
 
-                //After copying, modify properties for a copied class
+                //After copying, modify properties for a copied copied instance
                 InstanceUtil.modifyProperties(copy, properties);
                 setSelectedInstance(copy);
                 return copy;

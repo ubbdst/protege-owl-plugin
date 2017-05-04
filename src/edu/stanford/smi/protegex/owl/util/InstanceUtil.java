@@ -59,8 +59,9 @@ public class InstanceUtil {
      *
      * @param instance      an instance to be modified
      * @param propertiesMap properties map which holds keys as RDF properties and values as RDF property values
+     * @since 1.8
      */
-    public static void modifyProperties(Instance instance, Map<RDFProperty, Optional<?>> propertiesMap) {
+    /*public static void modifyProperties(Instance instance, Map<RDFProperty, Optional<?>> propertiesMap) {
         for (Map.Entry<RDFProperty, Optional<?>> entry : propertiesMap.entrySet()) {
             if (entry.getValue().isPresent()) {
                 updatePropertyValue(instance, entry.getKey(), entry.getValue().get());
@@ -68,7 +69,18 @@ public class InstanceUtil {
                 removePropertyValue(instance, entry.getKey());
             }
         }
+    }*/
+
+    public static void modifyProperties(Instance instance, Map<RDFProperty, Object> propertiesMap) {
+        for (Map.Entry<RDFProperty, Object> entry : propertiesMap.entrySet()) {
+            if (entry.getValue() != null) {
+                updatePropertyValue(instance, entry.getKey(), entry.getValue());
+            } else {
+                removePropertyValue(instance, entry.getKey());
+            }
+        }
     }
+
 
 
     /**
@@ -88,14 +100,15 @@ public class InstanceUtil {
     /**
      * Return corresponding class URI for a given RDF class type.
      */
+    @SuppressWarnings("unchecked")
     public static String getClassURIPrefix(Instance instance) {
         OWLModel owlModel = (OWLModel)instance.getKnowledgeBase();
         Collection<Cls> rdfTypes = instance.getDirectTypes();
         int iterations = 0;
-        /*
+         /*
          if (rdfTypes.size() >= 2)
             log.info("Found classes: " + rdfTypes.toString() + " for instance " +  instance.getName());
-        */
+         */
         for (Cls clazz : rdfTypes) {
             iterations++;
             String className = clazz.getName();

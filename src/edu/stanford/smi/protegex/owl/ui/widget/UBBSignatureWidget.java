@@ -5,9 +5,8 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFNames;
-import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
@@ -41,7 +40,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     @Override
     public Collection getValues() {
         String slotValue = getText();
-       // System.out.println("Slot values: " + slotValue);
+        // System.out.println("Slot values: " + slotValue);
         validateSignature(slotValue);
         prepareValueChange(slotValue);
         return CollectionUtilities.createList(slotValue);
@@ -122,30 +121,28 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //Get corresponding class URI prefix
         String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
 
-        if (newValue == null) {//If the value is null, replace with default UUID
+        if (newValue == null) {//if the value is null, replace with default UUID
             instance.setOwnSlotValue(slot, classHierarchyPrefix + uuid);
-        }
-        else {//Else, perform a background check
+        } else {//Else, perform a background check
             String currentSlotValue = newValue.toLowerCase();
             if (!oldValue.equalsIgnoreCase(classHierarchyPrefix + currentSlotValue)) {
                 //Restrict the call only to the instances of a selected class
-                Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
+                Collection<Instance> instances = getKnowledgeBase().getDirectInstances(instance.getDirectType());
                 if (!slotValueExists(instances, slot, currentSlotValue)) {
                     //Execute change
                     instance.setDirectOwnSlotValue(slot, classHierarchyPrefix + currentSlotValue);
                 } else
-                    log.info("Slot value [" + classHierarchyPrefix + currentSlotValue+ "] already exists for a classHierarchyURI widget");
+                    log.info("Slot value [" + classHierarchyPrefix + currentSlotValue + "] already exists for a classHierarchyURI widget");
             }
         }
     }
-
 
 
     /**
      * Check if a value exists for a slot in a given instance list.
      * For JDK >= 1.7
      */
-    /*private boolean slotValueExists (Collection<Instance> instances, Slot slot, String value) {
+    private boolean slotValueExists (Collection<Instance> instances, Slot slot, String value) {
         //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
         for (Instance instance : instances) {
             if(instance.hasOwnSlot(slot)){
@@ -156,20 +153,20 @@ public class UBBSignatureWidget extends TextFieldWidget {
             }
         }
         return false;
-    }*/
+    }
 
     /**
      * Check if a value exists for a slot in a given instance list.
      * Using streams is faster for large collection.
      * For JDK >= 1.8
      */
-    private boolean slotValueExists(Collection<Instance> instances, Slot slot, String value) {
+    /*private boolean slotValueExists(Collection<Instance> instances, Slot slot, String value) {
         //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
         return instances
                 .parallelStream()
                 .map(instance -> instance.getDirectOwnSlotValue(slot))
                 .anyMatch(slotValue -> slotValue != null && slotValue.toString().equalsIgnoreCase(value));
-    }
+    }*/
 
 
     /**
@@ -182,7 +179,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
         setInvalidValueBorder();
         //Display error message in a popup window
         //JOptionPane.showMessageDialog(null, msg, null, JOptionPane.ERROR_MESSAGE);
-        ProtegeUI.getModalDialogFactory().showErrorMessageDialog((OWLModel) getKnowledgeBase(), msg);
+        ProtegeUI.getModalDialogFactory().showErrorMessageDialog((OWLModel)getKnowledgeBase(), msg);
     }
 
 
