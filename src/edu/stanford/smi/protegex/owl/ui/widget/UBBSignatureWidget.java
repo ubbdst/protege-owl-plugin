@@ -5,6 +5,8 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
@@ -64,6 +66,15 @@ public class UBBSignatureWidget extends TextFieldWidget {
     }
 
 
+    private RDFProperty getRDFProperty(String name){
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    private OWLModel getOWLModel(){
+        return (OWLModel)getKnowledgeBase();
+    }
+
     /*public void setValues(Collection values) {
         String id = (String) CollectionUtilities.getFirstItem(values);
         //Identifier slot shall not have UUID
@@ -83,10 +94,10 @@ public class UBBSignatureWidget extends TextFieldWidget {
             showErrorMessage("Invalid signature for UUID value [" + signature + "]. Try another one");
             //Do not continue
             throw new IllegalArgumentException("Invalid signature for value [" + signature + "]");
-        } else if (slotValueExists(getKnowledgeBase().getInstances(), getSlot(), signature)) {
-            showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
-            //Do not continue
-            throw new IllegalArgumentException("Invalid signature for value [" + signature + "]");
+        } else if (slotValueExists(getRDFProperty(UBBSlotNames.IDENTIFIER), signature)) {
+                showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
+                //Do not continue
+                throw new IllegalArgumentException("Invalid signature for value [" + signature + "]");
         }
     }
 
@@ -123,16 +134,14 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
         if (newValue == null) {//if the value is null, replace with default UUID
             instance.setOwnSlotValue(slot, classHierarchyPrefix + uuid);
-        } else {//Else, perform a background check
+        }
+        else {//Else, perform a background check
             String currentSlotValue = newValue.toLowerCase();
             if (!oldValue.equalsIgnoreCase(classHierarchyPrefix + currentSlotValue)) {
-                //Restrict the call only to the instances of a selected class
-                Collection<Instance> instances = getKnowledgeBase().getDirectInstances(instance.getDirectType());
-                if (!slotValueExists(instances, slot, currentSlotValue)) {
+                if (!slotValueExists(getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI), classHierarchyPrefix + currentSlotValue)) {
                     //Execute change
                     instance.setDirectOwnSlotValue(slot, classHierarchyPrefix + currentSlotValue);
-                } else
-                    log.info("Slot value [" + classHierarchyPrefix + currentSlotValue + "] already exists for a classHierarchyURI widget");
+                }
             }
         }
     }
@@ -140,14 +149,16 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
     /**
      * Check if a value exists for a slot in a given instance list.
-     * For JDK >= 1.7
      */
-    private boolean slotValueExists (Collection<Instance> instances, Slot slot, String value) {
-        //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
-        for (Instance instance : instances) {
-            if(instance.hasOwnSlot(slot)){
-                Object slotValue = instance.getDirectOwnSlotValue(slot);
-                if(slotValue != null && slotValue.toString().equals(value)){
+    @SuppressWarnings("unchecked")
+    private boolean slotValueExists (RDFProperty property, Object value) {
+        if (value != null) {
+            Collection<RDFResource> resources = getOWLModel().getRDFResourcesWithPropertyValue(property, value);
+            //Check if slot value exists for the resource other than this one.
+            for (RDFResource resource : resources) {
+                if (!resource.getName().equalsIgnoreCase(getInstance().getName())) {
+                    log.info("Value [" + value + "] already exists for property " +
+                            "[" + property.getName() + "]" + " of resource [" + resource.getName() + "]");
                     return true;
                 }
             }
@@ -155,18 +166,39 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return false;
     }
 
+
+    /**
+     * Check if a value exists for a slot in a given instance list.
+     * @deprecated use #slotValueExists(RDFProperty property, Object value)
+     */
+    @SuppressWarnings("unchecked")
+    private boolean slotValueExists (Collection<Instance> instances, Slot slot, String value) {
+        //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
+        for (Instance instance : instances) {
+            Object slotValue = instance.getDirectOwnSlotValue(slot);
+            if(slotValue != null) {
+                if (slotValue.toString().equals(value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     /**
      * Check if a value exists for a slot in a given instance list.
      * Using streams is faster for large collection.
      * For JDK >= 1.8
      */
-    /*private boolean slotValueExists(Collection<Instance> instances, Slot slot, String value) {
+     /*private boolean slotValueExists(Collection<Instance> instances, Slot slot, String value) {
         //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
         return instances
                 .parallelStream()
                 .map(instance -> instance.getDirectOwnSlotValue(slot))
                 .anyMatch(slotValue -> slotValue != null && slotValue.toString().equalsIgnoreCase(value));
-    }*/
+     }*/
 
 
     /**
