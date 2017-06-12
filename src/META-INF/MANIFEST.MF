@@ -418,7 +418,7 @@ Slot-Widget: True
 Name: edu/stanford/smi/protegex/owl/ui/widget/OWLDateWidget.class
 Slot-Widget: True
 
-Name: edu/stanford/smi/protegex/owl/ui/widget/UBBOWLDateWidget.class
+Name: edu/stanford/smi/protegex/owl/ui/widget/date/UBBOWLDateWidget.class
 Slot-Widget: True
 
 Name: edu/stanford/smi/protegex/owl/ui/widget/UBBgYearWidget.class

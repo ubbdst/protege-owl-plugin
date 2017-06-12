@@ -1,4 +1,4 @@
-package edu.stanford.smi.protegex.owl.ui.widget;
+package edu.stanford.smi.protegex.owl.ui.widget.date;
 
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
@@ -18,6 +18,7 @@ import edu.stanford.smi.protegex.owl.model.RDFSDatatype;
 import edu.stanford.smi.protegex.owl.model.RDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.impl.XMLSchemaDatatypes;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+import edu.stanford.smi.protegex.owl.ui.widget.AbstractPropertyWidget;
 
 import javax.swing.*;
 import java.awt.*;
