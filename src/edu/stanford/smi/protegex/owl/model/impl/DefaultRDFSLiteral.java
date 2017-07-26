@@ -163,8 +163,11 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
     }
 
 
- //Original
- /**public RDFSDatatype getDatatype() {
+
+ /**
+  * Original code
+  **/
+  /*public RDFSDatatype getDatatype() {
           System.out.println("Raw value: " + rawValue);
         if (rawValue.startsWith(LANGUAGE_PREFIX)) {
             return owlModel.getXSDstring();
@@ -183,9 +186,18 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
             System.out.println("Datatype: " + datatype);
             return datatype; 
         }
-    }**/
- 
- 
+    }*/
+
+
+    /**
+     * Issue:
+     * <tt>
+     *     Man kan ikke begynne et fritekstfelt med ett tegn.
+     *     Da må man først sette ‘lang’ til ’no’ for å ikke få feilmelding.
+     * </tt>
+     *
+     * @return RDF datatype
+     */
     public RDFSDatatype getDatatype() {
         String inputValue  = rawValue.trim();
         if (inputValue.startsWith(LANGUAGE_PREFIX)) {
@@ -198,7 +210,8 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
             }
            String[] tokens = inputValue.split(Character.toString(SEPARATOR));
             String datatypeName;
-            //If a string contains only one character
+            //If string contains only one character,
+            //return default String datatype
             if(tokens[0].length() == 1) {
                 return owlModel.getXSDstring();
             }
