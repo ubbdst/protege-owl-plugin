@@ -63,7 +63,8 @@ import edu.stanford.smi.protegex.owl.ui.search.finder.ResourceFinder;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 
 /**
- * The class tree display on the individuals tab.
+ * The class tree display on the individuals tab. This contains header label (top),
+ * scrollable class hierarchy (center) and finder component in the footer (now disabled).
  *
  * @author Holger Knublauch  <holger@knublauch.com>
  * @author Ray Fergerson <fergerson@smi.stanford.edu>
@@ -126,26 +127,29 @@ public class IndividualsTabClassesPanel extends SelectableContainer implements C
             }
         });
         
-        
-        
         String classHiearchyLabel = LocalizedText.getText(ResourceKey.CLASS_BROWSER_HIERARCHY_LABEL);
         LabeledComponent c = new LabeledComponent(classHiearchyLabel, ComponentFactory.createScrollPane(classTree));
         c.setBorder(ComponentUtilities.getAlignBorder());
         c.addHeaderButton(getViewClsAction());
 
-        FindAction fAction =
-                new FindInDialogAction(new DefaultClassFind(owlModel, Find.CONTAINS),
+        /*
+          Remove Finder Component from the class tree component (CLASS BROWSER) following the request from UiB Library.
+          In server-client architecture, finding a resource deep into the hierarchy is resource-intensive and
+          causes Protege to freeze. See issue #1 at https://prosjekt.uib.no/issues/7757
+
+          Hemed, 27-07-2017
+         **/
+
+        /**
+        FindAction fAction = new FindInDialogAction(new DefaultClassFind(owlModel, Find.CONTAINS),
                                        Icons.getFindClsIcon(), classTree, true);
-
         ResourceFinder finder = new ResourceFinder(fAction);
-
-        FindAction findIndAction =
-                new FindInDialogAction(new DefaultIndividualFind(owlModel, Find.CONTAINS),
+        FindAction findIndAction = new FindInDialogAction(new DefaultIndividualFind(owlModel, Find.CONTAINS),
                                        Icons.getFindIcon(), null, true);
         findIndAction.setTextBox(finder.getTextComponent());
-
         finder.addButton(findIndAction);
         c.setFooterComponent(finder);
+        **/
 
         return c;
     }
