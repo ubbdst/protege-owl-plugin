@@ -327,12 +327,13 @@ public class LiteralTableModel extends AbstractTableModel {
         }
     }
 
+     //Original code
 
-    private void setLangAt(String value, int rowIndex) {
+    /*private void setLangAt(String value, int rowIndex) {
         final String lexicalValue = (String) getValueAt(rowIndex, COL_VALUE);
         value = value.trim();
         Object newValue;
-        if (value.length() == 0) {
+        if (value == null || value.length() == 0) {
             newValue = lexicalValue;
         }
         else {
@@ -340,7 +341,28 @@ public class LiteralTableModel extends AbstractTableModel {
         }
         values.set(rowIndex, newValue);
         subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
+    }*/
+
+
+    /*
+       Modified by Hemed, 28-07-2017
+     */
+    private void setLangAt(String value, int rowIndex) {
+        final String lexicalValue = (String)getValueAt(rowIndex, COL_VALUE);
+        Object newValue;
+        if (value == null || value.trim().length() == 0) {
+            newValue = lexicalValue;
+        }
+        else {
+            newValue = owlModel.createRDFSLiteral(lexicalValue, value.trim());
+        }
+        values.set(rowIndex, newValue);
+        subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
     }
+
+
+
+
 
 
     public void setValues(Collection newValues) {

@@ -165,20 +165,19 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
 
 
  /**
-  * Original code
-  **/
+  * Original code that had an exception for single character
+  */
   /*public RDFSDatatype getDatatype() {
-          System.out.println("Raw value: " + rawValue);
         if (rawValue.startsWith(LANGUAGE_PREFIX)) {
+            System.out.println("Raw value started with lang prefix: " + rawValue);
             return owlModel.getXSDstring();
         }
         else {
             int index = rawValue.indexOf(SEPARATOR);
-            
             if (index == -1) { // no separator - should not be the case
             	return owlModel.getXSDstring();
             }
-            
+
             System.out.println("Index: " + index);
             String datatypeName = rawValue.substring(2, index);
             System.out.println("DatatypeName: " + datatypeName);
@@ -190,7 +189,7 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
 
 
     /**
-     * Issue:
+     * Issue: https://prosjekt.uib.no/issues/7757
      * <tt>
      *     Man kan ikke begynne et fritekstfelt med ett tegn.
      *     Da må man først sette ‘lang’ til ’no’ for å ikke få feilmelding.
@@ -208,14 +207,14 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
             if (index == -1) { // no separator - should not be the case
             	return owlModel.getXSDstring();
             }
-           String[] tokens = inputValue.split(Character.toString(SEPARATOR));
+            String[] tokens = inputValue.split(Character.toString(SEPARATOR));
             String datatypeName;
-            //If string contains only one character,
-            //return default String datatype
+            //If string contains only one character, return default String datatype
             if(tokens[0].length() == 1) {
                 return owlModel.getXSDstring();
             }
             else{
+                //Remove preceding language tag from the string
                 datatypeName =  inputValue.substring(2, index);
             }
             RDFSDatatype datatype = owlModel.getRDFSDatatypeByName(datatypeName); 
