@@ -1,5 +1,5 @@
 # Protege OWL Plugin 3.6
-The original Protege OWL plugin with some customizations from the University of Bergen Library. 
+The original Protege 3.5 OWL plugin with some customizations from the University of Bergen Library. 
 
 ## Customizations include :
 
@@ -11,6 +11,7 @@ The original Protege OWL plugin with some customizations from the University of 
 - Modify some instance properties for the copied individual
 - Add some utility classes for convenience methods
 - Add external UBB plugins to the core codes so that we don't have to install them separately
+- Solve some bugs in the original OWL 3.5 plugin, see https://prosjekt.uib.no/issues/7757 
 
 
 ## Original source codes 
