@@ -29,6 +29,7 @@ import edu.stanford.smi.protegex.owl.model.RDFSLiteral;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.ComponentUtil;
 import edu.stanford.smi.protegex.owl.ui.dialogs.ModalDialogFactory;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,7 +81,7 @@ public class HTMLEditorPanel extends JPanel {
 
     public RDFSLiteral getRDFSLiteral(OWLModel owlModel) {
         String text = getText();
-        if (text != null) {
+        if (text != null && !text.isEmpty()) {
             String lang = null;
             Object language = languageComboBox.getSelectedItem();
             if (language instanceof String && ((String) language).trim().length() > 0) {
@@ -94,8 +95,23 @@ public class HTMLEditorPanel extends JPanel {
     }
 
 
+    /**
+     * HTML text was coming out as encoded string after going through HtmlEditorPanel.
+     * Here we are decoding it back to it's original value, if any.
+     *
+     * Also, the EkitCore library wraps an empty string to <p style="margin-top: 0"> </p> tags,
+     * which is weird. We are here adding a hack to remove the tags, if any.
+     *
+     * Hemed, 02-08-2017
+     */
     public String getText() {
-        return ekitCore.getDocumentBody().trim();
+        String text = ekitCore.getDocumentBody().trim();
+        if(text.startsWith("<p style=\"margin-top: 0\">")) {
+            text = text.replace("<p style=\"margin-top: 0\">", "")
+                    .replace(" </p>", "")
+                    .trim();
+        }
+        return StringEscapeUtils.unescapeHtml(text);
     }
 
 

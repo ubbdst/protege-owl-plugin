@@ -73,7 +73,7 @@ public class StringValueEditor implements PropertyValueEditor {
 
     public Object editValue(Component parent, RDFResource instance, RDFProperty property, Object value) {
         OWLModel owlModel = instance.getOWLModel();
-        RDFSLiteral oldLiteral = null;
+        RDFSLiteral oldLiteral;
         if (value instanceof String) {
             oldLiteral = owlModel.createRDFSLiteral((String) value, owlModel.getXSDstring());
         }
@@ -88,6 +88,7 @@ public class StringValueEditor implements PropertyValueEditor {
         }
         RDFSLiteral newLiteral = HTMLEditorPanel.show(parent, oldLiteral,
                 "Edit " + property.getBrowserText() + " at " + instance.getBrowserText(), instance.getOWLModel());
+
         if (newLiteral != null && !oldLiteral.equals(newLiteral)) {
             if(newLiteral.getLanguage() == null || newLiteral.getLanguage().length() == 0) {
                 return newLiteral.getString();
