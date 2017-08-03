@@ -31,8 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * @author Holger Knublauch
- * modified by Hemed
+ * @author Holger Knublauch, modified by Heme
  */
 public class DefaultRDFSLiteral implements RDFSLiteral {
     
@@ -328,7 +327,7 @@ public class DefaultRDFSLiteral implements RDFSLiteral {
 
     public String getString() {
         if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
-            return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1);
+            return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
         }
         return rawValue;
     }
