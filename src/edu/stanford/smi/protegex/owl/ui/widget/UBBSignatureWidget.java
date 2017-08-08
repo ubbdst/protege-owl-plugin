@@ -4,10 +4,7 @@ import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
@@ -42,7 +39,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     @Override
     public Collection getValues() {
         String slotValue = getText();
-        // System.out.println("Slot values: " + slotValue);
+        //System.out.println("Slot values: " + slotValue);
         validateSignature(slotValue);
         prepareValueChange(slotValue);
         return CollectionUtilities.createList(slotValue);
@@ -66,7 +63,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     }
 
 
-    private RDFProperty getRDFProperty(String name){
+    private RDFProperty getPredicate(String name){
         return getOWLModel().getRDFProperty(name);
     }
 
@@ -93,11 +90,17 @@ public class UBBSignatureWidget extends TextFieldWidget {
         if (UUIDWidget.isValidUUID(signature)) {
             showErrorMessage("Invalid signature for UUID value [" + signature + "]. Try another one");
             //Do not continue
-            throw new IllegalArgumentException("Invalid signature for value [" + signature + "]");
-        } else if (slotValueExists(getRDFProperty(UBBSlotNames.IDENTIFIER), signature)) {
+            throw new IllegalArgumentException("Invalid signature for UUID value [" + signature + "]");
+        }
+        else if (ClassHierarchyURIWidget.isValidURI(signature)) {
+            showErrorMessage("URI [" + signature + "] is not a valid signature. Try another one");
+            //Do not continue
+            throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
+        }
+        else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
                 showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
                 //Do not continue
-                throw new IllegalArgumentException("Invalid signature for value [" + signature + "]");
+                throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
         }
     }
 
@@ -123,7 +126,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
      *
      * @param oldValue an old value to be replaced which is in the form
      *                 of "http://data.ub.uib.no/{class_name}/{id}"
-     * @param newValue a new value
+     * @param newValue a new value of type
      */
     private void replaceSlotValue(Slot slot, String oldValue, String newValue) {
         Instance instance = getInstance();
@@ -133,14 +136,21 @@ public class UBBSignatureWidget extends TextFieldWidget {
         String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
 
         if (newValue == null) {//if the value is null, replace with default UUID
-            instance.setOwnSlotValue(slot, classHierarchyPrefix + uuid);
+            //Create a value of XSD:anyURI datatype
+            Object defaultVal = getOWLModel().createRDFSLiteral(classHierarchyPrefix + uuid, getOWLModel().getXSDanyURI());
+            instance.setOwnSlotValue(slot, defaultVal);
         }
         else {//Else, perform a background check
-            String currentSlotValue = newValue.toLowerCase();
-            if (!oldValue.equalsIgnoreCase(classHierarchyPrefix + currentSlotValue)) {
-                if (!slotValueExists(getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI), classHierarchyPrefix + currentSlotValue)) {
+            String currentSlotValue = classHierarchyPrefix + newValue.toLowerCase();
+            if (!oldValue.equalsIgnoreCase(currentSlotValue)) {
+                if (!slotValueExists(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), currentSlotValue)
+                        && ClassHierarchyURIWidget.isValidURI(currentSlotValue)) {
+                    //Create a value of XSD:anyURI datatype
+                    Object newVal = getOWLModel().createRDFSLiteral(currentSlotValue, getOWLModel().getXSDanyURI());
                     //Execute change
-                    instance.setDirectOwnSlotValue(slot, classHierarchyPrefix + currentSlotValue);
+                    //instance.setDirectOwnSlotValue(slot, newVal);
+                    getSubject().setPropertyValue(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), newVal);
+
                 }
             }
         }
@@ -185,6 +195,29 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return false;
     }
 
+
+
+    /**
+     * Get RDF resource
+     */
+    private RDFResource getSubject(){
+        return (RDFResource) getInstance();
+    }
+
+    /**
+     * Get RDF property
+     */
+    private RDFProperty getPredicate() {
+        return getOWLModel().getRDFProperty(UBBSlotNames.IDENTIFIER);
+    }
+
+
+    /**
+     * Get default datatype for this widget
+     */
+    private RDFSDatatype getDefaultDatatype() {
+        return getOWLModel().getXSDanyURI();
+    }
 
 
     /**

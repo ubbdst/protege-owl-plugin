@@ -8,7 +8,6 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -24,8 +23,7 @@ public class InstanceUtil {
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
     public static final String PATH_SEPARATOR = "/";
 
-    private InstanceUtil() {
-    }
+    private InstanceUtil() { }
 
 
     /**
@@ -80,7 +78,6 @@ public class InstanceUtil {
             }
         }
     }
-
 
 
     /**
