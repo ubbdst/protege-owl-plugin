@@ -6,30 +6,53 @@ import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
+import org.apache.commons.validator.routines.UrlValidator;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
+ * A widget to generate class hierarchy URI for the individuals upon creation.
+ *
  * @author Hemed Al Ruwehy
  * @author Øyvind Gjesdal
- *         The University of Bergen Library
- *         2017-04-10
+ * The University of Bergen Library
+ * 2017-04-10
  */
 public class ClassHierarchyURIWidget extends TextFieldWidget {
     private static String PATH_SEPARATOR = "/";
     private static transient Logger log = Log.getLogger(ClassHierarchyURIWidget.class);
 
+
+    /*
+      This widget will show up only if the range defined in the given slot is of datatype xsd:anyURI.
+     */
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
-        //Check if a slot accept values of type ANY,
-        //if it does, then show this widget in the dropdown list as one of the options.
-        boolean isAnyURIDatatype = cls.getTemplateSlotValueType(slot) == ValueType.ANY;
-        return isAnyURIDatatype;
+        if(slot instanceof RDFProperty){
+            RDFProperty classHierarchySlot = (RDFProperty)slot;
+            if(classHierarchySlot.hasRange(false) &&
+                    classHierarchySlot.getRangeDatatype().getName()
+                            .equals(classHierarchySlot.getOWLModel().getXSDanyURI().getName())){
+                return true;
+            }
+        }
+        return false;
     }
 
+    /**
+     * Check for URI validity without fragment
+     *
+     * @param name a name to be checked for validity
+     */
+    public static boolean isValidUriAndWithoutSegment(String name) {
+        String[] schemes = {"http", "https"};
+        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
+        //UrlValidator urlValidator = new UrlValidator(schemes);
+        return urlValidator.isValid(name);
+
+    }
 
     @Override
     public void initialize() {
@@ -43,14 +66,8 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
         return (OWLModel) getKnowledgeBase();
     }
 
-
-
     @Override
     public void setValues(Collection values) {
-        /*
-         TODO:
-          2) Act on changes when identifier value is changed as well as when the direct type changes (e.g. by drag-and-drop to a different hierarchy)
-        */
         String savedValue = (String) CollectionUtilities.getFirstItem(values);
         if (savedValue == null) {
             setText(constructClassHierarchyURI());
@@ -64,6 +81,9 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     }
 
 
+    /**
+     * Assign slot value to the corresponding individual.
+     */
     private void assignPropertyValueToInstance() {
         Object oldValue = getSubject().getPropertyValue(getPredicate());
         String text = getText().trim();
@@ -105,11 +125,10 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
 
     }
 
-
     /**
      * Get RDF resource of this slot
      */
-    private RDFResource getSubject(){
+    private RDFResource getSubject() {
         return (RDFResource) getInstance();
     }
 
@@ -120,7 +139,6 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
         return getOWLModel().getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI);
     }
 
-
     /**
      * Get default datatype for this widget
      */
@@ -128,14 +146,13 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
         return getOWLModel().getXSDanyURI();
     }
 
-
     /**
      * Build URI for the class hierarchy
      */
     private String constructClassHierarchyURI() {
         String prefix = InstanceUtil.getClassURIPrefix(getInstance());
         try {
-            String fullURI = prefix + URLEncoder.encode(getID(), "UTF-8");
+            String fullURI = prefix + URLEncoder.encode(getId(), "UTF-8");
             return fullURI.toLowerCase();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -146,49 +163,17 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     /**
      * Get identifier. Check identifier slot if it has a value, otherwise return instance UUID.
      */
-    private String getID() {
+    private String getId() {
         //Process identifier slot
         Instance instance = this.getInstance();
         Slot identifierSlot = getKnowledgeBase().getSlot(UBBSlotNames.IDENTIFIER);
         if (identifierSlot != null) {
             Object slotValue = instance.getDirectOwnSlotValue(identifierSlot);
-            if(slotValue != null ){
+            if (slotValue != null) {
                 return slotValue.toString();
             }
         }
         return UUIDWidget.getUUIDFromInstanceURI(instance);
     }
-
-
-    /**
-     * Check the validity of the URL
-     * @param text a text to parse
-     */
-    public static boolean isValidURI (String text) {
-        /*if (isDuplicateURL(text)) {
-            log.warning("This URL is already used elsewhere.");
-            return false;
-        }*/
-        try {
-            if (text.startsWith("http:") || text.startsWith("file:") ||
-                    text.startsWith("mailto:") || text.startsWith("urn:")) {
-                new URL(text).toURI();
-                return true;
-            }
-            return false;
-        }
-        catch (Exception ex) {
-            log.warning("Invalid URI. " + ex.getLocalizedMessage());
-            return false;
-        }
-
-    }
-
-
-    private boolean isDuplicateURL(String text) {
-        Frame frame = getKnowledgeBase().getFrame(text);
-        return frame != null && !getInstance().equals(frame);
-    }
-
 
 }

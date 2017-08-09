@@ -42,7 +42,6 @@ import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
-import edu.stanford.smi.protegex.owl.ui.widget.ClassHierarchyURIWidget;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
@@ -429,8 +428,12 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
                 //Get UUID from instance URI
                 String uuid = UUIDWidget.getUUIDFromInstanceURI(copy);
-                //Get corresponding class URI
-                String classHierarchyURI = InstanceUtil.getClassURIPrefix(copy).toLowerCase()  + uuid ;
+
+                //Get corresponding class URI in xsd:anyURI datatype
+                Object classHierarchyURI = owlModel.createRDFSLiteral(
+                        InstanceUtil.getClassURIPrefix(copy).toLowerCase() + uuid,
+                        owlModel.getXSDanyURI()
+                );
 
                 //Build properties that need to be modified before instance is displaced
                 Map<RDFProperty, Object> properties = new HashMap<RDFProperty, Object>();
@@ -438,7 +441,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 properties.put(owlModel.getRDFProperty(UBBSlotNames.UUID), uuid);
                 properties.put(owlModel.getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI), classHierarchyURI);
 
-                //After copying, modify properties for a copied copied instance
+                //After copying, modify particular properties for a copied instance
                 InstanceUtil.modifyProperties(copy, properties);
                 setSelectedInstance(copy);
                 return copy;

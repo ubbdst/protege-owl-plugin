@@ -8,18 +8,18 @@ import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
  * A widget that holds identifier value and
- * modifies class hierarchy URI based on the change of it's value
+ * modifies value for classhierarchyURI slot (http://data.ub.uib.no/ontology/classHierarchyURI")
+ * based on the change of it's value
  *
  * @author Hemed Al Ruwehy
- *         University of Bergen Library
- *         2017-04-27
+ * University of Bergen Library
+ * 2017-04-27
  */
 public class UBBSignatureWidget extends TextFieldWidget {
     private static transient Logger log = Log.getLogger(UBBSignatureWidget.class);
@@ -38,11 +38,13 @@ public class UBBSignatureWidget extends TextFieldWidget {
      */
     @Override
     public Collection getValues() {
-        String slotValue = getText();
+        String newValue = getText();
         //System.out.println("Slot values: " + slotValue);
-        validateSignature(slotValue);
-        prepareValueChange(slotValue);
-        return CollectionUtilities.createList(slotValue);
+        validateSignature(newValue);
+        //Value change will be executed in this given slot
+        Slot classHierarchySlot = getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
+        prepareValueChange(classHierarchySlot, newValue, getDefaultDatatype());
+        return CollectionUtilities.createList(newValue);
     }
 
     /**
@@ -63,13 +65,13 @@ public class UBBSignatureWidget extends TextFieldWidget {
     }
 
 
-    private RDFProperty getPredicate(String name){
+    private RDFProperty getPredicate(String name) {
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    private OWLModel getOWLModel(){
-        return (OWLModel)getKnowledgeBase();
+    private OWLModel getOWLModel() {
+        return (OWLModel) getKnowledgeBase();
     }
 
     /*public void setValues(Collection values) {
@@ -84,73 +86,80 @@ public class UBBSignatureWidget extends TextFieldWidget {
     }*/
 
     /**
-     * Validate signature. Signature is not UUID, it is UiB specific number
+     * Validate signature. Signature is not UUID, and is not a URI, it is UiB specific number
      */
     private void validateSignature(String signature) {
         if (UUIDWidget.isValidUUID(signature)) {
-            showErrorMessage("Invalid signature for UUID value [" + signature + "]. Try another one");
+            showErrorMessage("Encountered UUID [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
-            throw new IllegalArgumentException("Invalid signature for UUID value [" + signature + "]");
-        }
-        else if (ClassHierarchyURIWidget.isValidURI(signature)) {
-            showErrorMessage("URI [" + signature + "] is not a valid signature. Try another one");
+            throw new IllegalArgumentException("Encounted UUID [" + signature + "] which is not valid signature");
+        } else if (ClassHierarchyURIWidget.isValidUriAndWithoutSegment(signature)) {
+            showErrorMessage("Encountered URI [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
             throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
-        }
-        else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
-                showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
-                //Do not continue
-                throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
+        } else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
+            showErrorMessage("Signature \"" + signature + "\" already exists. Try another one");
+            //Do not continue
+            throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
         }
     }
 
 
     /**
-     * Prepare slot value change
+     * Prepare value change for the classHierarchyURI widget
+     *
+     * @param slot  a slot that it's value need to be changed
+     * @param value a new value
      */
-    private void prepareValueChange(String currentValue) {
-        Slot slot = getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
+    private void prepareValueChange(Slot slot, String value, RDFSDatatype datatype) {
         if (slot != null) {
             Object slotValue = getInstance().getDirectOwnSlotValue(slot);
             //Update value of a given slot iff it is not the same with this value
-            if (slotValue != null) {
+            if (slotValue != null && slotValue instanceof String) {
                 //Fire change
-                replaceSlotValue(slot, slotValue.toString(), currentValue);
+                replaceSlotValue(slot, (String) slotValue, value, datatype);
             }
         }
     }
 
 
     /**
-     * Replace slot value
+     * Replace old value to a new value for a given slot
      *
      * @param oldValue an old value to be replaced which is in the form
      *                 of "http://data.ub.uib.no/{class_name}/{id}"
-     * @param newValue a new value of type
+     * @param newValue a new value
+     * @param datatype an optional data type to be applied to a new value. Can be <tt>null</tt>
      */
-    private void replaceSlotValue(Slot slot, String oldValue, String newValue) {
+    private void replaceSlotValue(Slot slot, String oldValue, String newValue, RDFSDatatype datatype) {
         Instance instance = getInstance();
         //Get UUID from instance URI
         String uuid = UUIDWidget.getUUIDFromInstanceURI(instance);
         //Get corresponding class URI prefix
         String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
 
-        if (newValue == null) {//if the value is null, replace with default UUID
+        if (newValue == null) {//if value is null, replace with default UUID
             //Create a value of XSD:anyURI datatype
-            Object defaultVal = getOWLModel().createRDFSLiteral(classHierarchyPrefix + uuid, getOWLModel().getXSDanyURI());
+            Object defaultVal = classHierarchyPrefix + uuid;
+            if (datatype != null) {
+                defaultVal = getOWLModel().createRDFSLiteral(classHierarchyPrefix + uuid, datatype);
+            }
+
             instance.setOwnSlotValue(slot, defaultVal);
         }
         else {//Else, perform a background check
             String currentSlotValue = classHierarchyPrefix + newValue.toLowerCase();
             if (!oldValue.equalsIgnoreCase(currentSlotValue)) {
-                if (!slotValueExists(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), currentSlotValue)
-                        && ClassHierarchyURIWidget.isValidURI(currentSlotValue)) {
-                    //Create a value of XSD:anyURI datatype
-                    Object newVal = getOWLModel().createRDFSLiteral(currentSlotValue, getOWLModel().getXSDanyURI());
-                    //Execute change
-                    //instance.setDirectOwnSlotValue(slot, newVal);
-                    getSubject().setPropertyValue(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), newVal);
-
+                if (!slotValueExists(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), currentSlotValue) &&
+                        ClassHierarchyURIWidget.isValidUriAndWithoutSegment(currentSlotValue)) {
+                    Object newVal = currentSlotValue;
+                    if (datatype != null) {
+                        //Create a value of XSD:anyURI datatype
+                        newVal = getOWLModel().createRDFSLiteral(currentSlotValue, datatype);
+                    }
+                    //If all is well, then execute change
+                    RDFProperty predicate = getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI);
+                    getSubject().setPropertyValue(predicate, newVal);
                 }
             }
         }
@@ -161,7 +170,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * Check if a value exists for a slot in a given instance list.
      */
     @SuppressWarnings("unchecked")
-    private boolean slotValueExists (RDFProperty property, Object value) {
+    private boolean slotValueExists(RDFProperty property, Object value) {
         if (value != null) {
             Collection<RDFResource> resources = getOWLModel().getRDFResourcesWithPropertyValue(property, value);
             //Check if slot value exists for the resource other than this one.
@@ -178,37 +187,10 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
 
     /**
-     * Check if a value exists for a slot in a given instance list.
-     * @deprecated use #slotValueExists(RDFProperty property, Object value)
-     */
-    @SuppressWarnings("unchecked")
-    private boolean slotValueExists (Collection<Instance> instances, Slot slot, String value) {
-        //Collection<Instance> instances = getKnowledgeBase().getDirectInstances(getInstance().getDirectType());
-        for (Instance instance : instances) {
-            Object slotValue = instance.getDirectOwnSlotValue(slot);
-            if(slotValue != null) {
-                if (slotValue.toString().equals(value)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-
-    /**
      * Get RDF resource
      */
-    private RDFResource getSubject(){
+    private RDFResource getSubject() {
         return (RDFResource) getInstance();
-    }
-
-    /**
-     * Get RDF property
-     */
-    private RDFProperty getPredicate() {
-        return getOWLModel().getRDFProperty(UBBSlotNames.IDENTIFIER);
     }
 
 
@@ -235,7 +217,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
 
     /**
-     * Display popup window with a given message
+     * Display popup error window with a given message
      */
     private void showErrorMessage(String msg) {
         //Set red color font
@@ -243,28 +225,8 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //Set red borders
         setInvalidValueBorder();
         //Display error message in a popup window
-        //JOptionPane.showMessageDialog(null, msg, null, JOptionPane.ERROR_MESSAGE);
-        ProtegeUI.getModalDialogFactory().showErrorMessageDialog((OWLModel)getKnowledgeBase(), msg);
+        ProtegeUI.getModalDialogFactory().showErrorMessageDialog(getOWLModel(), msg);
     }
 
-
-    /**
-     * Display confirm message
-     */
-    private void showConfirmMessage(String msg) {
-        //Set red color font
-        getTextField().setForeground(Color.RED);
-        //Set red borders
-        setInvalidValueBorder();
-        //Display error message in a popup window
-        int result = JOptionPane.showConfirmDialog(null, msg, null, JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            setText("");
-            getInstance().setOwnSlotValue(getSlot(), null);
-            setInstanceValues();
-        } else {
-            // Do nothing
-        }
-    }
 }
 
