@@ -6,6 +6,8 @@ import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -89,7 +91,7 @@ public class InstanceUtil {
             throw new IllegalArgumentException("RDFType does not have anything after a \"#\" or \"/\""
                     + "You might want to change property name [" + className + "] in the ontology");
         }
-        String typeName = className.replaceAll(regex, "$1");
+        String typeName = className.replaceAll(regex, "$1").toLowerCase();
         return getNamespace(model) + "instance" + PATH_SEPARATOR + typeName + PATH_SEPARATOR;
     }
 
@@ -133,6 +135,23 @@ public class InstanceUtil {
      */
     private static String getNamespace(OWLModel model) {
         return new UUIDInstanceURI(model).getNamespaceForActiveProject();
+    }
+
+
+    /**
+     * Encode a given URL string
+     *
+     * @param url URL to be encoded.
+     */
+    public static String encodeUrl(String url) {
+        String encodedUrl = url.toLowerCase();
+        try {
+            encodedUrl = URLEncoder.encode(url, "UTF-8");
+            return encodedUrl;
+        } catch (UnsupportedEncodingException e) {
+            log.warning("(UnsupportedEncodingException: " + e.getLocalizedMessage());
+        }
+        return encodedUrl;
     }
 
 

@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 
 /**
  * A widget that holds identifier value and
- * modifies value for classhierarchyURI slot (http://data.ub.uib.no/ontology/classHierarchyURI")
- * based on the change of it's value
+ * modifies value for classHierarchyURI slot (http://data.ub.uib.no/ontology/classHierarchyURI")
+ * based on change of it's value
  *
  * @author Hemed Al Ruwehy
  * University of Bergen Library
@@ -74,16 +74,6 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return (OWLModel) getKnowledgeBase();
     }
 
-    /*public void setValues(Collection values) {
-        String id = (String) CollectionUtilities.getFirstItem(values);
-        //Identifier slot shall not have UUID
-        if (UUIDWidget.isValidUUID(id)) {
-            setText("");
-        }
-        else {
-            super.setValues(values);
-        }
-    }*/
 
     /**
      * Validate signature. Signature is not UUID, and is not a URI, it is UiB specific number
@@ -92,12 +82,12 @@ public class UBBSignatureWidget extends TextFieldWidget {
         if (UUIDWidget.isValidUUID(signature)) {
             showErrorMessage("Encountered UUID [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
-            throw new IllegalArgumentException("Encounted UUID [" + signature + "] which is not valid signature");
-        } else if (ClassHierarchyURIWidget.isValidUriAndWithoutSegment(signature)) {
+            throw new IllegalArgumentException("Encountered UUID [" + signature + "] which is not valid signature");
+        } /*else if (ClassHierarchyURIWidget.isValidUriAndWithoutSegment(signature)) {
             showErrorMessage("Encountered URI [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
             throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
-        } else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
+        }*/ else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
             showErrorMessage("Signature \"" + signature + "\" already exists. Try another one");
             //Do not continue
             throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
@@ -106,7 +96,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
 
     /**
-     * Prepare value change for the classHierarchyURI widget
+     * Prepare value change for the given slot
      *
      * @param slot  a slot that it's value need to be changed
      * @param value a new value
@@ -124,7 +114,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
 
     /**
-     * Replace old value to a new value for a given slot
+     * Replace old value to a new value for a given slot with an optional datatype
      *
      * @param oldValue an old value to be replaced which is in the form
      *                 of "http://data.ub.uib.no/{class_name}/{id}"
@@ -139,25 +129,28 @@ public class UBBSignatureWidget extends TextFieldWidget {
         String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
 
         if (newValue == null) {//if value is null, replace with default UUID
-            //Create a value of XSD:anyURI datatype
             Object defaultVal = classHierarchyPrefix + uuid;
             if (datatype != null) {
                 defaultVal = getOWLModel().createRDFSLiteral(classHierarchyPrefix + uuid, datatype);
             }
-
             instance.setOwnSlotValue(slot, defaultVal);
         }
-        else {//Else, perform a background check
+        else if (!startsWithScheme(newValue)) {
+            // We don't have to go further if new slot value starts with URI scheme,
+            // this is  because it will invalidate classHierarchyURI for the value such as
+            // http://data.ub.uib.no/instance/document/{http://ubb-ms-02}
             String currentSlotValue = classHierarchyPrefix + newValue.toLowerCase();
-            if (!oldValue.equalsIgnoreCase(currentSlotValue)) {
+            //Perform a background check for value change
+            if (!oldValue.equalsIgnoreCase(currentSlotValue) ) {
                 if (!slotValueExists(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), currentSlotValue) &&
                         ClassHierarchyURIWidget.isValidUriAndWithoutSegment(currentSlotValue)) {
+                    //System.out.println("Current slot value: " + currentSlotValue);
                     Object newVal = currentSlotValue;
                     if (datatype != null) {
-                        //Create a value of XSD:anyURI datatype
+                        //Create a value of a specified datatype
                         newVal = getOWLModel().createRDFSLiteral(currentSlotValue, datatype);
                     }
-                    //If all is well, then execute change
+                    //If all is well, execute change
                     RDFProperty predicate = getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI);
                     getSubject().setPropertyValue(predicate, newVal);
                 }
@@ -185,6 +178,17 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return false;
     }
 
+
+    /**
+     * Check if a string starts with URI schemes
+     *
+     * @param name a name to check
+     * @return true if a string contains http, https, file, ftp,
+     */
+    private boolean startsWithScheme(String name){
+        return  name.startsWith("http") || name.startsWith("ftp")  ||
+                name.startsWith("file");
+    }
 
     /**
      * Get RDF resource

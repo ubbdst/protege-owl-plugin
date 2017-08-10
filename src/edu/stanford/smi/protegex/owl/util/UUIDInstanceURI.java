@@ -43,7 +43,7 @@ public class UUIDInstanceURI implements InstanceURI {
                 individualNamespace = defaultNamespace + PATH_SEPARATOR;
             }
         }
-        return individualNamespace;
+        return individualNamespace.toLowerCase();
     }
 
     /**

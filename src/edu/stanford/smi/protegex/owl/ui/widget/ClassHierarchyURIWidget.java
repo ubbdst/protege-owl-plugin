@@ -1,6 +1,9 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import edu.stanford.smi.protege.model.*;
+import edu.stanford.smi.protege.model.Cls;
+import edu.stanford.smi.protege.model.Facet;
+import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
@@ -8,8 +11,6 @@ import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 import org.apache.commons.validator.routines.UrlValidator;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -86,7 +87,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      */
     private void assignPropertyValueToInstance() {
         Object oldValue = getSubject().getPropertyValue(getPredicate());
-        String text = getText().trim();
+        String text = getText();
         Object newValue = getOWLModel().createRDFSLiteral(text, getDefaultDatatype());
         /*if (text.length() > 0) {
             RDFSDatatype datatype = getOWLModel().getXSDanyURI();
@@ -112,7 +113,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
             newValue = getOWLModel().createRDFSLiteral(text, datatype);
 
         }
-        /if (newValue == null) {
+         if (newValue == null) {
             getSubject().setPropertyValue(getPredicate(), null);
         }*/
         if (newValue != null) {
@@ -151,13 +152,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      */
     private String constructClassHierarchyURI() {
         String prefix = InstanceUtil.getClassURIPrefix(getInstance());
-        try {
-            String fullURI = prefix + URLEncoder.encode(getId(), "UTF-8");
-            return fullURI.toLowerCase();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return prefix;
+        return (prefix + InstanceUtil.encodeUrl(getId()));
     }
 
     /**
