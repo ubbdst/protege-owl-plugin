@@ -22,6 +22,8 @@ For Protege OWL Plugin 3.5 : http://smi-protege.stanford.edu/repos/protege/owl/t
 ## Installation instructions
 
 Download a final release from https://github.com/ubbdst/protege-owl-plugin/releases and extract it to the
-Protege OWL plugin directory. You find it with a name <code>"edu.stanford.smi.protegex.owl"</code> under <code>"plugins"</code> folder in your Protege installation directory. However, you will have to replace the old <code>protege-owl.jar</code> file to this new one, otherwise there will be a conflict between the two.
-Note that, if you are running Protege server-client mode, you need to copy the file both to the server and to all of your clients. 
+Protege OWL plugin directory. You find it with a name <code>"edu.stanford.smi.protegex.owl"</code> under <code>"plugins"</code> folder in your Protege installation directory. 
+
+However, you will have to replace the old <code>protege-owl.jar</code> file to this new one, otherwise there will be a conflict between the two.
+Note that, if you are running Protege server-client mode, you will have to do this both to the server and to all of your clients. 
 
