@@ -33,7 +33,6 @@ import edu.stanford.smi.protegex.owl.ui.components.AddablePropertyValuesComponen
 import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditor;
 import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditorManager;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
-import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -226,8 +225,17 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
                 if (editor != null) {
                     Object newValue = editor.editValue(null, getSubject(), getPredicate(), oldValue);
                     if (newValue != null) {
+                        /*
                         //Unescape HTML for this value, which is coming from HTMEditorPanel
-                        newValue = StringEscapeUtils.unescapeHtml((String)newValue);
+                        if(newValue instanceof String) {
+                            newValue = StringEscapeUtils.unescapeHtml((String)newValue);
+                        }
+                        else if (newValue instanceof RDFSLiteral){
+                            String lang = ((RDFSLiteral) newValue).getLanguage();
+                            String plainValue =  StringEscapeUtils.unescapeHtml(((RDFSLiteral) newValue).getString());
+                            newValue = getOWLModel().createRDFSLiteral(StringEscapeUtils.unescapeHtml(plainValue, lang);
+                        }
+                        */
                         if (oldValue instanceof RDFSLiteral) {
                             Object neo = ((RDFSLiteral) oldValue).getPlainValue();
                             if (neo != null) {

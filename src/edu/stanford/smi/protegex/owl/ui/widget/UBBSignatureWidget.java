@@ -42,7 +42,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //System.out.println("Slot values: " + slotValue);
         validateSignature(newValue);
         //Value change will be executed in this given slot
-        Slot classHierarchySlot = getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
+        Slot classHierarchySlot =  getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
         prepareValueChange(classHierarchySlot, newValue, getDefaultDatatype());
         return CollectionUtilities.createList(newValue);
     }
@@ -99,60 +99,60 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * Prepare value change for the given slot
      *
      * @param slot  a slot that it's value need to be changed
-     * @param value a new value
+     * @param newValue a new value
+     * @param datatype an optional data type to be applied to a new value. Can be <tt>null</tt>
      */
-    private void prepareValueChange(Slot slot, String value, RDFSDatatype datatype) {
+    private void prepareValueChange(Slot slot, String newValue, RDFSDatatype datatype) {
         if (slot != null) {
             Object slotValue = getInstance().getDirectOwnSlotValue(slot);
-            //Update value of a given slot iff it is not the same with this value
-            if (slotValue != null && slotValue instanceof String) {
-                //Fire change
-                replaceSlotValue(slot, (String) slotValue, value, datatype);
+            //Update value of a given slot iff it is not the same with this value.
+            if (slotValue != null)
+                // We don't have to go further if new slot value starts with URI scheme,
+                // this is  because it will invalidate classHierarchyURI for the value such as
+                // http://data.ub.uib.no/instance/document/{http://ubb-ms-02}
+                if(!startsWithScheme(newValue) && isValidUri(newValue)) {
+                   replaceSlotValue(slot, slotValue.toString(), newValue, datatype);
             }
         }
     }
 
 
     /**
-     * Replace old value to a new value for a given slot with an optional datatype
+     * Replace old value to a new value for a given slot with an optional datatype.
+     * The method also checks to the entire knowledgebase whether the new value exists.
+     * The method is independent to a particular slot
      *
      * @param oldValue an old value to be replaced which is in the form
      *                 of "http://data.ub.uib.no/{class_name}/{id}"
      * @param newValue a new value
      * @param datatype an optional data type to be applied to a new value. Can be <tt>null</tt>
      */
-    private void replaceSlotValue(Slot slot, String oldValue, String newValue, RDFSDatatype datatype) {
+    protected void replaceSlotValue(Slot slot, String oldValue, String newValue, RDFSDatatype datatype) {
         Instance instance = getInstance();
         //Get UUID from instance URI
         String uuid = UUIDWidget.getUUIDFromInstanceURI(instance);
         //Get corresponding class URI prefix
         String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
-
         if (newValue == null) {//if value is null, replace with default UUID
             Object defaultVal = classHierarchyPrefix + uuid;
             if (datatype != null) {
-                defaultVal = getOWLModel().createRDFSLiteral(classHierarchyPrefix + uuid, datatype);
+                defaultVal = createLiteral(classHierarchyPrefix + uuid, datatype);
             }
             instance.setOwnSlotValue(slot, defaultVal);
         }
-        else if (!startsWithScheme(newValue)) {
-            // We don't have to go further if new slot value starts with URI scheme,
-            // this is  because it will invalidate classHierarchyURI for the value such as
-            // http://data.ub.uib.no/instance/document/{http://ubb-ms-02}
-            String currentSlotValue = classHierarchyPrefix + newValue.toLowerCase();
-            //Perform a background check for value change
-            if (!oldValue.equalsIgnoreCase(currentSlotValue) ) {
-                if (!slotValueExists(getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI), currentSlotValue) &&
-                        ClassHierarchyURIWidget.isValidUriAndWithoutSegment(currentSlotValue)) {
-                    //System.out.println("Current slot value: " + currentSlotValue);
-                    Object newVal = currentSlotValue;
+        else {//Perform a background check for the new value
+            String newSlotValue = classHierarchyPrefix + newValue.toLowerCase();
+            //If new value is the same as the old one, do not do anything.
+            if (!oldValue.equalsIgnoreCase(newSlotValue)) {
+                //Check whether this value has been used somewhere in the knowledgebase.
+                if (!slotValueExists((RDFProperty)slot, newSlotValue)) {
+                    Object newVal = newSlotValue;
+                    //Create a value for a specified datatype, if any
                     if (datatype != null) {
-                        //Create a value of a specified datatype
-                        newVal = getOWLModel().createRDFSLiteral(currentSlotValue, datatype);
+                        newVal = createLiteral(newSlotValue, datatype);
                     }
                     //If all is well, execute change
-                    RDFProperty predicate = getPredicate(UBBSlotNames.CLASS_HIERARCHY_URI);
-                    getSubject().setPropertyValue(predicate, newVal);
+                    instance.setOwnSlotValue(slot, newVal);
                 }
             }
         }
@@ -178,6 +178,20 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return false;
     }
 
+
+    /**
+     * Wrapper for creating RDFSLiteral.
+     */
+    private RDFSLiteral createLiteral(String value,  RDFSDatatype datatype){
+        return getOWLModel().createRDFSLiteral(value, datatype);
+    }
+
+    /**
+      * A wrapper for validating URI
+     */
+    private boolean isValidUri(String name){
+        return ClassHierarchyURIWidget.isValidUriAndWithoutSegment(name);
+    }
 
     /**
      * Check if a string starts with URI schemes
