@@ -23,10 +23,10 @@ import java.util.logging.Logger;
  */
 public class UBBSignatureWidget extends TextFieldWidget {
     private static transient Logger log = Log.getLogger(UBBSignatureWidget.class);
+    private static final String EMPTY_STRING = "";
 
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
-
-        //Check if a slot accept values of type String,
+        //Check if a slot accept values of type String (has range of data type String),
         //if it does then show this widget in the dropdown list as one of the it's options.
         boolean isString = cls.getTemplateSlotValueType(slot) == ValueType.STRING;
 
@@ -42,8 +42,8 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //System.out.println("Slot values: " + slotValue);
         validateSignature(newValue);
         //Value change will be executed in this given slot
-        Slot classHierarchySlot =  getKnowledgeBase().getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
-        prepareValueChange(classHierarchySlot, newValue, getDefaultDatatype());
+        RDFProperty classHierarchySlot = getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
+        prepareValueChange(classHierarchySlot, newValue);
         return CollectionUtilities.createList(newValue);
     }
 
@@ -65,10 +65,9 @@ public class UBBSignatureWidget extends TextFieldWidget {
     }
 
 
-    private RDFProperty getPredicate(String name) {
+    private RDFProperty getSlot(String name) {
         return getOWLModel().getRDFProperty(name);
     }
-
 
     private OWLModel getOWLModel() {
         return (OWLModel) getKnowledgeBase();
@@ -83,11 +82,12 @@ public class UBBSignatureWidget extends TextFieldWidget {
             showErrorMessage("Encountered UUID [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
             throw new IllegalArgumentException("Encountered UUID [" + signature + "] which is not valid signature");
-        } /*else if (ClassHierarchyURIWidget.isValidUriAndWithoutSegment(signature)) {
+        /*} else if (startsWithScheme(signature) || isValidUri(signature)) {
             showErrorMessage("Encountered URI [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
             throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
-        }*/ else if (slotValueExists(getPredicate(UBBSlotNames.IDENTIFIER), signature)) {
+        */
+        } else if (slotValueExists(getSlot(UBBSlotNames.IDENTIFIER), signature)) {
             showErrorMessage("Signature \"" + signature + "\" already exists. Try another one");
             //Do not continue
             throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
@@ -96,83 +96,99 @@ public class UBBSignatureWidget extends TextFieldWidget {
 
 
     /**
-     * Prepare value change for the given slot
+     * Prepare value change for the a given slot
      *
      * @param slot  a slot that it's value need to be changed
-     * @param newValue a new value
-     * @param datatype an optional data type to be applied to a new value. Can be <tt>null</tt>
+     * @param newValue a new value.
      */
-    private void prepareValueChange(Slot slot, String newValue, RDFSDatatype datatype) {
+    private void prepareValueChange(RDFProperty slot, String newValue) {
         if (slot != null) {
-            Object slotValue = getInstance().getDirectOwnSlotValue(slot);
-            //Update value of a given slot iff it is not the same with this value.
-            if (slotValue != null)
-                // We don't have to go further if new slot value starts with URI scheme,
-                // this is  because it will invalidate classHierarchyURI for the value such as
-                // http://data.ub.uib.no/instance/document/{http://ubb-ms-02}
-                if(!startsWithScheme(newValue) && isValidUri(newValue)) {
-                   replaceSlotValue(slot, slotValue.toString(), newValue, datatype);
+            //Old value is in the form of "http://data.ub.uib.no/{class_name}/{id}"
+            Object oldValue = getSubject().getPropertyValue(slot);
+            if(oldValue == null){
+                //Give old value a default value to avoid null
+                oldValue = createLiteral(EMPTY_STRING, getDefaultDatatype());
+            }
+            //Get the current selected instance
+            Instance instance = getInstance();
+            //Get UUID from instance URI
+            String uuid = UUIDWidget.getUUIDFromInstanceURI(instance);
+            //Get corresponding class URI prefix
+            String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance);
+            //Create a full URI for the new slot value
+            if(newValue == null){
+                newValue = classHierarchyPrefix + uuid;
+            }
+            else {//Should we encode URI?, doing so it may skip validation.
+                newValue = classHierarchyPrefix + newValue.toLowerCase();
+            }
+            //Do not proceed if new value is not a valid URI
+            if(isValidUri(newValue)) {
+                RDFSLiteral literal = createLiteral(newValue, getDefaultDatatype());
+                replaceSlotValue(slot, oldValue, literal);
             }
         }
     }
 
 
     /**
-     * Replace old value to a new value for a given slot with an optional datatype.
-     * The method also checks to the entire knowledgebase whether the new value exists.
-     * The method is independent to a particular slot
+     * Replace old value to a new value for a given slot. Note that this method does not perform just simple replace,
+     * rather a replacement such that a new value does not exist anywhere in the knowledgebase.
+     * In other words, the method ensures uniqueness of the new value and
+     * checks to the entire knowledgebase whether the value exists before replacement.
      *
-     * @param oldValue an old value to be replaced which is in the form
-     *                 of "http://data.ub.uib.no/{class_name}/{id}"
-     * @param newValue a new value
-     * @param datatype an optional data type to be applied to a new value. Can be <tt>null</tt>
+     * Feasible usecase would be, for example, when you want to modify values for an identifier slot
+     * in which you don't want to end up with same identifiers for different resources.
+     *
+     * @param oldValue an old value to be replaced with a new value.
+     * @param replacement a new value. Cannot be <tt>null</tt>
      */
-    protected void replaceSlotValue(Slot slot, String oldValue, String newValue, RDFSDatatype datatype) {
-        Instance instance = getInstance();
-        //Get UUID from instance URI
-        String uuid = UUIDWidget.getUUIDFromInstanceURI(instance);
-        //Get corresponding class URI prefix
-        String classHierarchyPrefix = InstanceUtil.getClassURIPrefix(instance).toLowerCase();
-        if (newValue == null) {//if value is null, replace with default UUID
-            Object defaultVal = classHierarchyPrefix + uuid;
-            if (datatype != null) {
-                defaultVal = createLiteral(classHierarchyPrefix + uuid, datatype);
+    protected void replaceSlotValue(RDFProperty slot, Object oldValue, Object replacement) {
+        //Update value of a given slot iff it is not the same with the old one.
+        if (!replacement.equals(oldValue)) {
+            //Extract string representation of this object
+            Object stringValue = replacement;
+            if(replacement instanceof RDFSLiteral){
+                stringValue = ((RDFSLiteral) replacement).getString();
             }
-            instance.setOwnSlotValue(slot, defaultVal);
-        }
-        else {//Perform a background check for the new value
-            String newSlotValue = classHierarchyPrefix + newValue.toLowerCase();
-            //If new value is the same as the old one, do not do anything.
-            if (!oldValue.equalsIgnoreCase(newSlotValue)) {
-                //Check whether this value has been used somewhere in the knowledgebase.
-                if (!slotValueExists((RDFProperty)slot, newSlotValue)) {
-                    Object newVal = newSlotValue;
-                    //Create a value for a specified datatype, if any
-                    if (datatype != null) {
-                        newVal = createLiteral(newSlotValue, datatype);
-                    }
-                    //If all is well, execute change
-                    instance.setOwnSlotValue(slot, newVal);
-                }
+            //Check whether this value has been used somewhere in the knowledgebase.
+            if (!slotValueExists(slot, stringValue)) {
+                //If all is well, execute change
+                getSubject().setPropertyValue(slot, replacement);
             }
         }
+    }
+
+    /**
+     * A wrapper method for replacing a slot value.
+     * @see #replaceSlotValue(RDFProperty, Object, Object)
+     *
+     * @param oldValue an old value, cannot be <tt>null</tt>
+     * @param newValue a new value, cannot be <tt>null</tt>
+     */
+     protected void replaceValue(RDFProperty slot, String oldValue, String newValue) {
+        replaceSlotValue(slot, oldValue, newValue);
     }
 
 
     /**
      * Check if a value exists for a slot in a given instance list.
+     *
+     * @param property  RDF property to check
+     * @param value value to be checked
      */
     @SuppressWarnings("unchecked")
-    private boolean slotValueExists(RDFProperty property, Object value) {
+    protected boolean slotValueExists(RDFProperty property, Object value) {
         if (value != null) {
             Collection<RDFResource> resources = getOWLModel().getRDFResourcesWithPropertyValue(property, value);
             //Check if slot value exists for the resource other than this one.
-            for (RDFResource resource : resources) {
+             for (RDFResource resource : resources) {
                 if (!resource.getName().equalsIgnoreCase(getInstance().getName())) {
                     log.info("Value [" + value + "] already exists for property " +
                             "[" + property.getName() + "]" + " of resource [" + resource.getName() + "]");
                     return true;
                 }
+
             }
         }
         return false;
@@ -189,7 +205,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     /**
       * A wrapper for validating URI
      */
-    private boolean isValidUri(String name){
+    protected static boolean isValidUri(String name){
         return ClassHierarchyURIWidget.isValidUriAndWithoutSegment(name);
     }
 

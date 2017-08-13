@@ -91,7 +91,11 @@ public class InstanceUtil {
             throw new IllegalArgumentException("RDFType does not have anything after a \"#\" or \"/\""
                     + "You might want to change property name [" + className + "] in the ontology");
         }
-        String typeName = className.replaceAll(regex, "$1").toLowerCase();
+        String typeName = className.replaceAll(regex, "$1");
+        //Lowercase the class label
+        if(typeName != null && !typeName.isEmpty()){
+            typeName = typeName.toLowerCase();
+        }
         return getNamespace(model) + "instance" + PATH_SEPARATOR + typeName + PATH_SEPARATOR;
     }
 
