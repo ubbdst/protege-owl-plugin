@@ -138,7 +138,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * checks to the entire knowledgebase whether the value exists before replacement.
      *
      * Feasible usecase would be, for example, when you want to modify values for an identifier slot
-     * in which you don't want to end up with same identifiers for different resources.
+     * in which you don't want to end up with same identifier for different resources.
      *
      * @param oldValue an old value to be replaced with a new value.
      * @param replacement a new value. Cannot be <tt>null</tt>

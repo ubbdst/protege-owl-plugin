@@ -57,7 +57,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
 
     @Override
     public void initialize() {
-        super.initialize(false, 1, 1);
+        super.initialize(false, 4, 1);
     }
 
     /**
