@@ -31,7 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * @author Holger Knublauch, modified by Heme
+ * @author Holger Knublauch, modified by Hemed
  */
 public class DefaultRDFSLiteral implements RDFSLiteral {
     

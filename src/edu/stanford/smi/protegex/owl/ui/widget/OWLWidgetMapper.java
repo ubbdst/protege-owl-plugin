@@ -36,7 +36,6 @@ import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

@@ -23,6 +23,7 @@ public class UUIDInstanceURI implements InstanceURI {
 
     private static final String INSTANCE_LABEL = "instance";
     private static final String PATH_SEPARATOR = "/";
+    private static final String UNDEFINED_NAMESPACE = "undefined/";
     private static final String DEFAULT_UBB_NAMESPACE = "http://data.ub.uib.no/";
     private static transient Logger log = Log.getLogger(UUIDInstanceURI.class);
     private OWLModel owlModel;
@@ -36,7 +37,7 @@ public class UUIDInstanceURI implements InstanceURI {
      *
      * @param defaultNamespace a default namespace to be appended at the beginning, can be <tt>null</tt>
      */
-    public static String constructNamespace(String defaultNamespace) {
+    public static String appendPathSeperator(String defaultNamespace) {
         String individualNamespace = defaultNamespace;
         if (defaultNamespace != null && !defaultNamespace.isEmpty()) {
             if (!defaultNamespace.endsWith(PATH_SEPARATOR)) {
@@ -57,7 +58,7 @@ public class UUIDInstanceURI implements InstanceURI {
             log.severe("Encountered null knowledge base. This is not allowed");
             throw new IllegalArgumentException("Knowledge base cannot be null");
         }
-        String fullName = constructNamespace(namespace);
+        String fullName = appendPathSeperator(namespace);
         do {
             fullName = fullName + generateRandomUUID();
         }
@@ -85,7 +86,11 @@ public class UUIDInstanceURI implements InstanceURI {
      */
     public String getNamespaceForActiveProject() {
         if(owlModel != null ) {
-            return constructNamespace(owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace());
+            String namespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
+            if(namespace == null) {
+                return UNDEFINED_NAMESPACE;
+            }
+            return appendPathSeperator(namespace).toLowerCase();
         }
         return DEFAULT_UBB_NAMESPACE;
     }
