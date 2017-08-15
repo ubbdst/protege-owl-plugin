@@ -1,6 +1,7 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
 import edu.stanford.smi.protege.model.*;
+import edu.stanford.smi.protege.util.Assert;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
@@ -144,6 +145,9 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * @param replacement a new value. Cannot be <tt>null</tt>
      */
     protected void replaceSlotValue(RDFProperty slot, Object oldValue, Object replacement) {
+        //Ensure non-null values
+        Assert.assertNotNull("Value cannot be null", oldValue);
+        Assert.assertNotNull("Replacement cannot be null", replacement);
         //Update value of a given slot iff it is not the same with the old one.
         if (!replacement.equals(oldValue)) {
             //Extract string representation of this object
