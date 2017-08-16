@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 public class UUIDWidget extends TextFieldWidget {
 
     private static final String PATH_SEPARATOR = "/";
+    private static final String EMPTY_STRING = "";
     private static transient Logger log = Log.getLogger(UUIDWidget.class);
 
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
@@ -51,16 +52,15 @@ public class UUIDWidget extends TextFieldWidget {
      * Extract UUID from instance URI, if it exists
      */
     public static String getUUIDFromInstanceURI(Instance instance) {
-        String instanceId = "";
         String instanceURI = instance.getName();
         int lastIndex = instanceURI.lastIndexOf(PATH_SEPARATOR);
         if (lastIndex != -1) {
             String lastPart = instanceURI.substring(lastIndex + 1, instanceURI.length());
             if (isValidUUID(lastPart)) {
-                instanceId = lastPart;
+                return lastPart;
             }
         }
-        return instanceId;
+        return EMPTY_STRING;
     }
 
     /**

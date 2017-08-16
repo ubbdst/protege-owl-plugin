@@ -2,7 +2,6 @@ package edu.stanford.smi.protegex.owl.ui.widget;
 
 import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.Assert;
-import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
@@ -34,7 +33,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
         return isString;
     }
 
-    /*
+    /**
       This method is called on value change.
      */
     @Override
@@ -45,7 +44,8 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //Value change will be executed in this given slot
         RDFProperty classHierarchySlot = getSlot(UBBSlotNames.CLASS_HIERARCHY_URI);
         prepareValueChange(classHierarchySlot, newValue);
-        return CollectionUtilities.createList(newValue);
+
+        return super.getValues();
     }
 
     /**
@@ -107,7 +107,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
             //Old value is in the form of "http://data.ub.uib.no/{class_name}/{id}"
             Object oldValue = getSubject().getPropertyValue(slot);
             if(oldValue == null){
-                //Give old value a default value to avoid null
+                //Assign old value a default value to avoid null
                 oldValue = createLiteral(EMPTY_STRING, getDefaultDatatype());
             }
             //Get the current selected instance
@@ -125,8 +125,8 @@ public class UBBSignatureWidget extends TextFieldWidget {
             }
             //Do not proceed if new value is not a valid URI
             if(isValidUri(newValue)) {
-                RDFSLiteral literal = createLiteral(newValue, getDefaultDatatype());
-                replaceSlotValue(slot, oldValue, literal);
+                RDFSLiteral newValueLiteral = createLiteral(newValue, getDefaultDatatype());
+                replaceSlotValue(slot, oldValue, newValueLiteral);
             }
         }
     }
@@ -202,7 +202,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
     /**
      * Wrapper for creating RDFSLiteral.
      */
-    private RDFSLiteral createLiteral(String value,  RDFSDatatype datatype){
+    protected RDFSLiteral createLiteral(String value,  RDFSDatatype datatype){
         return getOWLModel().createRDFSLiteral(value, datatype);
     }
 

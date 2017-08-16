@@ -14,11 +14,16 @@ import org.apache.commons.validator.routines.UrlValidator;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.DATATYPE_PREFIX;
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.LANGUAGE_PREFIX;
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.SEPARATOR;
+
 /**
  * A widget to generate class hierarchy URI for the individuals upon creation.
  *
  * @author Hemed Al Ruwehy
  * @author Øyvind Gjesdal
+ *
  * The University of Bergen Library
  * 2017-04-10
  */
@@ -67,13 +72,26 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
         return (OWLModel) getKnowledgeBase();
     }
 
+
+    /**
+     * Method for setting values of the property where this widget is assigned.
+     * This method is called during creation of the instance also, when instance browser
+     * is refreshed for example by navigating to another instance via UI.
+     *
+     * @param values values that need to be assigned to the property
+     */
     @Override
     public void setValues(Collection values) {
         String savedValue = (String) CollectionUtilities.getFirstItem(values);
         if (savedValue == null) {
-            setText(constructClassHierarchyURI());
-            assignPropertyValueToInstance();
-            //setInstanceValues();
+            //Create class URI
+            String classURI = constructClassHierarchyURI();
+            //Show it to user UI
+            setText(classURI);
+            //Convert it to XSD:anyURI data type
+            Object value = createXsdAnyURILiteral(classURI);
+            //Assign new property value to this instance
+            assignPropertyValueToInstance(value);
         } else {
             super.setValues(values);
         }
@@ -82,42 +100,35 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     }
 
 
-    /**
-     * Assign slot value to the corresponding individual.
-     */
-    private void assignPropertyValueToInstance() {
-        Object oldValue = getSubject().getPropertyValue(getPredicate());
-        String text = getText();
-        Object newValue = getOWLModel().createRDFSLiteral(text, getDefaultDatatype());
-        /*if (text.length() > 0) {
-            RDFSDatatype datatype = getOWLModel().getXSDanyURI();
-            if (getOWLModel().getXSDstring().equals(datatype)) {
-                String language = null;
-                if (oldValue instanceof RDFSLiteral) {
-                    RDFSLiteral oldLiteral = (RDFSLiteral) oldValue;
-                    if (oldLiteral.getLanguage() != null) {
-                        language = oldLiteral.getLanguage();
-                        newValue = getOWLModel().createRDFSLiteral(text, language);
-                    }
-                    else {
-                        newValue = text;
-                    }
-                }
-                else {
-                    newValue = text;
-                }
-            }
-            else {
-                newValue = getOWLModel().createRDFSLiteral(text, datatype);
-            }
-            newValue = getOWLModel().createRDFSLiteral(text, datatype);
+    @Override
+    public void setText(String s) {
+        String plainText = stripDatatype(s);
+        super.setText(plainText);
+    }
 
+
+    /**
+     * We know that value of this widget is of data type xsd:anyURI and there is no need for users to see
+     * the full URI including datatype in the UI. Therefore, we are stripping out datatype part for easy readability.
+
+     * @param rawValue a string with data type
+     *                 example: ~@http://www.w3.org/2001/XMLSchema#anyURI http://data.ub.uib.no/instance/document/ubb-ms-02
+     *
+     * @return a string where datatype is stripped.
+     *                 example: http://data.ub.uib.no/instance/document/ubb-ms-02
+     */
+    protected static String stripDatatype(String rawValue) {
+        if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
+            return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
         }
-         if (newValue == null) {
-            getSubject().setPropertyValue(getPredicate(), null);
-        }*/
+        return rawValue;
+    }
+
+    /**
+     * Assign slot value to a corresponding individual.
+     */
+    private void assignPropertyValueToInstance(Object newValue) {
         if (newValue != null) {
-            //newValue = DefaultRDFSLiteral.getPlainValueIfPossible(newValue);
             Collection oldValues = getSubject().getPropertyValues(getPredicate(), true);
             if (!oldValues.contains(newValue)) {
                 getSubject().setPropertyValue(getPredicate(), newValue);
@@ -143,7 +154,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     /**
      * Get default datatype for this widget
      */
-    private RDFSDatatype getDefaultDatatype() {
+    private RDFSDatatype getXsdAnyURI() {
         return getOWLModel().getXSDanyURI();
     }
 
@@ -169,6 +180,15 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
             }
         }
         return UUIDWidget.getUUIDFromInstanceURI(instance);
+    }
+
+
+    /**
+     * Create literal with XSD:anyURI datatype (which is default for this widget)
+     */
+    public RDFSLiteral createXsdAnyURILiteral(String text){
+        return getOWLModel().createRDFSLiteral(text, getXsdAnyURI());
+
     }
 
 }
