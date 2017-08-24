@@ -23,7 +23,6 @@
 
 package edu.stanford.smi.protegex.owl.ui.individuals;
 
-import edu.stanford.smi.protege.action.DeleteInstancesAction;
 import edu.stanford.smi.protege.action.MakeCopiesAction;
 import edu.stanford.smi.protege.action.ReferencersAction;
 import edu.stanford.smi.protege.event.*;
@@ -41,6 +40,7 @@ import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
+import edu.stanford.smi.protegex.owl.ui.actions.MoveToTrashAction;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget;
@@ -405,7 +405,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     }
 
     protected Action createDeleteAction() {
-        deleteAction = new DeleteInstancesAction(this);
+        deleteAction = new MoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
+        /*deleteAction = new DeleteInstancesAction(this);*/
         return deleteAction;
     }
 

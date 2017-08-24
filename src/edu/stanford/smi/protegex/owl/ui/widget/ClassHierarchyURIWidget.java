@@ -1,9 +1,6 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import edu.stanford.smi.protege.model.Cls;
-import edu.stanford.smi.protege.model.Facet;
-import edu.stanford.smi.protege.model.Instance;
-import edu.stanford.smi.protege.model.Slot;
+import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
@@ -35,17 +32,23 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     /*
       This widget will show up only if the range defined in the given slot is of datatype xsd:anyURI.
      */
-    public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
+    /*public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
         if(slot instanceof RDFProperty){
             RDFProperty classHierarchySlot = (RDFProperty)slot;
-            if(classHierarchySlot.hasRange(false) &&
-                    classHierarchySlot.getRangeDatatype().getName()
-                            .equals(classHierarchySlot.getOWLModel().getXSDanyURI().getName())){
-                return true;
+            if(classHierarchySlot.isRangeDefined()) {
+                if(classHierarchySlot.getRangeDatatype().equals(classHierarchySlot.getOWLModel().getXSDanyURI())) {
+                    return true;
+                }
+
             }
         }
         return false;
+    }*/
+
+    public static boolean isSuitable(Class clazz, Cls cls, Slot slot) {
+       return OWLWidgetMapper.isSuitable(clazz, cls, slot);
     }
+
 
     /**
      * Check for URI validity without fragment
