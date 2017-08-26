@@ -12,10 +12,10 @@ import edu.stanford.smi.protegex.owl.ui.dialogs.ModalDialogFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
+import java.util.Collection;
 
 public class MoveToTrashOrDeleteAction extends AllowableAction {
-    public static final String CLASS_TRASH = "Trash";
+    public static final String TRASH_CLASS_NAME = "Trash";
     private static final long serialVersionUID = -1874566858726067172L;
 
     public MoveToTrashOrDeleteAction(ResourceKey key, Selectable selectable) {
@@ -26,11 +26,11 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (isAllowed()) {
-            WaitCursor var2 = new WaitCursor((JComponent)this.getSelectable());
+            WaitCursor waitCursor = new WaitCursor((JComponent)this.getSelectable());
             try {
                 onMoveOrDelete();
             } finally {
-                var2.hide();
+                waitCursor.hide();
             }
         }
     }
@@ -39,7 +39,8 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * Show modal dialog with Yes/No options
      */
     private boolean isDeleteConfirmed(String text) {
-        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(), text, ModalDialogFactory.MODE_YES_NO);
+        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(),
+                text, "Confirm deletion",  ModalDialogFactory.MODE_YES_NO);
         return option == ModalDialogFactory.OPTION_YES;
     }
 
@@ -48,7 +49,8 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * Show modal dialog with OK/Cancel options
      */
     private boolean isMoveConfirmed(String text) {
-        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(), text, ModalDialogFactory.MODE_OK_CANCEL);
+        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(),
+                text, "Move to Trash", ModalDialogFactory.MODE_OK_CANCEL);
         return option == ModalDialogFactory.OPTION_OK;
     }
 
@@ -76,7 +78,6 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
                 onAfterDelete(instance);
             }
         }
-
     }
 
     /**
@@ -86,9 +87,10 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * @param clazz a destination class
      */
     private void moveInstance(Instance instance, OWLNamedClass clazz) {
-        if (isMoveConfirmed("This instance will be moved to class " + clazz.getLocalName())) {
+        String targetClassName = clazz.getLocalName();
+        if (isMoveConfirmed("Instance will be moved to class " + targetClassName)) {
             instance.setDirectType(clazz);
-            Log.getLogger().info("Instance " + instance.getName() + " moved to " + clazz.getLocalName());
+            Log.getLogger().info("Instance " + instance.getName() + " moved to " + targetClassName);
         }
     }
 
@@ -98,23 +100,22 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * resource to other resources and then destroy the object.
      */
     public void deleteInstance(Instance instance) {
-        Log.getLogger().info("Deleting instance " + instance.getName());
         instance.getKnowledgeBase().deleteFrame(instance);
+        Log.getLogger().info("Instance " + instance.getName() + " has been deleted");
     }
 
 
     @Override
     public void onSelectionChange() {
-        boolean var1 = true;
-        Iterator var2 = this.getSelection().iterator();
-        while (var2.hasNext()) {
-            Instance var3 = (Instance) var2.next();
-            if (!var3.isEditable()) {
-                var1 = false;
+        boolean isAllowed = true;
+        for (Object selection : getSelection()) {
+            Instance instance = (Instance) selection;
+            if (!instance.isEditable()) {
+                isAllowed = false;
                 break;
             }
         }
-        this.setAllowed(var1);
+        this.setAllowed(isAllowed);
     }
 
 
@@ -122,9 +123,9 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * For each selected instance, decide whether to move to Trash or delete permanently
      */
     protected void onMoveOrDelete() {
-        Iterator resource = this.getSelection().iterator();
-        while (resource.hasNext()) {
-            Instance selectedInstance = (Instance)resource.next();
+        Collection selectedResources = getSelection();
+        for (Object selection : selectedResources) {
+            Instance selectedInstance = (Instance) selection;
             moveOrDelete(selectedInstance);
         }
     }
@@ -134,10 +135,10 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
      * Get Trash class or create new one if it does not exist
      */
     private OWLNamedClass getTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = model.getOWLNamedClass(CLASS_TRASH);
+        OWLNamedClass trashClass = model.getOWLNamedClass(TRASH_CLASS_NAME);
         //If it does not exists, create it.
         if (trashClass == null) {
-            trashClass = model.createOWLNamedClass(CLASS_TRASH);
+            trashClass = model.createOWLNamedClass(TRASH_CLASS_NAME);
         }
         return trashClass;
     }
@@ -146,7 +147,6 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
     protected void onAboutToDelete(Object var1) { }
 
     protected void onAfterDelete(Object var1) { }
-
 
 
     /**
