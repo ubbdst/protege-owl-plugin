@@ -30,7 +30,7 @@ import java.util.Collection;
 
 public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     public static final String TRASH_CLASS_NAME = "Trash";
-    private static final long serialVersionUID = -1874566858726067172L;
+    private static final long serialVersionUID = -1874566858726067173L;
 
     public DeleteInstanceOrMoveToTrashAction(ResourceKey key, Selectable selectable) {
         super(key, selectable);
