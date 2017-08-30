@@ -40,7 +40,7 @@ import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
-import edu.stanford.smi.protegex.owl.ui.actions.MoveToTrashOrDeleteAction;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget;
@@ -406,7 +406,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     protected Action createDeleteAction() {
         //deleteAction = new DeleteInstancesAction(this);
-        deleteAction = new MoveToTrashOrDeleteAction(ResourceKey.INSTANCE_DELETE, this);
+        deleteAction = new DeleteInstanceOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
         return deleteAction;
     }
 

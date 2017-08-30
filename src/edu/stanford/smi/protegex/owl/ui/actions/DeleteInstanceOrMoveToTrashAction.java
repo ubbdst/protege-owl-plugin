@@ -14,11 +14,25 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
-public class MoveToTrashOrDeleteAction extends AllowableAction {
+
+/**
+ * Actions for either deleting or moving an instance to Trash.
+ *
+ * The idea is that, if instance belongs directly to class Trash, and deletion is triggered, then
+ * delete the instance entirely. On the other hand, if an instance belongs to a class other than Trash,
+ * and deletion is triggered, move the instance to class Trash.
+ * This came as a request from the University of Bergen Library to avoid deletion mistakes.
+ *
+ * @author Hemed Al Ruwehy
+ * 30-08-2017
+ * University of Bergen Library
+ */
+
+public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     public static final String TRASH_CLASS_NAME = "Trash";
     private static final long serialVersionUID = -1874566858726067172L;
 
-    public MoveToTrashOrDeleteAction(ResourceKey key, Selectable selectable) {
+    public DeleteInstanceOrMoveToTrashAction(ResourceKey key, Selectable selectable) {
         super(key, selectable);
     }
 
@@ -28,7 +42,7 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
         if (isAllowed()) {
             WaitCursor waitCursor = new WaitCursor((JComponent)this.getSelectable());
             try {
-                onMoveOrDelete();
+                onDeleteOrMove();
             } finally {
                 waitCursor.hide();
             }
@@ -72,7 +86,9 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
     public void onDelete(Object var1) {
         Instance instance = (Instance) var1;
         if (canDelete(instance)) {
-            if (isDeleteConfirmed("Are you sure you want to permanently delete this instance?")) {
+            if (isDeleteConfirmed("Deleting an instance means removing all of its references " +
+                    "to other resources and then destroy\nthe instance permanently. " +
+                    "Are you sure you want to delete this instance?")) {
                 onAboutToDelete(instance);
                 deleteInstance(instance);
                 onAfterDelete(instance);
@@ -122,11 +138,11 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
     /**
      * For each selected instance, decide whether to move to Trash or delete permanently
      */
-    protected void onMoveOrDelete() {
+    protected void onDeleteOrMove() {
         Collection selectedResources = getSelection();
         for (Object selection : selectedResources) {
             Instance selectedInstance = (Instance) selection;
-            moveOrDelete(selectedInstance);
+            deleteOrMove(selectedInstance);
         }
     }
 
@@ -144,27 +160,36 @@ public class MoveToTrashOrDeleteAction extends AllowableAction {
     }
 
 
+    /**
+     * Get model for the given instance
+     */
+    private OWLModel getOWLModel(Instance instance){
+        return (OWLModel)instance.getKnowledgeBase();
+    }
+
+
     protected void onAboutToDelete(Object var1) { }
 
     protected void onAfterDelete(Object var1) { }
 
 
     /**
-     * Move or delete instance based on which class it belongs.
+     * Delete or move instance based on which class it belongs.
      *
      * Idea: If instance has direct type of class Trash, and deletion is confirmed,
      * then delete permanently. Otherwise, move instance to Trash class.
      *
      * @param sourceInstance instance to move or delete
      */
-    protected void moveOrDelete(Instance sourceInstance) {
-        OWLNamedClass targetCls = getTrashClass((OWLModel) sourceInstance.getKnowledgeBase());
-        //If the instance belongs to Trash class and deletion is confirmed, then delete permanently
+    protected void deleteOrMove(Instance sourceInstance) {
+        OWLNamedClass targetCls = getTrashClass(getOWLModel(sourceInstance));
+        //If instance belongs to class Trash and deletion is confirmed,
+        //then delete permanently
         if (sourceInstance.hasDirectType(targetCls)) {
             if (canDelete(sourceInstance)) {
                 onDelete(sourceInstance);
             }
-        } else {//Otherwise, move instance to Trash class if confirmed by a user
+        } else {//Otherwise, move instance to class Trash
             if (sourceInstance instanceof Cls) {
                 if (targetCls.isMetaclass()) {
                     moveInstance(sourceInstance, targetCls);
