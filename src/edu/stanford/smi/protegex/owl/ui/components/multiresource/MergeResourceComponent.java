@@ -5,8 +5,8 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.components.AddResourceAction;
-import edu.stanford.smi.protegex.owl.ui.components.AddResourcesWithBrowserTextAction;
 import edu.stanford.smi.protegex.owl.ui.components.AddablePropertyValuesComponent;
+import edu.stanford.smi.protegex.owl.ui.components.MergeResourceWithBrowserTextAction;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 
 import javax.swing.*;
@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
+ * This is a multi resource
  * @author Hemed Al Rywehy
  * @author Holger Knublauch  <holger@knublauch.com>
  *
@@ -27,7 +28,7 @@ public class MergeResourceComponent extends AddablePropertyValuesComponent {
 
     private Action createAction;
 
-    private Action addAction;
+    private Action mergeAction;
 
     private MultiResourceList list;
 
@@ -60,22 +61,24 @@ public class MergeResourceComponent extends AddablePropertyValuesComponent {
 
         OWLLabeledComponent lc = new OWLLabeledComponent((label == null ? getLabel():label), new JScrollPane(list));
 
-        /*createAction = createCreateAction();
+        /*
+        createAction = createCreateAction();
         if (createAction != null) {
             lc.addHeaderButton(createAction);
         }*/
 
-        addAction = createAddAction(symmetric);
-        if (addAction != null) {
-            lc.addHeaderButton(addAction);
+        mergeAction = createMergeAction(symmetric);
+        if (mergeAction != null) {
+            lc.addHeaderButton(mergeAction);
         }
         lc.addHeaderButton(removeAction);
         add(BorderLayout.CENTER, lc);
         updateActions();
     }
 
-    protected AddResourceAction createAddAction(boolean symmetric) {
-        return new AddResourcesWithBrowserTextAction(this, symmetric);
+    protected AddResourceAction createMergeAction(boolean symmetric) {
+        //return new AddResourcesWithBrowserTextAction(this, symmetric);
+        return new MergeResourceWithBrowserTextAction(this, symmetric);
     }
 
 
@@ -123,7 +126,7 @@ public class MergeResourceComponent extends AddablePropertyValuesComponent {
             createAction.setEnabled(!isReadOnly && isCreateEnabled());
         }*/
         removeAction.setEnabled(!isReadOnly && list.isRemoveEnabled());
-        addAction.setEnabled(!isReadOnly);
+        mergeAction.setEnabled(!isReadOnly);
     }
 
 

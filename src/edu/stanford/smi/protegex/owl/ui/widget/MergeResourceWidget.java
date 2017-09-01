@@ -36,6 +36,8 @@ import edu.stanford.smi.protegex.owl.ui.components.multiresource.MergeResourceCo
  * @author Holger Knublauch  <holger@knublauch.com>
  * @author Hemed Al Ruwehy
  *
+ * Mostly a copy of
+ *
  * 24-08-2017
  * University of Bergen Library
  */
@@ -69,7 +71,10 @@ public class MergeResourceWidget extends AbstractPropertyValuesWidget {
     }
 
 
+    /**
+     * Where MultiResourceWidget is suitable, this widget is also suitable.
+     */
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
-        return OWLWidgetMapper.isSuitable(MergeResourceWidget.class, cls, slot);
+        return OWLWidgetMapper.isSuitable(MultiResourceWidget.class, cls, slot);
     }
 }
