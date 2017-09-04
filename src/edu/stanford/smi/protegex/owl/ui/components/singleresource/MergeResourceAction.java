@@ -100,23 +100,31 @@ public class MergeResourceAction extends SetResourceAction {
                      there exist values for such property in the target resource.
                      Otherwise, we wont be able to chose which value to keep.
                      */
-                    if(property.isFunctional() && !existingValues.isEmpty()){
+                    if(property.isFunctional() && hasValues(existingValues)){
                         continue;
                     }
                     Collection combinedValues = new HashSet();
-                    if (valuesToBeCopied != null && !valuesToBeCopied.isEmpty()) {
+                    if (hasValues(valuesToBeCopied)) {
                         combinedValues.addAll(valuesToBeCopied);
                     }
-                    if (existingValues != null && !existingValues.isEmpty()) {
+                    if (hasValues(existingValues)) {
                         combinedValues.addAll(existingValues);
                     }
                     //Execute change to the target resource
-                    if(!combinedValues.isEmpty()) {
+                    if(hasValues(combinedValues)) {
                         getSubject().setPropertyValues(property, combinedValues);
                     }
                 }
           }
 
+    }
+
+
+    /**
+     *  A wrapper for checking if a given collection has values
+     */
+    private boolean hasValues(Collection collection) {
+        return collection != null && !collection.isEmpty();
     }
 
 
