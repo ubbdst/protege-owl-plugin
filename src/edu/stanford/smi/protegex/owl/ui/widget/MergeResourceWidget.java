@@ -26,17 +26,12 @@ package edu.stanford.smi.protegex.owl.ui.widget;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Facet;
 import edu.stanford.smi.protege.model.Slot;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.OWLObjectProperty;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
-import edu.stanford.smi.protegex.owl.ui.components.multiresource.MergeResourceComponent;
+import edu.stanford.smi.protegex.owl.ui.components.singleresource.MergeResourceComponent;
 
 /**
- * @author Holger Knublauch  <holger@knublauch.com>
  * @author Hemed Al Ruwehy
- *
- * Mostly a copy of
  *
  * 24-08-2017
  * University of Bergen Library
@@ -51,30 +46,14 @@ public class MergeResourceWidget extends AbstractPropertyValuesWidget {
 
 
     protected PropertyValuesComponent createComponent(RDFProperty predicate) {
-        boolean symmetric = false;
-        if (predicate instanceof OWLObjectProperty) {
-            symmetric = ((OWLObjectProperty) predicate).isSymmetric();
-        }
-        else {
-            OWLModel owlModel = getOwlModel(predicate);
-            if (owlModel.getOWLSameAsProperty().equals(predicate) ||
-                    owlModel.getOWLDifferentFromProperty().equals(predicate)) {
-                symmetric = true;
-            }
-        }
-        return new MergeResourceComponent(predicate, symmetric, getLabel(), isReadOnlyConfiguredWidget());
-    }
-
-
-    private OWLModel getOwlModel(RDFProperty predicate) {
-        return predicate.getOWLModel();
+        return new MergeResourceComponent(predicate, getLabel(), isReadOnlyConfiguredWidget());
     }
 
 
     /**
-     * Where MultiResourceWidget is suitable, this widget is also suitable.
+     * This widget is suitable whenever SingleResourceWidget is suitable
      */
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
-        return OWLWidgetMapper.isSuitable(MultiResourceWidget.class, cls, slot);
+        return OWLWidgetMapper.isSuitable(SingleResourceWidget.class, cls, slot);
     }
 }
