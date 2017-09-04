@@ -2,6 +2,7 @@ package edu.stanford.smi.protegex.owl.ui.components.singleresource;
 
 
 import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
@@ -9,8 +10,8 @@ import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * A class that performs merge action
@@ -30,17 +31,9 @@ public class MergeResourceAction extends SetResourceAction {
         this.component = component;
     }
 
-
     @Override
     public void resourceSelected(RDFResource resource) {
         if (isMergeConfirmed(resource)) {
-            //TODO: Do a merge logic
-             /*
-              Step 1:  Copy all values from resource to target resource, except dct:identifier, ubbont:uuid og classHierarchyURI.
-              When a predicate in the target resource has a functional property, do not copy to that property
-
-              Case 2: Make all references from the source subject point to target subject
-              */
              onMerge(resource);
         }
     }
@@ -51,13 +44,6 @@ public class MergeResourceAction extends SetResourceAction {
         doMerge(resource);
         afterMerge(resource);
     }
-
-
-    protected void doMerge(RDFResource resource) {
-        copyValues(resource);
-        Log.getLogger().info("Instance " + resource.getName() + " has been merged into " + getSubject().getName());
-    }
-
 
     /**
      * Pre validate instance before merge and provide useful message to the user
@@ -70,21 +56,67 @@ public class MergeResourceAction extends SetResourceAction {
             throw new UnsupportedOperationException("Cannot merge instance to itself: [" + resource.getName() + "]");
         } else if (!resource.getProtegeType().equals(getSubject().getProtegeType())) {
             showMessageDialog(resource, "Cannot merge instances that belong to different classes");
-            throw new UnsupportedOperationException("Cannot merge instances with different classes " +
+            throw new UnsupportedOperationException("Cannot merge instances from different classes " +
                     "[" + resource.getName() + " , " + getSubject().getName() + "]");
         }
     }
 
 
+    protected void doMerge(RDFResource resource) {
+        copyValues(resource);
+        Log.getLogger().info("Instance " + resource.getName() + " has been merged into " + getSubject().getName());
+    }
+
+
     protected void afterMerge(RDFResource resource) {
+        getSubject().setPropertyValue(getPredicate(), resource);
         if (isDeleteConfirmed(resource)) {
             deleteResource(resource);
         }
     }
 
 
-    private void showMessageDialog(RDFResource source, String text) {
-        ProtegeUI.getModalDialogFactory().showMessageDialog(source.getOWLModel(), text);
+
+    /**
+     * Copy all values from given resource to a target resource, except values for properties <tt>dct:identifier</tt>,
+     * <tt>ubbont:uuid</tt> and <tt>ubbont:classHierarchyURI</tt>.
+     * If a predicate is of functional property, do not copy, user must decide which value to pick manually.
+     *
+     * @param resource a resource in which values of its properties need to be copied
+     */
+    @SuppressWarnings("unchecked")
+    private void copyValues(RDFResource resource) {
+        Collection<RDFProperty> properties = resource.getRDFProperties();
+        for (RDFProperty property : properties) {
+                if (!property.getName().equals(UBBSlotNames.UUID) &&
+                        /*!property.equals(getOWLModel().getRDFTypeProperty()) &&*/
+                        !property.getName().equals(UBBSlotNames.IDENTIFIER) &&
+                        !property.getName().equals(UBBSlotNames.CLASS_HIERARCHY_URI)) {
+
+                    Collection valuesToBeCopied = resource.getPropertyValues(property);
+                    Collection existingValues = getSubject().getPropertyValues(property);
+                    /*
+                     Skip the iteration if we meet a functional property and
+                     there exist values for such property in the target resource.
+                     Otherwise, we wont be able to chose which value to keep.
+                     */
+                    if(property.isFunctional() && !existingValues.isEmpty()){
+                        continue;
+                    }
+                    Collection combinedValues = new HashSet();
+                    if (valuesToBeCopied != null && !valuesToBeCopied.isEmpty()) {
+                        combinedValues.addAll(valuesToBeCopied);
+                    }
+                    if (existingValues != null && !existingValues.isEmpty()) {
+                        combinedValues.addAll(existingValues);
+                    }
+                    //Execute change to the target resource
+                    if(!combinedValues.isEmpty()) {
+                        getSubject().setPropertyValues(property, combinedValues);
+                    }
+                }
+          }
+
     }
 
 
@@ -92,35 +124,6 @@ public class MergeResourceAction extends SetResourceAction {
         resource.delete();
         Log.getLogger().info("Resource " + resource.getName() + " has been deleted after merge");
     }
-
-
-    private void copyValues(RDFResource resource) {
-        Collection<RDFProperty> properties = resource.getRDFProperties();
-        for (RDFProperty property : properties) {
-            if (!property.isFunctional()) {
-                if (!property.getName().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#type") &&
-                        !property.getName().equals(UBBSlotNames.UUID) &&
-                        !property.getName().equals(UBBSlotNames.IDENTIFIER) &&
-                        !property.getName().equals(UBBSlotNames.CLASS_HIERARCHY_URI)) {
-
-                    Collection combinedValues = new ArrayList();
-                    Collection valuesToBeCopied = resource.getPropertyValues(property);
-                    Collection existingValues = getSubject().getPropertyValues(property);
-
-                    if (valuesToBeCopied != null && !valuesToBeCopied.isEmpty()) {
-                        combinedValues.addAll(valuesToBeCopied);
-                    }
-                    if (existingValues != null && !existingValues.isEmpty()) {
-                        combinedValues.addAll(existingValues);
-                    }
-                    getSubject().setPropertyValues(property, combinedValues);
-                }
-            }
-
-        }
-
-    }
-
 
     /**
      * Get subject (this is a selected instance in the instance browser hierarchy)
@@ -136,6 +139,19 @@ public class MergeResourceAction extends SetResourceAction {
                 .showConfirmDialog(resource.getOWLModel(), text, "Confirm deletion");
     }
 
+
+    private OWLModel getOWLModel() {
+        return getSubject().getOWLModel();
+    }
+
+    private RDFProperty getPredicate() {
+        return component.getPredicate();
+    }
+
+
+    private void showMessageDialog(RDFResource source, String text) {
+        ProtegeUI.getModalDialogFactory().showMessageDialog(source.getOWLModel(), text);
+    }
 
     /**
      * Shows a dialog with Yes/No options.
