@@ -86,9 +86,8 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     public void onDelete(Object var1) {
         Instance instance = (Instance) var1;
         if (canDelete(instance)) {
-            if (isDeleteConfirmed("Deleting an instance means removing all of its references " +
-                    "to other resources and then destroy\nthe instance permanently. " +
-                    "Are you sure you want to delete this instance?")) {
+            if (isDeleteConfirmed("Are you sure you want to permanently delete instance " +
+                    "\"" + instance.getBrowserText() + "\"?")) {
                 onAboutToDelete(instance);
                 deleteInstance(instance);
                 onAfterDelete(instance);
@@ -104,7 +103,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      */
     private void moveInstance(Instance instance, OWLNamedClass clazz) {
         String targetClassName = clazz.getLocalName();
-        if (isMoveConfirmed("Instance will be moved to class " + targetClassName)) {
+        if (isMoveConfirmed("Instance \"" + instance.getBrowserText() + "\" will be moved to class " + targetClassName)) {
             instance.setDirectType(clazz);
             Log.getLogger().info("Instance " + instance.getName() + " moved to " + targetClassName);
         }
