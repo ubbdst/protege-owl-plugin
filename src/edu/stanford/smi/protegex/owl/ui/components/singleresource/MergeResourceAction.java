@@ -62,6 +62,8 @@ public class MergeResourceAction extends SetResourceAction {
 
         if (isMergeConfirmed(resource, text)) {
             onMerge(resource);
+            Log.getLogger().info("Instance " + resource.getName() + " merged into " + getSubject().getName());
+            showMessageDialog(resource, "Merging was successful and the merged instance has been moved to Trash");
         }
     }
 
@@ -93,7 +95,8 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     protected void doMerge(RDFResource resource) {
-        copyValues(resource);
+        copyInstanceValues(resource);
+        //copyInstanceReferences(resource);
     }
 
     /*
@@ -106,16 +109,14 @@ public class MergeResourceAction extends SetResourceAction {
     */
     protected void afterMerge(RDFResource resource) {
         moveToTrash(resource);
-        assignPropertyValue(resource);
-        showMessageDialog(resource, "Merging was successful and the merged instance has been moved to Trash");
-        Log.getLogger().info("Instance " + resource.getName() + " merged into " + getSubject().getName());
+        assignPropertyValue(getPredicate(), resource);
     }
 
     /**
-     * Assigns a given resource as a value to the property in which this action takes place
+     * Assigns a given resource as a value to a given property
      */
-    private void assignPropertyValue(Object resource) {
-        getSubject().setPropertyValue(getPredicate(), resource);
+    private void assignPropertyValue(RDFProperty property, Object resource) {
+        getSubject().setPropertyValue(property, resource);
     }
 
     /**
@@ -126,7 +127,7 @@ public class MergeResourceAction extends SetResourceAction {
      * @param resource a resource in which values of its properties need to be copied
      */
     @SuppressWarnings("unchecked")
-    private void copyValues(RDFResource resource) {
+    private void copyInstanceValues(RDFResource resource) {
         Collection<RDFProperty> properties = resource.getRDFProperties();
         for (RDFProperty property : properties) {
             if (!property.getName().equals(UBBSlotNames.UUID) &&
@@ -151,10 +152,9 @@ public class MergeResourceAction extends SetResourceAction {
                 if (hasValues(existingValues)) {
                     combinedValues.addAll(existingValues);
                 }
-                //Execute change to the target resource
                 if (hasValues(combinedValues)) {
-                    //Ensure no duplicates
-                    getSubject().setPropertyValues(property, new HashSet(combinedValues));
+                    //Remove duplicates and assign values to the target resource
+                    assignPropertyValue(property, new HashSet(combinedValues));
                 }
             }
         }
@@ -162,7 +162,7 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     /**
-     * Gets subject in which this action takes place
+     * Gets subject where this action takes place
      */
     protected RDFResource getSubject() {
         return component.getSubject();
@@ -178,6 +178,9 @@ public class MergeResourceAction extends SetResourceAction {
         return getSubject().getOWLModel();
     }
 
+    /**
+     * Gets the property where this action takes place
+     */
     protected RDFProperty getPredicate() {
         return component.getPredicate();
     }
