@@ -62,11 +62,12 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     /**
      * Show modal dialog with OK/Cancel options
      */
-    private boolean isMoveConfirmed(String text) {
+    private boolean isMoveToTrashConfirmed() {
         int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(),
-                text, "Move to Trash", ModalDialogFactory.MODE_OK_CANCEL);
+                "Instance will be moved to class Trash", "Move to Trash", ModalDialogFactory.MODE_OK_CANCEL);
         return option == ModalDialogFactory.OPTION_OK;
     }
+
 
     private boolean canDelete(Instance instance) {
         boolean var2 = true;
@@ -97,17 +98,15 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     }
 
     /**
-     * Move instance to a specified class
+     * Moves instance to a specified class
      *
      * @param instance an instance to move
      * @param clazz a destination class
      */
-    private void moveInstance(Instance instance, OWLNamedClass clazz) {
+    public static void moveInstance(Instance instance, OWLNamedClass clazz) {
         String targetClassName = clazz.getLocalName();
-        if (isMoveConfirmed("Instance will be moved to class " + targetClassName)) {
-            instance.setDirectType(clazz);
-            Log.getLogger().info("Instance " + instance.getName() + " moved to " + targetClassName);
-        }
+        instance.setDirectType(clazz);
+        Log.getLogger().info("Instance " + instance.getName() + " moved to " + targetClassName);
     }
 
 
@@ -115,7 +114,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Deletes this instance from the model. This will first remove all references of the
      * resource to other resources and then destroy the object.
      */
-    public void deleteInstance(Instance instance) {
+    public static void deleteInstance(Instance instance) {
         instance.getKnowledgeBase().deleteFrame(instance);
         Log.getLogger().info("Instance " + instance.getName() + " has been deleted");
     }
@@ -150,7 +149,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     /**
      * Get Trash class or create new one if it does not exist
      */
-    private OWLNamedClass getTrashClass(OWLModel model) {
+    public static OWLNamedClass getTrashClass(OWLModel model) {
         OWLNamedClass trashClass = model.getOWLNamedClass(TRASH_CLASS_NAME);
         //If it does not exists, create it.
         if (trashClass == null) {
@@ -192,10 +191,14 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         } else {//Otherwise, move instance to class Trash
             if (sourceInstance instanceof Cls) {
                 if (targetCls.isMetaclass()) {
-                    moveInstance(sourceInstance, targetCls);
+                    if(isMoveToTrashConfirmed()){
+                        moveInstance(sourceInstance, targetCls);
+                    }
                 }
             } else if (!targetCls.isMetaclass()) {
-                moveInstance(sourceInstance, targetCls);
+                if(isMoveToTrashConfirmed()) {
+                    moveInstance(sourceInstance, targetCls);
+                }
             }
         }
     }
