@@ -2,13 +2,17 @@ package edu.stanford.smi.protegex.owl.util;
 
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protege.model.Reference;
 import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -38,6 +42,36 @@ public class InstanceUtil {
         if (instance.hasOwnSlot(property) && instance.getDirectOwnSlotValue(property) != null) {
             instance.setDirectOwnSlotValue(property, null);
         }
+    }
+
+
+    /**
+     * Gets all references of type OWLIndividual of the given resource
+     *
+     * @param resource a resource in which its references need to be fetched
+     * @return a map which contains resource and property to which this resource is referred to
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<RDFResource, RDFProperty> getInstanceReferences(RDFResource resource){
+        Map<RDFResource, RDFProperty> instancesAndProperties = new HashMap();
+        Collection<Reference> references = resource.getReferences();
+        for(Reference reference : references) {
+            if(reference.getFrame() instanceof OWLIndividual){
+                RDFResource subject = (RDFResource) reference.getFrame();
+                RDFProperty predicate = (RDFProperty) reference.getSlot();
+                if(subject != null && predicate != null) {
+                    instancesAndProperties.put(subject, predicate);
+                }
+            }
+        }
+        return instancesAndProperties;
+    }
+
+    /**
+     * Check if a given property has inverse relation
+     */
+    public static boolean isInverseProperty(RDFProperty property) {
+        return property.getInverseProperty() != null;
     }
 
 

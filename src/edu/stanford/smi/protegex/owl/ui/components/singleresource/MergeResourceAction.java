@@ -9,10 +9,12 @@ import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 
 import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction.getTrashClass;
 
@@ -35,14 +37,14 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     /**
-     * Move a given instance to class Trash
+     * Moves a given instance to class Trash
      */
     private static void moveToTrash(RDFResource resource) {
         resource.setProtegeType(getTrashClass(resource.getOWLModel()));
     }
 
     /**
-     * A wrapper for checking if a given collection has values
+     * Checks if a given collection has values
      */
     public static boolean hasValues(Collection collection) {
         return collection != null && !collection.isEmpty();
@@ -95,12 +97,12 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     protected void doMerge(RDFResource resource) {
+        copyInstanceReferences(resource);
         copyInstanceValues(resource);
-        //copyInstanceReferences(resource);
     }
 
     /*
-        TODO: After merge, do the following:-
+         TODO: After merge, do the following:-
          a) Do not delete object, rather move it to class trash and give that information to user
             via Dialog box.
          b) Copy resource UUID and identifier to previousIdentifier of the target resource,
@@ -109,20 +111,51 @@ public class MergeResourceAction extends SetResourceAction {
     */
     protected void afterMerge(RDFResource resource) {
         moveToTrash(resource);
-        assignPropertyValue(getPredicate(), resource);
+        assignPropertyValue(resource);
     }
 
+
     /**
-     * Assigns a given resource as a value to a given property
+     * Makes all individuals that had a given resource as an object, have a new merged resource as an object
+     * for that property. Since we move the resource to Trash after merging, we don't have to remove the old link.
+     * It will be automatically removed when the resource is deleted from Trash.
      */
-    private void assignPropertyValue(RDFProperty property, Object resource) {
-        getSubject().setPropertyValue(property, resource);
+    private void copyInstanceReferences(RDFResource resource) {
+        Map<RDFResource, RDFProperty> references = InstanceUtil.getInstanceReferences(resource);
+        for(Map.Entry<RDFResource, RDFProperty> entry : references.entrySet()){
+            RDFResource referenceInstance = entry.getKey();
+            RDFProperty referenceProperty = entry.getValue();
+            //Replace the the merged resource to the new resource if the property does not allow more than two values
+            if(referenceProperty.isFunctional() && referenceInstance.getPropertyValues(referenceProperty).contains(resource)) {
+                referenceInstance.setPropertyValue(referenceProperty, getSubject());
+            }
+            else {//Otherwise, keep the merged resource and just add new resource to the list
+                referenceInstance.addPropertyValue(referenceProperty, getSubject());
+            }
+        }
     }
+
+
+    /**
+     * Assigns a given resource as a value to a property where this action takes place.
+     */
+    private void assignPropertyValue(RDFResource resource) {
+        //If its functional, override any existing value
+        if(getPredicate().isFunctional()) {
+            getSubject().setPropertyValue(getPredicate(), resource);
+        }
+        else {//Otherwise, append it to the list
+            getSubject().addPropertyValue(getPredicate(), resource);
+        }
+    }
+
 
     /**
      * Copies all values from given resource to a target resource, except values for properties {@code ct:identifier},
      * {@code ubbont:uuid} and {@code ubbont:classHierarchyURI}.
-     * If a predicate is of functional property, do not copy, user must decide which value to pick manually.
+     *
+     * If a predicate is of functional property, and there exist values for such property in the target resource,
+     * do not copy, user must decide which value to pick manually.
      *
      * @param resource a resource in which values of its properties need to be copied
      */
@@ -154,7 +187,7 @@ public class MergeResourceAction extends SetResourceAction {
                 }
                 if (hasValues(combinedValues)) {
                     //Remove duplicates and assign values to the target resource
-                    assignPropertyValue(property, new HashSet(combinedValues));
+                    getSubject().setPropertyValues(property, new HashSet(combinedValues));
                 }
             }
         }
