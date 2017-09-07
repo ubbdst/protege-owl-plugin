@@ -29,6 +29,8 @@ import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTra
 public class MergeResourceAction extends SetResourceAction {
 
     private PropertyValuesComponent component;
+    private String PREV_UUID_PREFIX = "previousUuid:";
+    private String PREV_SIGNATURE_PREFIX = "previousSignature:";
 
 
     public MergeResourceAction(PropertyValuesComponent component) {
@@ -110,14 +112,38 @@ public class MergeResourceAction extends SetResourceAction {
          c) Copy resource URI to ubbont:previousURI of the target resource
     */
     protected void afterMerge(RDFResource resource) {
+        copyPreviousIdentifiers(resource);
         moveToTrash(resource);
-        assignPropertyValue(resource);
+        assignPropertyValue(getPredicate(), resource);
+    }
+
+
+    /**
+     * Copies previous UUID, identifier and URI to the new resource
+     *
+     * @param resource a resource by which its identifiers need to be copied
+     */
+    private void copyPreviousIdentifiers(RDFResource resource) {
+        Object uuid = resource.getPropertyValue(getProperty(UBBSlotNames.UUID));
+        Object signature = resource.getPropertyValue(getProperty(UBBSlotNames.IDENTIFIER));
+        Object uri = resource.getName();
+
+        //Put uri as previousId
+        assignPropertyValue(getProperty(UBBSlotNames.PREVIOUS_IDENTIFIER), uri);
+        //Add others as comments
+        if(uuid != null) {
+            getSubject().addComment(PREV_UUID_PREFIX + uuid);
+        }
+        if(signature != null) {
+            getSubject().addComment(PREV_SIGNATURE_PREFIX + signature);
+        }
     }
 
 
     /**
      * Makes all individuals that had a given resource as an object, have a new merged resource as an object
-     * for that property. Since we move the resource to Trash after merging, we don't have to remove the old link.
+     * for that property.
+     * Since we move the resource to Trash after merging, we don't have to remove the old link.
      * It will be automatically removed when the resource is deleted from Trash.
      */
     private void copyInstanceReferences(RDFResource resource) {
@@ -137,15 +163,15 @@ public class MergeResourceAction extends SetResourceAction {
 
 
     /**
-     * Assigns a given resource as a value to a property where this action takes place.
+     * Assigns a given object as a value to a property where this action takes place.
      */
-    private void assignPropertyValue(RDFResource resource) {
+    private void assignPropertyValue(RDFProperty property, Object value) {
         //If its functional, override any existing value
         if(getPredicate().isFunctional()) {
-            getSubject().setPropertyValue(getPredicate(), resource);
+            getSubject().setPropertyValue(property, value);
         }
         else {//Otherwise, append it to the list
-            getSubject().addPropertyValue(getPredicate(), resource);
+            getSubject().addPropertyValue(property, value);
         }
     }
 
@@ -168,8 +194,8 @@ public class MergeResourceAction extends SetResourceAction {
                     !property.getName().equals(UBBSlotNames.IDENTIFIER) &&
                     !property.getName().equals(UBBSlotNames.CLASS_HIERARCHY_URI)) {
 
-                Collection valuesToBeCopied = resource.getPropertyValues(property);
                 Collection existingValues = getSubject().getPropertyValues(property);
+                Collection newValues = resource.getPropertyValues(property);
                     /*
                      Skip the iteration if we meet a functional property and
                      there exist values for such property in the target resource.
@@ -179,11 +205,11 @@ public class MergeResourceAction extends SetResourceAction {
                     continue;
                 }
                 Collection combinedValues = new ArrayList();
-                if (hasValues(valuesToBeCopied)) {
-                    combinedValues.addAll(valuesToBeCopied);
-                }
                 if (hasValues(existingValues)) {
                     combinedValues.addAll(existingValues);
+                }
+                if (hasValues(newValues)) {
+                    combinedValues.addAll(newValues);
                 }
                 if (hasValues(combinedValues)) {
                     //Remove duplicates and assign values to the target resource
@@ -206,6 +232,10 @@ public class MergeResourceAction extends SetResourceAction {
         return ProtegeUI.getModalDialogFactory().showConfirmDialog(resource.getOWLModel(), text, "Confirm deletion");
     }
 
+
+    private RDFProperty getProperty(String s) {
+        return getOWLModel().getRDFProperty(s);
+    }
 
     protected OWLModel getOWLModel() {
         return getSubject().getOWLModel();
