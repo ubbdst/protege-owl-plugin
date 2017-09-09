@@ -65,7 +65,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     	String iconName;
 
     	if(isInTrash()) {
-    	    iconName = OWLIcons.TRASH_ICON;
+    	    iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
         }
     	else if(isAnonymous()) {
            iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
