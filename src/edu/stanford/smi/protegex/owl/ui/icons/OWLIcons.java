@@ -23,8 +23,12 @@
 
 package edu.stanford.smi.protegex.owl.ui.icons;
 
-import java.awt.Image;
-import java.awt.Toolkit;
+import edu.stanford.smi.protege.util.ApplicationProperties;
+import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLAllValuesFrom;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
@@ -33,13 +37,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import edu.stanford.smi.protege.util.ApplicationProperties;
-import edu.stanford.smi.protege.util.Log;
-import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLAllValuesFrom;
 
 /**
  * A singleton that provides access to the OWL specific icons.
@@ -119,6 +116,8 @@ public class OWLIcons {
     public static final String DEFINED_OWL_CLASS = "DefinedOWLClass";
 
     public static final String DELETE = "Delete";
+
+    public static final String TRASH_ICON = "OWLTrash";
 
     public static final String DELETE_OVERLAY = "DeleteOverlay";
 
@@ -386,6 +385,10 @@ public class OWLIcons {
 
     public static Icon getDeleteIcon() {
         return getImageIcon(DELETE);
+    }
+
+    public static Icon getTrashIcon() {
+        return getImageIcon(TRASH_ICON);
     }
 
 

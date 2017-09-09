@@ -5,7 +5,7 @@ import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.UBBSlotNames;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNamespaces;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
@@ -124,12 +124,12 @@ public class MergeResourceAction extends SetResourceAction {
      * @param resource a resource by which its identifiers need to be copied
      */
     private void copyPreviousIdentifiers(RDFResource resource) {
-        Object uuid = resource.getPropertyValue(getProperty(UBBSlotNames.UUID));
-        Object signature = resource.getPropertyValue(getProperty(UBBSlotNames.IDENTIFIER));
+        Object uuid = resource.getPropertyValue(getProperty(UBBOntologyNamespaces.UUID));
+        Object signature = resource.getPropertyValue(getProperty(UBBOntologyNamespaces.IDENTIFIER));
         Object uri = resource.getName();
 
         //Put uri as previousId
-        assignPropertyValue(getProperty(UBBSlotNames.PREVIOUS_IDENTIFIER), uri);
+        assignPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER), uri);
         //Add others as comments
         if(uuid != null) {
             getSubject().addComment(PREV_UUID_PREFIX + uuid);
@@ -189,10 +189,10 @@ public class MergeResourceAction extends SetResourceAction {
     private void copyInstanceValues(RDFResource resource) {
         Collection<RDFProperty> properties = resource.getRDFProperties();
         for (RDFProperty property : properties) {
-            if (!property.getName().equals(UBBSlotNames.UUID) &&
+            if (!property.getName().equals(UBBOntologyNamespaces.UUID) &&
                     /*!property.equals(getOWLModel().getRDFTypeProperty()) &&*/
-                    !property.getName().equals(UBBSlotNames.IDENTIFIER) &&
-                    !property.getName().equals(UBBSlotNames.CLASS_HIERARCHY_URI)) {
+                    !property.getName().equals(UBBOntologyNamespaces.IDENTIFIER) &&
+                    !property.getName().equals(UBBOntologyNamespaces.CLASS_HIERARCHY_URI)) {
 
                 Collection existingValues = getSubject().getPropertyValues(property);
                 Collection newValues = resource.getPropertyValues(property);

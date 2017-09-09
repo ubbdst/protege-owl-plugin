@@ -151,7 +151,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      * Get RDF property (this slot)
      */
     private RDFProperty getPredicate() {
-        return getOWLModel().getRDFProperty(UBBSlotNames.CLASS_HIERARCHY_URI);
+        return getOWLModel().getRDFProperty(UBBOntologyNamespaces.CLASS_HIERARCHY_URI);
     }
 
     /**
@@ -175,7 +175,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
     private String getId() {
         //Process identifier slot
         Instance instance = this.getInstance();
-        Slot identifierSlot = getKnowledgeBase().getSlot(UBBSlotNames.IDENTIFIER);
+        Slot identifierSlot = getKnowledgeBase().getSlot(UBBOntologyNamespaces.IDENTIFIER);
         if (identifierSlot != null) {
             Object slotValue = instance.getDirectOwnSlotValue(identifierSlot);
             if (slotValue != null) {

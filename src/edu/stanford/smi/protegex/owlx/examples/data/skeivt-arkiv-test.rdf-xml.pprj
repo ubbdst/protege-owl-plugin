@@ -1,4 +1,4 @@
-; Wed Sep 06 00:34:15 CEST 2017
+; Sat Sep 09 14:33:39 CEST 2017
 ; 
 ;+ (version "3.5")
 ;+ (build "Build 663")
@@ -6,12 +6,13 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30186]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30187]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30188]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30189]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30190]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30191]))
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30270]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30271]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30272]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30273]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30274]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30275]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30276]))
 
 ([CLSES_TAB] of  Widget
 
@@ -765,9 +766,6 @@
 	(property_list [XY_Instance_890])
 	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
 
-([KB_513787_Class0] of  Map
-)
-
 ([KB_632156_Instance_0] of  String
 
 	(name "OWL-PREDEFINED-PROFILE-URI")
@@ -782,6 +780,9 @@
 
 	(boolean_value FALSE)
 	(name "DisabledByUser"))
+
+([KB_633397_Class0] of  Map
+)
 
 ([KB_635552_Instance_0] of  Widget
 
@@ -5462,6 +5463,7 @@
 		":OWL-CLASS"
 		"http://www.w3.org/2000/01/rdf-schema#Literal"
 		"http://www.w3.org/2002/07/owl#Ontology"
+		"http://protege.stanford.edu/plugins/owl/protege#ExternalResource"
 		"http://www.w3.org/2002/07/owl#intersectionOf"
 		"http://www.w3.org/2001/XMLSchema#IDREF"
 		"http://www.w3.org/2000/01/rdf-schema#Datatype"
@@ -5618,24 +5620,6 @@
 	(widget_class_name "edu.stanford.smi.protege.widget.ProtegePropertiesTab"))
 
 ([skeivt-arkiv-test.rdf-xml_ProjectKB_Class10005] of  Property_List
-)
-
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class10006] of  Widget
-
-	(is_hidden FALSE)
-	(label "Name")
-	(name ":NAME")
-	(property_list [skeivt-arkiv-test.rdf-xml_ProjectKB_Class10008])
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
-
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class10007] of  Widget
-
-	(is_hidden FALSE)
-	(label "Comment")
-	(name "http://www.w3.org/2000/01/rdf-schema#comment")
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
-
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class10008] of  Property_List
 )
 
 ([skeivt-arkiv-test.rdf-xml_ProjectKB_Class10069] of  Boolean
@@ -6111,32 +6095,55 @@
 ([skeivt-arkiv-test.rdf-xml_ProjectKB_Class27] of  Property_List
 )
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30186] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30195] of  Widget
+
+	(is_hidden FALSE)
+	(label "Name")
+	(name ":NAME")
+	(property_list [skeivt-arkiv-test.rdf-xml_ProjectKB_Class30197])
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30196] of  Widget
+
+	(is_hidden FALSE)
+	(label "Comment")
+	(name "http://www.w3.org/2000/01/rdf-schema#comment")
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30197] of  Property_List
+)
+
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30270] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30187] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30271] of  String
 
 	(name "http://purl.org/ontology/bibo/Document")
 	(string_value "http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Ftitle"))
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30188] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30272] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Thing")
 	(string_value "%3ANAME"))
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30189] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30273] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Class")
 	(string_value "%3ANAME"))
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30190] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30274] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
 
-([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30191] of  String
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30275] of  String
+
+	(name "http://data.ub.uib.no/Trash")
+	(string_value "http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2Ftitle"))
+
+([skeivt-arkiv-test.rdf-xml_ProjectKB_Class30276] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
@@ -6350,8 +6357,8 @@
 ([skeivt-arkiv-test.rdf-xml_ProjectKB_Class6] of  Property_List
 
 	(properties
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class10006]
-		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class10007]))
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30195]
+		[skeivt-arkiv-test.rdf-xml_ProjectKB_Class30196]))
 
 ([skeivt-arkiv-test.rdf-xml_ProjectKB_Class60] of  Property_List
 )

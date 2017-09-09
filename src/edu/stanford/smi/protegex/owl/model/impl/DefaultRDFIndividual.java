@@ -23,27 +23,19 @@
 
 package edu.stanford.smi.protegex.owl.model.impl;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.Icon;
-
 import edu.stanford.smi.protege.model.DefaultSimpleInstance;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protege.model.KnowledgeBase;
-import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFIndividual;
-import edu.stanford.smi.protegex.owl.model.RDFObject;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
-import edu.stanford.smi.protegex.owl.model.RDFSLiteral;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.event.PropertyValueListener;
 import edu.stanford.smi.protegex.owl.model.event.ResourceListener;
 import edu.stanford.smi.protegex.owl.model.visitor.OWLModelVisitor;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+
+import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
 
@@ -61,9 +53,27 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         visitor.visitRDFIndividual(this);
     }
 
+    /**
+     * Check if this instance belongs to Trash
+     */
+    private boolean isInTrash() {
+        return getProtegeType().getLocalName().equals("Trash");
+    }
+
 
     public Icon getIcon() {
-    	String iconName = (isAnonymous() ? OWLIcons.RDF_ANON_INDIVIDUAL : OWLIcons.RDF_INDIVIDUAL); 
+    	String iconName;
+
+    	if(isInTrash()) {
+    	    iconName = OWLIcons.TRASH_ICON;
+        }
+    	else if(isAnonymous()) {
+           iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
+        }
+        else {
+    	    iconName = OWLIcons.RDF_INDIVIDUAL;
+        }
+    	//iconName = (isInTrash() || isAnonymous() ? OWLIcons.RDF_ANON_INDIVIDUAL : OWLIcons.RDF_INDIVIDUAL);
         return isEditable() ?
                 OWLIcons.getImageIcon(iconName) :
                 OWLIcons.getReadOnlyIndividualIcon(OWLIcons.getImageIcon(iconName));
