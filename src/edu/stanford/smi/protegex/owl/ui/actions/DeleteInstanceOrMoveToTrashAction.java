@@ -8,6 +8,7 @@ import edu.stanford.smi.protege.resource.ResourceKey;
 import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNamespaces;
 import edu.stanford.smi.protegex.owl.ui.dialogs.ModalDialogFactory;
 
 import javax.swing.*;
@@ -29,7 +30,6 @@ import java.util.Collection;
  */
 
 public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
-    public static final String TRASH_CLASS_NAME = "Trash";
     private static final long serialVersionUID = -1874566858726067173L;
 
     public DeleteInstanceOrMoveToTrashAction(ResourceKey key, Selectable selectable) {
@@ -150,10 +150,10 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Get Trash class or create new one if it does not exist
      */
     public static OWLNamedClass getTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = model.getOWLNamedClass(TRASH_CLASS_NAME);
+        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
         //If it does not exists, create it.
         if (trashClass == null) {
-            trashClass = model.createOWLNamedClass(TRASH_CLASS_NAME);
+            trashClass = model.createOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
         }
         return trashClass;
     }
