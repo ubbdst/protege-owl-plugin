@@ -62,9 +62,9 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     /**
      * Show modal dialog with OK/Cancel options
      */
-    private boolean isMoveToTrashConfirmed() {
+    private boolean isMoveToTrashConfirmed(Instance instance) {
         int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(),
-                "Instance will be moved to class Trash", "Move to Trash", ModalDialogFactory.MODE_OK_CANCEL);
+                "Instance " +   "\"" + instance.getBrowserText() + "\"" + " will be moved to Trash", "Move to trash", ModalDialogFactory.MODE_OK_CANCEL);
         return option == ModalDialogFactory.OPTION_OK;
     }
 
@@ -87,9 +87,8 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     public void onDelete(Object var1) {
         Instance instance = (Instance) var1;
         if (canDelete(instance)) {
-            if (isDeleteConfirmed("Deleting an instance means removing all of its references " +
-                    "to other resources and then destroy\nthe instance permanently. " +
-                    "Are you sure you want to delete this instance?")) {
+            if (isDeleteConfirmed("Are you sure you want to permanently delete instance " +
+                    "\"" + instance.getBrowserText() + "\"?")) {
                 onAboutToDelete(instance);
                 deleteInstance(instance);
                 onAfterDelete(instance);
@@ -191,12 +190,12 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         } else {//Otherwise, move instance to class Trash
             if (sourceInstance instanceof Cls) {
                 if (targetCls.isMetaclass()) {
-                    if(isMoveToTrashConfirmed()){
+                    if(isMoveToTrashConfirmed(sourceInstance)){
                         moveInstance(sourceInstance, targetCls);
                     }
                 }
             } else if (!targetCls.isMetaclass()) {
-                if(isMoveToTrashConfirmed()) {
+                if(isMoveToTrashConfirmed(sourceInstance)) {
                     moveInstance(sourceInstance, targetCls);
                 }
             }
