@@ -14,6 +14,7 @@ public class UBBOntologyNamespaces {
     public static final String CLASS_HIERARCHY_URI = "http://data.ub.uib.no/ontology/classHierarchyURI";
     public static final String UUID = "http://data.ub.uib.no/ontology/uuid";
     public static final String PREVIOUS_IDENTIFIER = "http://data.ub.uib.no/ontology/previousIdentifier";
+    public static final String HAS_BEEN_MERGED_WITH = "http://data.ub.uib.no/ontology/hasBeenMergedWith";
     public static final String TRASH_CLASS_NAME = "Trash";
 
 }

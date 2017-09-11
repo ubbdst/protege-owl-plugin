@@ -29,9 +29,6 @@ import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTra
 public class MergeResourceAction extends SetResourceAction {
 
     private PropertyValuesComponent component;
-    private String PREV_UUID_PREFIX = "previousUuid:";
-    private String PREV_SIGNATURE_PREFIX = "previousSignature:";
-
 
     public MergeResourceAction(PropertyValuesComponent component) {
         super("Select resource to merge", OWLIcons.getAddIcon(OWLIcons.RDF_INDIVIDUAL), component);
@@ -128,14 +125,15 @@ public class MergeResourceAction extends SetResourceAction {
         Object signature = resource.getPropertyValue(getProperty(UBBOntologyNamespaces.IDENTIFIER));
         Object uri = resource.getName();
 
-        //Put uri as previousId
-        assignPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER), uri);
-        //Add others as comments
+        getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.HAS_BEEN_MERGED_WITH), uri);
+
         if(uuid != null) {
-            getSubject().addComment(PREV_UUID_PREFIX + uuid);
+            getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER),
+                    "uuid:" + uuid);
         }
         if(signature != null) {
-            getSubject().addComment(PREV_SIGNATURE_PREFIX + signature);
+            getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER),
+                    "signature:" + signature);
         }
     }
 
@@ -259,7 +257,7 @@ public class MergeResourceAction extends SetResourceAction {
      * @param source an instance to be merged
      */
     private boolean isMergeConfirmed(RDFResource source, String text) {
-        return ProtegeUI.getModalDialogFactory().showConfirmDialog(source.getOWLModel(), text, "Confirm Merge");
+        return ProtegeUI.getModalDialogFactory().showConfirmDialog(source.getOWLModel(), text, "Confirm merge");
     }
 }
 

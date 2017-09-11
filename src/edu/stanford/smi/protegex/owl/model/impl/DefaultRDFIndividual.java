@@ -37,15 +37,53 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
+import static edu.stanford.smi.protegex.owl.ui.widget.ClassHierarchyURIWidget.stripDatatype;
+import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
+import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
 
+public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
 
     public DefaultRDFIndividual(KnowledgeBase kb, FrameID id) {
         super(kb, id);
     }
 
+    public DefaultRDFIndividual() { }
 
-    public DefaultRDFIndividual() {
+    /**
+     * Returns a local name of this instance
+     *
+     * Note that, this is an experimental feature, it may be removed in the future.
+     */
+    /*private String getHumanReadableName(OWLModel model) {
+        if(humanReadableText == null) {
+            String classURI = getProtegeType().getName();
+            //Generate new browser text
+            String newBrowserText = model.getUniqueFrameName(NamespaceUtil.getLocalName(classURI));
+            //Set this new browser text
+            setHumanReadableText(newBrowserText);
+            return newBrowserText;
+        }
+        return humanReadableText;
+    }*/
+
+    /**
+     * Returns a human understandable name of this instance
+     *
+     * This is an experimental feature, it may be removed in the future.
+     */
+    public String getUnderstandableName() {
+        String uuid = getUUIDFromInstanceURI(this);
+        if(!uuid.isEmpty()) {
+            if (isInTrash()) {
+                Object classHierarchyURI = getPropertyValue(getOWLModel()
+                        .getRDFProperty(UBBOntologyNamespaces.CLASS_HIERARCHY_URI));
+                if (classHierarchyURI != null) {
+                  return stripDatatype(classHierarchyURI.toString());
+                }
+            }
+            return getProtegeType().getLocalName() + "_" + uuid;
+        }
+      return "";
     }
 
 
@@ -60,6 +98,17 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         return getProtegeType().getLocalName().equals(UBBOntologyNamespaces.TRASH_CLASS_NAME);
     }
 
+    @Override
+    public String getBrowserText() {
+        String browserText = super.getBrowserText();
+        //Append class name for easy readability
+        if(browserText.startsWith("http") || isValidUUID(browserText)){
+            if(!getUnderstandableName().isEmpty()) {
+                return getUnderstandableName();
+            }
+        }
+        return browserText;
+    }
 
     public Icon getIcon() {
     	String iconName;
@@ -472,11 +521,9 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         OWLUtil.setPropertyValue(this, property, value);
     }
 
-
     public void setPropertyValues(RDFProperty property, Collection values) {
         OWLUtil.setPropertyValues(this, property, values);
     }
-
 
     public void setProtegeType(RDFSClass type) {
         OWLUtil.setProtegeType(this, type);

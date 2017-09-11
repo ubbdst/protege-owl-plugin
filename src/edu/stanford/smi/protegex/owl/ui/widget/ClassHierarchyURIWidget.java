@@ -120,7 +120,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      * @return a string where datatype is stripped.
      *                 example: http://data.ub.uib.no/instance/document/ubb-ms-02
      */
-    protected static String stripDatatype(String rawValue) {
+    public static String stripDatatype(String rawValue) {
         if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
             return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
         }
