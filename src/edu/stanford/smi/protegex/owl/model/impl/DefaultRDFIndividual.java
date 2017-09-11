@@ -57,18 +57,17 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
      * Check if this instance belongs to Trash
      */
     private boolean isInTrash() {
-        return getProtegeType().getLocalName().equals("Trash");
+        return getProtegeType().getLocalName().equals(UBBOntologyNamespaces.TRASH_CLASS_NAME);
     }
 
 
     public Icon getIcon() {
     	String iconName;
-
-    	if(isInTrash()) {
-    	    iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
-        }
-    	else if(isAnonymous()) {
+    	if(isAnonymous()) {
            iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
+        }
+        else if(isInTrash()) {
+            iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
         }
         else {
     	    iconName = OWLIcons.RDF_INDIVIDUAL;
