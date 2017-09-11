@@ -119,6 +119,7 @@ public class OWLIcons {
 
     public static final String TRASH_CLASS_ICON = "OWLTrashClass";
     public static final String TRASH_INDIVIDUAL_ICON = "OWLTrashIndividual";
+    public static final String MERGE_INDIVIDUAL_ICON = "OWLMergeIndividual";
 
     public static final String DELETE_OVERLAY = "DeleteOverlay";
 
@@ -394,6 +395,10 @@ public class OWLIcons {
 
     public static Icon getTrashIndividualIcon() {
         return getImageIcon(TRASH_INDIVIDUAL_ICON);
+    }
+
+    public static Icon getMergeIndividualIcon() {
+        return getImageIcon(MERGE_INDIVIDUAL_ICON);
     }
 
 

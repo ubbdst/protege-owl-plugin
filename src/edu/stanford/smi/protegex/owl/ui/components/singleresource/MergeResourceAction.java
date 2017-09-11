@@ -31,11 +31,11 @@ public class MergeResourceAction extends SetResourceAction {
     private PropertyValuesComponent component;
 
     public MergeResourceAction(PropertyValuesComponent component) {
-        super("Select resource to merge", OWLIcons.getAddIcon(OWLIcons.RDF_INDIVIDUAL), component);
+        super("Select resource to merge", OWLIcons.getAddIcon(OWLIcons.MERGE_INDIVIDUAL_ICON), component);
         this.component = component;
     }
 
-    /**
+    /**method@2x.png
      * Moves a given instance to class Trash
      */
     private static void moveToTrash(RDFResource resource) {
