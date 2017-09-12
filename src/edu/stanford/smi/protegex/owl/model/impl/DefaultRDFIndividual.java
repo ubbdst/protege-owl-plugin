@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getTrashClass;
 import static edu.stanford.smi.protegex.owl.ui.widget.ClassHierarchyURIWidget.stripDatatype;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
@@ -95,7 +96,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
      * Check if this instance belongs to Trash
      */
     private boolean isInTrash() {
-        return getProtegeType().getLocalName().equals(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+        return getDirectTypes().contains(getTrashClass(getOWLModel()));
     }
 
     @Override

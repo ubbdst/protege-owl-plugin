@@ -4,10 +4,7 @@ import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.model.Reference;
 import edu.stanford.smi.protege.util.Log;
-import edu.stanford.smi.protegex.owl.model.OWLIndividual;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.model.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -193,6 +190,17 @@ public class InstanceUtil {
     }
 
 
+    /**
+     * Get Trash class or create new one if it does not exist
+     */
+    public static OWLNamedClass getTrashClass(OWLModel model) {
+        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+        //If it does not exists, create it.
+        if (trashClass == null) {
+            trashClass = model.createOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+        }
+        return trashClass;
+    }
 }
 
 

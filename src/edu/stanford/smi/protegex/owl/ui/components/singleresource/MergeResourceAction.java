@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction.getTrashClass;
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getTrashClass;
 
 /**
  * A class that performs merge action
@@ -133,7 +133,7 @@ public class MergeResourceAction extends SetResourceAction {
         }
         if(signature != null) {
             getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER),
-                    "signature:" + signature);
+                    "identifier:" + signature);
         }
     }
 

@@ -24,7 +24,6 @@
 package edu.stanford.smi.protegex.owl.ui.components.literaltable;
 
 import edu.stanford.smi.protegex.owl.model.*;
-import edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
@@ -156,17 +155,21 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
     }
 
 
-    private void handleAddAction() {
+    /**
+     * The original method for createAction from Holger Knublauch
+     */
+
+    /*private void handleAddAction() {
         Object defaultValue = createDefaultValue();
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             getSubject().addPropertyValue(getPredicate(), defaultValue);
             table.setSelectedRow(defaultValue);
-            
-            if (defaultValue instanceof DefaultRDFSLiteral && ((DefaultRDFSLiteral)defaultValue).getDatatype().equals(getOWLModel().getXSDstring())) {
-            	table.editCell(defaultValue);
-            	return;
+
+            if (defaultValue instanceof DefaultRDFSLiteral && ((DefaultRDFSLiteral)defaultValue)
+                    .getDatatype().equals(getOWLModel().getXSDstring())) {
+                table.editCell(defaultValue);
+                return;
             }
-                        
             if (!defaultValue.equals("")) {
                 final Iterator it = PropertyValueEditorManager.listEditors();
                 while (it.hasNext()) {
@@ -181,6 +184,37 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
                         return;
                     }
                 }
+            }
+            table.editCell(defaultValue);
+        }
+    }*/
+
+
+    /**
+     * This is a modified version of the method such that,editor panel is brought forward when creating value
+     * The method is experimental
+     */
+    private void handleAddAction() {
+        Object defaultValue = createDefaultValue();
+        if (defaultValue != null && !getObjects().contains(defaultValue)) {
+            //Add this to show the position of the cursor
+            getSubject().addPropertyValue(getPredicate(), defaultValue);
+            table.setSelectedRow(defaultValue);
+
+            //By default, bring up the editor panel.
+              final Iterator it = PropertyValueEditorManager.listEditors();
+                while (it.hasNext()) {
+                    PropertyValueEditor editor = (PropertyValueEditor) it.next();
+                    if (editor.canEdit(getSubject(), getPredicate(), null)) {
+                        Object newValue = editor.editValue(this, getSubject(), getPredicate(), defaultValue);
+                        if (newValue != null && !newValue.equals(defaultValue)) {
+                            getSubject().addPropertyValue(getPredicate(), newValue);
+                            table.setSelectedRow(newValue);
+                        }
+                        //Remove cursor position from the cell
+                        getSubject().removePropertyValue(getPredicate(), defaultValue);
+                        return;
+                    }
             }
             table.editCell(defaultValue);
         }

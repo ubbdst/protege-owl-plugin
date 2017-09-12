@@ -8,8 +8,8 @@ import edu.stanford.smi.protege.resource.ResourceKey;
 import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
-import edu.stanford.smi.protegex.owl.model.UBBOntologyNamespaces;
 import edu.stanford.smi.protegex.owl.ui.dialogs.ModalDialogFactory;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -146,19 +146,6 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
 
 
     /**
-     * Get Trash class or create new one if it does not exist
-     */
-    public static OWLNamedClass getTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
-        //If it does not exists, create it.
-        if (trashClass == null) {
-            trashClass = model.createOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
-        }
-        return trashClass;
-    }
-
-
-    /**
      * Get model for the given instance
      */
     private OWLModel getOWLModel(Instance instance){
@@ -180,7 +167,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * @param sourceInstance instance to move or delete
      */
     protected void deleteOrMove(Instance sourceInstance) {
-        OWLNamedClass targetCls = getTrashClass(getOWLModel(sourceInstance));
+        OWLNamedClass targetCls = InstanceUtil.getTrashClass(getOWLModel(sourceInstance));
         //If instance belongs to class Trash and deletion is confirmed,
         //then delete permanently
         if (sourceInstance.hasDirectType(targetCls)) {
