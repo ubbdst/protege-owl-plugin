@@ -201,6 +201,25 @@ public class InstanceUtil {
         }
         return trashClass;
     }
+
+    /**
+     * Validates language tag based on xsd:language specification.
+     * See http://www.datypic.com/sc/xsd/t-xsd_language.html.
+     *
+     * @param language a language tag to validate
+     *
+     * @return true if language tag is valid, otherwise false.
+     */
+    public static boolean isValidXSDLanguage(String language) {
+        String xsdLangRegex = "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$";
+        if (language == null || language.trim().length() == 0) {
+            return false;
+        }
+        if(language.matches(xsdLangRegex)) {
+            return true;
+        }
+        return false;
+    }
 }
 
 

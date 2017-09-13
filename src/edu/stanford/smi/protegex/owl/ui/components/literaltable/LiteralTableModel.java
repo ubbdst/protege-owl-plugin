@@ -33,6 +33,8 @@ import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditorManager;
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.isValidXSDLanguage;
+
 /**
  * A TableModel managing a list of RDFSLiterals which are predicate values of
  * a given subject/predicate pair.  This is used by the corresponding widget.
@@ -328,8 +330,8 @@ public class LiteralTableModel extends AbstractTableModel {
     }
 
      //Original code
-
-    /*private void setLangAt(String value, int rowIndex) {
+    /*
+     private void setLangAt(String value, int rowIndex) {
         final String lexicalValue = (String) getValueAt(rowIndex, COL_VALUE);
         value = value.trim();
         Object newValue;
@@ -341,28 +343,26 @@ public class LiteralTableModel extends AbstractTableModel {
         }
         values.set(rowIndex, newValue);
         subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
-    }*/
+    }
+    */
 
 
     /*
-       Modified by Hemed, 28-07-2017
+     * Modified by Hemed Al Ruwehy
+     * 2017-09-13
      */
     private void setLangAt(String value, int rowIndex) {
         final String lexicalValue = (String)getValueAt(rowIndex, COL_VALUE);
         Object newValue;
-        if (value == null || value.trim().length() == 0) {
-            newValue = lexicalValue;
+        if(isValidXSDLanguage(value)) {//Validate xsd:language
+            newValue =  owlModel.createRDFSLiteral(lexicalValue, value.trim());
         }
         else {
-            newValue = owlModel.createRDFSLiteral(lexicalValue, value.trim());
+            newValue = lexicalValue;
         }
         values.set(rowIndex, newValue);
-        subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
+        subject.setPropertyValues(predicate, getNewValues(rowIndex));  //Will fire back events etc
     }
-
-
-
-
 
 
     public void setValues(Collection newValues) {

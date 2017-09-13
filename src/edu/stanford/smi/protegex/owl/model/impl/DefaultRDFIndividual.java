@@ -72,7 +72,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
      *
      * This is an experimental feature, it may be removed in the future.
      */
-    public String getUnderstandableName() {
+    private String getHumanReadableName() {
         String uuid = getUUIDFromInstanceURI(this);
         if(!uuid.isEmpty()) {
             if (isInTrash()) {
@@ -82,7 +82,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
                   return stripDatatype(classHierarchyURI.toString());
                 }
             }
-            return getProtegeType().getLocalName() + "_" + uuid;
+            return getProtegeType().getBrowserText() + "_" + uuid;
         }
       return "";
     }
@@ -96,7 +96,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
      * Check if this instance belongs to Trash
      */
     private boolean isInTrash() {
-        return getDirectTypes().contains(getTrashClass(getOWLModel()));
+        return getProtegeTypes().contains(getTrashClass(getOWLModel()));
     }
 
     @Override
@@ -104,8 +104,8 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         String browserText = super.getBrowserText();
         //Append class name for easy readability
         if(browserText.startsWith("http") || isValidUUID(browserText)){
-            if(!getUnderstandableName().isEmpty()) {
-                return getUnderstandableName();
+            if(!getHumanReadableName().isEmpty()) {
+                return getHumanReadableName();
             }
         }
         return browserText;

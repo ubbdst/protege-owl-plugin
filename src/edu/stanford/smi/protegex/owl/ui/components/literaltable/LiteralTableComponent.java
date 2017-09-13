@@ -24,6 +24,7 @@
 package edu.stanford.smi.protegex.owl.ui.components.literaltable;
 
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
@@ -69,6 +70,7 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
         public void actionPerformed(ActionEvent e) {
             handleViewAction();
         }
+
     };
 
 
@@ -155,11 +157,7 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
     }
 
 
-    /**
-     * The original method for createAction from Holger Knublauch
-     */
-
-    /*private void handleAddAction() {
+     private void handleAddAction() {
         Object defaultValue = createDefaultValue();
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             getSubject().addPropertyValue(getPredicate(), defaultValue);
@@ -187,22 +185,23 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
             }
             table.editCell(defaultValue);
         }
-    }*/
+    }
 
 
     /**
-     * This is a modified version of the method such that,editor panel is brought forward when creating value
-     * The method is experimental
+     * This is a modified version of the method such that, editor panel is brought
+     * forward when creating value. The method was experimental.
      */
-    private void handleAddAction() {
+    /*private void handleAddAction() {
         Object defaultValue = createDefaultValue();
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             //Add this to show the position of the cursor
             getSubject().addPropertyValue(getPredicate(), defaultValue);
             table.setSelectedRow(defaultValue);
 
-            //By default, bring up the editor panel.
-              final Iterator it = PropertyValueEditorManager.listEditors();
+            if (!defaultValue.equals("")) {
+                //By default, bring up the editor panel.
+                final Iterator it = PropertyValueEditorManager.listEditors();
                 while (it.hasNext()) {
                     PropertyValueEditor editor = (PropertyValueEditor) it.next();
                     if (editor.canEdit(getSubject(), getPredicate(), null)) {
@@ -215,10 +214,11 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
                         getSubject().removePropertyValue(getPredicate(), defaultValue);
                         return;
                     }
+                }
             }
             table.editCell(defaultValue);
         }
-    }
+    }*/
 
 
     private void handleDeleteAction() {
