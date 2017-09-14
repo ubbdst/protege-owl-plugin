@@ -157,7 +157,14 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
     }
 
 
+    private void removeEmptyStringIfExists(){
+        if(getObjects().contains("")) {
+            getSubject().removePropertyValue(getPredicate(), "");
+        }
+    }
      private void handleAddAction() {
+        //There was an issue when empty string exists, the widget would  not respond
+        removeEmptyStringIfExists();
         Object defaultValue = createDefaultValue();
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             getSubject().addPropertyValue(getPredicate(), defaultValue);

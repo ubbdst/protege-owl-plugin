@@ -298,15 +298,13 @@ public class LiteralTableModel extends AbstractTableModel {
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         RDFSLiteral oldLiteral = getRDFSLiteral(rowIndex);
-
         if (columnIndex == COL_VALUE) {
             //Do not allow empty value to be saved.
-            //By adding this, users will not be able to put language tag first before the actual value.
-            //(added by Hemed)
-            if(aValue == null || aValue.toString().trim().isEmpty()){
+            //Side effect: by adding this, users will not be able to put language tag first before the actual value.
+            /*if(aValue == null || aValue.toString().trim().isEmpty()){
                 subject.removePropertyValue(predicate, aValue);
                 return;
-            }
+            }*/
 
             if (aValue instanceof RDFSLiteral) {
                 values.set(rowIndex, aValue.toString().trim());
