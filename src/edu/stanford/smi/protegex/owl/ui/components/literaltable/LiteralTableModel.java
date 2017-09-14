@@ -170,7 +170,7 @@ public class LiteralTableModel extends AbstractTableModel {
             }
             else {
                 RDFSLiteral literal = getRDFSLiteral(rowIndex);
-                return literal.toString();
+                return literal.toString().trim();
             }
         }
         else {
@@ -298,23 +298,29 @@ public class LiteralTableModel extends AbstractTableModel {
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         RDFSLiteral oldLiteral = getRDFSLiteral(rowIndex);
+
         if (columnIndex == COL_VALUE) {
+            //Do not allow empty value to be saved.
+            //By adding this, users will not be able to put language tag first before the actual value.
+            //(added by Hemed)
+            if(aValue == null || aValue.toString().trim().isEmpty()){
+                subject.removePropertyValue(predicate, aValue);
+                return;
+            }
+
             if (aValue instanceof RDFSLiteral) {
-                values.set(rowIndex, aValue);
+                values.set(rowIndex, aValue.toString().trim());
             }
             else {
-                final String lexicalValue = (String) aValue;
-                
-                RDFSLiteral newValue = oldLiteral;
-                                
+                final String lexicalValue = ((String) aValue).trim();
+                RDFSLiteral newValue;
                 RDFSDatatype datatype = oldLiteral.getDatatype();
-                
+
                 if (datatype.equals(owlModel.getXSDstring())) {
                 	newValue = DefaultRDFSLiteral.create(owlModel, lexicalValue, oldLiteral.getLanguage());
                 } else {
                 	newValue = owlModel.createRDFSLiteral(lexicalValue, datatype);
-                }              
-                
+                }
                 values.set(rowIndex, newValue);
             }
             subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
