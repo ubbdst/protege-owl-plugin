@@ -1,11 +1,12 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
 
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Facet;
 import edu.stanford.smi.protege.model.Slot;
-import edu.stanford.smi.protege.util.CollectionUtilities;
-import edu.stanford.smi.protege.widget.NumberFieldWidget;
+import edu.stanford.smi.protege.widget.TextFieldWidget;
+import edu.stanford.smi.protegex.owl.model.*;
 
 import javax.swing.*;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -17,6 +18,8 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static edu.stanford.smi.protegex.owl.ui.widget.ClassHierarchyURIWidget.stripDatatype;
+
 /**
  * @author Hemed Ali (hemed.ruwehy@uib.no)
  * @version 1.0
@@ -25,12 +28,20 @@ import java.util.logging.Logger;
  * A Protege Slot Widget plugin for validating xsd:gYear.
  */
 
-public class UBBgYearWidget extends NumberFieldWidget {
+public class UBBgYearWidget extends TextFieldWidget {
 
     private static final Logger logger = Logger.getLogger(UBBgYearWidget.class.getName());
     private static final String INVALID_INPUT_MSG = "Invalid input";
     private static final String LABEL_GYEAR_FORMAT = " (yyyy)";
     private static final String INVALID_GYEAR_MSG = "Invalid value for gYear: ";
+
+
+    /**
+     * A place where SingleLiteralWidget is applicable, this also is applicable
+     */
+    /*public static boolean isSuitable(Class clazz, Cls cls, Slot slot) {
+       return true;
+    }*/
 
     //Always show the widget in the dropdownlist
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
@@ -129,7 +140,7 @@ public class UBBgYearWidget extends NumberFieldWidget {
     @Override
     public Collection getValues() {
         //Get the current input value
-        String currentSlotValue = getText();
+        String currentSlotValue = stripDatatype(getText());
         String gYear = getValidGYear(currentSlotValue);
 
         if (gYear == null && currentSlotValue != null) {
@@ -146,7 +157,86 @@ public class UBBgYearWidget extends NumberFieldWidget {
             logger.log(Level.SEVERE, "Invalid input for gYear: " + currentSlotValue);
         }
 
-        return CollectionUtilities.createCollection(gYear);
+        System.out.println("Gyear: " + createGyearLiteral(stripDatatype(gYear)).toString());
+
+
+        assignPropertyValueToInstance(createGyearLiteral(gYear));
+
+        return super.getValues();
+    }
+
+
+    /**
+     * Assign slot value to a corresponding individual.
+     */
+    private void assignPropertyValueToInstance(Object newValue) {
+        if (newValue != null) {
+            Collection oldValues = getSubject().getPropertyValues(getPredicate(), true);
+            if (!oldValues.contains(newValue)) {
+                getSubject().setPropertyValue(getPredicate(), newValue);
+            }
+        }
+
+    }
+
+
+    /**
+     * Get RDF resource of this slot
+     */
+    private RDFResource getSubject() {
+        return (RDFResource) getInstance();
+    }
+
+    /**
+     * Get RDF property (this slot)
+     */
+    private RDFProperty getPredicate() {
+        return getOWLModel().getRDFProperty(getSlot().getName());
+    }
+
+
+    @Override
+    public void setValues(Collection collection) {
+        //System.out.println("gYear Collection values: " + getSlotValues());
+        setText("");
+        super.setValues(getSlotValues());
+    }
+
+    /**
+     * Get values for this slot, or null if no value
+     */
+    private Collection getSlotValues() {
+        return getInstance().getDirectOwnSlotValues(getSlot());
+    }
+
+
+    @Override
+    public void setText(String s) {
+        String plainText = stripDatatype(s);
+        super.setText(plainText);
+    }
+
+
+
+    private RDFSDatatype getGyearDatatype() {
+        System.out.println("gYear: " + getOWLModel().getRDFSDatatypeByURI(XSDDatatype.XSDgYear.getURI()).getURI() );
+        return  getOWLModel().getRDFSDatatypeByURI(XSDDatatype.XSDgYear.getURI());
+
+    }
+
+
+
+    /**
+     * Create literal with XSD:gYear datatype
+     */
+    public RDFSLiteral createGyearLiteral(String text){
+        return getOWLModel().createRDFSLiteral(text, getGyearDatatype());
+
+    }
+
+
+    private OWLModel getOWLModel() {
+        return (OWLModel)getKnowledgeBase();
     }
 
 

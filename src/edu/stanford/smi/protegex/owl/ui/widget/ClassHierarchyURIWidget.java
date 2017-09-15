@@ -121,6 +121,9 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      *                 example: http://data.ub.uib.no/instance/document/ubb-ms-02
      */
     public static String stripDatatype(String rawValue) {
+        if(rawValue == null) {
+            return "";
+        }
         if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
             return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
         }
