@@ -13,8 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.DATATYPE_PREFIX;
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.LANGUAGE_PREFIX;
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.SEPARATOR;
+
 /**
- * A static utility class for some useful instance methods
+ * A static utility class for some convenience  methods
  *
  * @author Hemed Al Ruwehy
  *         University of Bergen Library
@@ -219,6 +223,26 @@ public class InstanceUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * We know that value of this widget is of data type xsd:anyURI and there is no need for users to see
+     * the full URI including datatype in the UI. Therefore, we are stripping out datatype part for easy readability.
+
+     * @param rawValue a string with data type
+     *                 example: ~@http://www.w3.org/2001/XMLSchema#anyURI http://data.ub.uib.no/instance/document/ubb-ms-02
+     *
+     * @return a string where datatype is stripped.
+     *                 example: http://data.ub.uib.no/instance/document/ubb-ms-02
+     */
+    public static String stripDatatype(String rawValue) {
+        if(rawValue == null) {
+            return "";
+        }
+        if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
+            return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
+        }
+        return rawValue;
     }
 }
 

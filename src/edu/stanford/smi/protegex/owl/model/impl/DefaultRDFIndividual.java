@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getTrashClass;
-import static edu.stanford.smi.protegex.owl.ui.widget.ClassHierarchyURIWidget.stripDatatype;
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.stripDatatype;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
 
