@@ -22,21 +22,28 @@ import java.util.logging.Logger;
 
 
 /**
- * @author Hemed Ali (hemed.ruwehy@uib.no)
- * @version 1.0
+ * @author Hemed Ali Al Ruwehy (hemed.ruwehy@uib.no)
  * @since 2015-11-04
  * Modified: 2017-09-18
+ *
+ * The University of Bergen Library
+ *
  * <p>
- * A Protege OWL Slot Widget plugin for validating xsd:gYear. The widget will be shown to any slot wherever SingleLiteralWidget is
- * applicable to that slot.
+ * A Protege OWL Slot Widget for validating xsd:gYear. The widget will be shown to any slot whenever
+ * SingleLiteralWidget is applicable.
+ *
+ * The original SingleLiteralWidget with gYear datatype does not provide validation for gYear values,
+ * hence we decided to develop our own gYear widget so that gYear values are well validated before being
+ * assigned to the slot.
  */
 
 public class UBBgYearWidget extends NumberFieldWidget {
 
     private static final Logger logger = Logger.getLogger(UBBgYearWidget.class.getName());
     private static final String INVALID_INPUT_MSG = "Invalid input";
-    private static final String LABEL_GYEAR_FORMAT = " (yyyy)";
-    private static final String INVALID_GYEAR_MSG = "Invalid value for gYear: ";
+    private static final String YEAR_FORMAT = " (yyyy)";
+    private static final String INVALID_YEAR_MSG = "Invalid value for gYear: ";
+    private static final String EMPTY_STRING = "";
 
 
     //A place where SingleLiteralWidget is applicable, this also is applicable
@@ -44,42 +51,40 @@ public class UBBgYearWidget extends NumberFieldWidget {
         return SingleLiteralWidget.isSuitable(cls, slot, facet);
     }
 
-    //A Protege main methord to allow easy debuging
-    public static void main(String[] args) {
-        edu.stanford.smi.protege.Application.main(args);
-    }
 
+    @Override
+    public void initialize() {
+        super.initialize();
+        this.setPreferredColumns(2);
+    }
 
     @Override
     public String getLabel() {
-        return super.getLabel().concat(LABEL_GYEAR_FORMAT);
+        return super.getLabel().concat(YEAR_FORMAT);
     }
 
 
     /**
-     *  TODO: Do a better validation and do not return null.
-     *
      * A method to validate xsd:gYear based on the input string.
      *
-     * @param yearString  a string to validate
+     * @param yearString a gYear string to parse
      *
+     * @return {@code empty string} if a given string cannot be parsed to gYear, otherwise a valid gYear string
      */
-    private String getValidGYear(String yearString) {
+    private String getValidXSDgYear(String yearString) {
         String xmlGYear;
         try {
             int inputYear = Integer.parseInt(yearString);
-
-            /**
-             * Input year should be at most 4 digits number.
-             * Note: I had to make sure about this because
-             * if input year is greater than 4 digits, it will be truncated by toXMLFormat() method anyway.
+            /*
+             * Input year should be at most 4 digits number. I had to make sure about this because if input year
+             * is greater than 4 digits, it will be truncated by toXMLFormat() method anyway.
              **/
             if (inputYear > 0 && String.valueOf(inputYear).length() > 4) {
-                return null;
+                return EMPTY_STRING;
             }
             //Negative gYear with at most 4 digits is allowed. e.g -0160 for 160BC
             if (inputYear < 0 && String.valueOf(inputYear).length() > 5) {
-                return null;
+                return EMPTY_STRING;
             }
 
             XMLGregorianCalendar gCalendar = DatatypeFactory
@@ -94,43 +99,43 @@ public class UBBgYearWidget extends NumberFieldWidget {
 
         } catch (DatatypeConfigurationException ex) {
             logger.log(Level.SEVERE, ex.getLocalizedMessage());
-            xmlGYear = null;
+            xmlGYear = EMPTY_STRING;
         } catch (NumberFormatException nfe) {
             logger.log(Level.SEVERE, "gYear must be a number: ", nfe.getLocalizedMessage());
-            xmlGYear = null;
+            xmlGYear = EMPTY_STRING;
         } catch (IllegalArgumentException ie) {
             logger.log(Level.SEVERE, ie.getLocalizedMessage());
-            xmlGYear = null;
+            xmlGYear = EMPTY_STRING;
         }
         return xmlGYear;
     }
 
 
     /**
-     *  This method is called on the value change. The idea is to validate the input value for this slot
-     *  whenever there is a change in value.
+     * This method is called on the value change. The idea is to validate the input value for this slot
+     * whenever there is a change in value.
      */
 
     @Override
     public Collection getValues() {
         String slotValueWithoutDatatype = InstanceUtil.stripDatatype(getText());
-        String gYear = getValidGYear(slotValueWithoutDatatype);
+        String gYear = getValidXSDgYear(slotValueWithoutDatatype);
         RDFSLiteral gYearLiteral = null;
 
-        if (gYear == null && slotValueWithoutDatatype != null) {
-
-            //Display error message
+        if (slotValueWithoutDatatype != null && gYear.equals(EMPTY_STRING)) {
+            invalidateSlot();
+            logger.log(Level.SEVERE, "Invalid input for gYear: [" + slotValueWithoutDatatype + "]");
+            //Display message to the user
             JOptionPane.showMessageDialog(
                     null, "Invalid value \"" + slotValueWithoutDatatype + "\" for gYear",
                     INVALID_INPUT_MSG,
                     JOptionPane.ERROR_MESSAGE
             );
-            logger.log(Level.SEVERE, "Invalid input for gYear: [" + slotValueWithoutDatatype + "]");
         }
-        if (gYear != null) {
+        if (!gYear.equals(EMPTY_STRING)) {
+            //Create xsd:gYear literal
             gYearLiteral = getOWLModel().createRDFSLiteral(gYear, getXSDgYear());
         }
-
         assignPropertyValueToInstance(gYearLiteral);
         return CollectionUtilities.createCollection(gYearLiteral);
     }
@@ -144,7 +149,7 @@ public class UBBgYearWidget extends NumberFieldWidget {
 
 
     /**
-     * Assign slot value to a corresponding individual.
+     * Assign slot value to a corresponding individual, if it does not exist.
      */
     private void assignPropertyValueToInstance(Object newValue) {
         if (newValue != null) {
@@ -158,7 +163,7 @@ public class UBBgYearWidget extends NumberFieldWidget {
 
     @Override
     public void setInvalidValueBorder() {
-        //super.setInvalidValueBorder();
+        //Do nothing
     }
 
 
@@ -177,13 +182,6 @@ public class UBBgYearWidget extends NumberFieldWidget {
     }
 
 
-    /**
-     * Get values for this slot, or null if no value
-     */
-    private Collection getSlotValues() {
-        return getInstance().getDirectOwnSlotValues(getSlot());
-    }
-
 
     private RDFSDatatype getXSDgYear() {
         return getOWLModel().getRDFSDatatypeByURI(XSDDatatype.XSDgYear.getURI());
@@ -199,8 +197,8 @@ public class UBBgYearWidget extends NumberFieldWidget {
      * Invalidate slot widget
      */
     private void invalidateSlot() {
-        getTextField().setForeground(Color.RED);
         super.setInvalidValueBorder();
+        getTextField().setForeground(Color.RED);
     }
 
 
@@ -211,14 +209,19 @@ public class UBBgYearWidget extends NumberFieldWidget {
         StringBuilder s = new StringBuilder();
         s.append("<html>")
                 .append("<strong>")
-                .append(INVALID_GYEAR_MSG)
+                .append(INVALID_YEAR_MSG)
                 .append("</strong>")
                 .append("\"")
                 .append(inputString)
                 .append("\"")
                 .append("</html>");
-
         return s.toString();
+    }
+
+
+    //Calling Protege main method for easy debugging
+    public static void main(String[] args) {
+        edu.stanford.smi.protege.Application.main(args);
     }
 }
 
