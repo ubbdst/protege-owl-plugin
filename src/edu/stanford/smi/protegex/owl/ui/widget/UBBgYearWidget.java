@@ -42,7 +42,7 @@ public class UBBgYearWidget extends NumberFieldWidget {
     private static final Logger logger = Logger.getLogger(UBBgYearWidget.class.getName());
     private static final String INVALID_INPUT_MSG = "Invalid input";
     private static final String YEAR_FORMAT = " (yyyy)";
-    private static final String INVALID_YEAR_MSG = "Invalid value for gYear: ";
+    private static final String INVALID_YEAR_MSG = "Invalid value for gYear : ";
     private static final String EMPTY_STRING = "";
 
 
@@ -122,12 +122,13 @@ public class UBBgYearWidget extends NumberFieldWidget {
         String gYear = getValidXSDgYear(slotValueWithoutDatatype);
         RDFSLiteral gYearLiteral = null;
 
-        if (slotValueWithoutDatatype != null && gYear.equals(EMPTY_STRING)) {
+        if (!slotValueWithoutDatatype.isEmpty() && gYear.equals(EMPTY_STRING)) {
             invalidateSlot();
             logger.log(Level.SEVERE, "Invalid input for gYear: [" + slotValueWithoutDatatype + "]");
             //Display message to the user
             JOptionPane.showMessageDialog(
-                    null, "Invalid value \"" + slotValueWithoutDatatype + "\" for gYear",
+                    null, "Invalid value \"" + slotValueWithoutDatatype + "\" for gYear. "
+                            + "Value must be a number with at most 4 digits",
                     INVALID_INPUT_MSG,
                     JOptionPane.ERROR_MESSAGE
             );
