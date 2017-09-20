@@ -63,8 +63,12 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Show modal dialog with OK/Cancel options
      */
     private boolean isMoveToTrashConfirmed(Instance instance) {
-        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(),
-                "The instance " +   "\"" + instance.getBrowserText() + "\"" + " will be moved to Trash", "Move to trash", ModalDialogFactory.MODE_OK_CANCEL);
+        String text =  "The instance " +   "\"" + instance.getBrowserText() + "\"" + " of class " +
+                instance.getDirectType().getBrowserText() + " will be moved to Trash";
+
+        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(), text, "Move to trash",
+                ModalDialogFactory.MODE_OK_CANCEL);
+
         return option == ModalDialogFactory.OPTION_OK;
     }
 
