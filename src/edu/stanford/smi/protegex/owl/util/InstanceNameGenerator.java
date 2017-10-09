@@ -8,11 +8,11 @@ package edu.stanford.smi.protegex.owl.util;
  *         The University of Bergen Library
  *         2017-04-10
  */
-public interface InstanceURI {
+public interface InstanceNameGenerator {
 
     /**
-     * Generate unique instance URI (name).
-     * The method should check the knowledgebase (model) if the instance exists before creating a new one
+     * Generates unique instance URI (name).
+     * The method checks the knowledgebase if the instance exists before creating a new one
      *
      * @return a new and unique instance URI
      */

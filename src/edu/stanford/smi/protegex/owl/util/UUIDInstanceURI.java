@@ -9,21 +9,21 @@ import java.util.logging.Logger;
 
 /**
  * A class for generating instance (individual) URI using UUID due to the University of Bergen Library (UBB) requirements.
- * UBB wants the instance URI (ID/name) to be in the form of "default_namespace + UUID"
- * e.g http://data.ub.uib.no/7673868d-231e-490d-9c4f-19288e7e668d
+ * UBB wants the instance URI to be in the form of "default_namespace" + "id" + "uuid"
+ * e.g http://data.ub.uib.no/id/7673868d-231e-490d-9c4f-19288e7e668d
  * <p>
- * The generated name ((URI) is ensured to be unique, because we are checking the knowledge base for every new name
+ * The generated name (URI) is ensured to be unique, because we are checking the knowledge base for every new name
  * and if one exists from before (which is unlikely due to the use of UUID), new name is generated.
  *
  * @author Hemed Al Ruwehy,
  *         2017-04-04
  *         University of Bergen Library
  */
-public class UUIDInstanceURI implements InstanceURI {
+public class UUIDInstanceURI implements InstanceNameGenerator {
 
-    private static final String INSTANCE_LABEL = "instance";
-    private static final String PATH_SEPARATOR = "/";
-    private static final String UNDEFINED_NAMESPACE = "undefined/";
+    private static final String ID_HOLDER             = "id/" ;
+    private static final String PATH_SEPARATOR        = "/";
+    private static final String UNDEFINED_NAMESPACE   = "undefined_namespace/";
     private static final String DEFAULT_UBB_NAMESPACE = "http://data.ub.uib.no/";
     private static transient Logger log = Log.getLogger(UUIDInstanceURI.class);
     private OWLModel owlModel;
@@ -54,17 +54,17 @@ public class UUIDInstanceURI implements InstanceURI {
      * @param knowledgeBase a knowledge base
      */
     public static String generateUniqueInstanceName(String namespace, KnowledgeBase knowledgeBase) {
+        String instanceUri;
         if (knowledgeBase == null) {
-            log.severe("Encountered null knowledge base. This is not allowed");
             throw new IllegalArgumentException("Knowledge base cannot be null");
         }
         String fullName = appendPathSeperator(namespace);
         do {
-            fullName = fullName + generateRandomUUID();
+            instanceUri = fullName + ID_HOLDER + generateRandomUUID();
         }
-        while (knowledgeBase.containsFrame(fullName));
+        while (knowledgeBase.containsFrame(instanceUri));
 
-        return fullName;
+        return instanceUri;
     }
 
     /**
@@ -102,7 +102,7 @@ public class UUIDInstanceURI implements InstanceURI {
      */
     private boolean instanceExists(String frameName) {
         if(owlModel == null){
-            throw new IllegalArgumentException("OWLModel is null hence cannot check the knowledge");
+            throw new IllegalArgumentException("OWLModel is null hence cannot check the knowledge base");
         }
         return owlModel.getHeadFrameStore().getFrame(frameName) != null;
     }
@@ -124,7 +124,7 @@ public class UUIDInstanceURI implements InstanceURI {
         do {
             //Keep generating new name until there is no such name in the knowledge base
             //(though unlikely due to the use of UUID)
-            instanceUri = getNamespaceForActiveProject() + generateRandomUUID();
+            instanceUri = getNamespaceForActiveProject() + ID_HOLDER + generateRandomUUID();
         }
         while (instanceExists(instanceUri));
         return instanceUri;
