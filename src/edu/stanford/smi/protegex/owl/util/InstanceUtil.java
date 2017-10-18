@@ -173,7 +173,7 @@ public class InstanceUtil {
      * Get active namespace for the active project
      */
     private static String getNamespace(OWLModel model) {
-        return new UUIDInstanceURI(model).getNamespaceForActiveProject();
+        return new UUIDInstanceName(model).getNamespaceForActiveProject();
     }
 
 

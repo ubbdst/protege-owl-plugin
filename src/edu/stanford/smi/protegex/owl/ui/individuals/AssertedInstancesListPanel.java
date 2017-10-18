@@ -44,8 +44,9 @@ import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashActio
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget;
+import edu.stanford.smi.protegex.owl.util.InstanceNameGenerator;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
-import edu.stanford.smi.protegex.owl.util.UUIDInstanceURI;
+import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
 
 import javax.swing.*;
 import java.awt.*;
@@ -260,9 +261,10 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             @Override
             public void onCreate() {
                 if (!classes.isEmpty()) {
-                    RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
+                    //RDFSClass firstType = (RDFSClass) CollectionUtilities.getFirstItem(classes);
                     //final String name = owlModel.createNewResourceName(NamespaceUtil.getLocalName(firstType.getName()));
-                    final String name = new UUIDInstanceURI(owlModel).generateUniqueName();
+                    InstanceNameGenerator nameGenerator = new UUIDInstanceName(owlModel);
+                    final String name = nameGenerator.generateUniqueName();
                     //log.info("Creating new instance with name: " + name);
                     Transaction<Instance> t = new Transaction<Instance>(owlModel, "Create Individual: " +
                             NamespaceUtil.getLocalName(name) + " of " + CollectionUtilities.toString(classes), name) {
@@ -422,7 +424,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
             @Override
             protected Instance copy(Instance instance, boolean isDeep) {
-                final String newName = new UUIDInstanceURI(owlModel).generateUniqueName();
+                InstanceNameGenerator generator = new UUIDInstanceName(owlModel);
+                final String newName = generator.generateUniqueName();
                 //log.info("Copying instance: " + instance.getName() + " to " + newName);
                 Instance copy = (Instance) super.copy(instance, isDeep).rename(newName);
                 log.info("Copied instance: " + instance.getName() + " to " + copy.getName());

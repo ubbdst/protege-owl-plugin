@@ -19,16 +19,16 @@ import java.util.logging.Logger;
  *         2017-04-04
  *         University of Bergen Library
  */
-public class UUIDInstanceURI implements InstanceNameGenerator {
+public class UUIDInstanceName implements InstanceNameGenerator {
 
     private static final String ID_HOLDER             = "id/" ;
     private static final String PATH_SEPARATOR        = "/";
     private static final String UNDEFINED_NAMESPACE   = "undefined_namespace/";
     private static final String DEFAULT_UBB_NAMESPACE = "http://data.ub.uib.no/";
-    private static transient Logger log = Log.getLogger(UUIDInstanceURI.class);
+    private static transient Logger log = Log.getLogger(UUIDInstanceName.class);
     private OWLModel owlModel;
 
-    public UUIDInstanceURI(OWLModel owlModel) {
+    public UUIDInstanceName(OWLModel owlModel) {
         this.owlModel = owlModel;
     }
 

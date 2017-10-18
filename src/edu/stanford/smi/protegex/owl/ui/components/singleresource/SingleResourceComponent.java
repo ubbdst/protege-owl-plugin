@@ -38,7 +38,8 @@ import edu.stanford.smi.protegex.owl.ui.actions.ResourceActionManager;
 import edu.stanford.smi.protegex.owl.ui.components.AbstractPropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
-import edu.stanford.smi.protegex.owl.util.UUIDInstanceURI;
+import edu.stanford.smi.protegex.owl.util.InstanceNameGenerator;
+import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,7 +169,8 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
         if (cls != null) {
             //Generate unique name for the instance
-            final String uniqueInstanceName = new UUIDInstanceURI(owlModel).generateUniqueName();
+            InstanceNameGenerator nameGenerator = new UUIDInstanceName(owlModel);
+            final String uniqueInstanceName = nameGenerator.generateUniqueName();
             //Instance instance = ((KnowledgeBase) owlModel).createInstance(null, cls);
             Instance instance = ((KnowledgeBase) owlModel).createInstance(uniqueInstanceName, cls);
             if (instance instanceof RDFUntypedResource) {
