@@ -5,7 +5,7 @@ import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.UBBOntologyNamespaces;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
@@ -121,18 +121,18 @@ public class MergeResourceAction extends SetResourceAction {
      * @param resource a resource by which its identifiers need to be copied
      */
     private void copyPreviousIdentifiers(RDFResource resource) {
-        Object uuid = resource.getPropertyValue(getProperty(UBBOntologyNamespaces.UUID));
-        Object signature = resource.getPropertyValue(getProperty(UBBOntologyNamespaces.IDENTIFIER));
+        Object uuid = resource.getPropertyValue(getProperty(UBBOntologyNames.UUID));
+        Object signature = resource.getPropertyValue(getProperty(UBBOntologyNames.IDENTIFIER));
         Object uri = resource.getName();
 
-        getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.HAS_BEEN_MERGED_WITH), uri);
+        getSubject().addPropertyValue(getProperty(UBBOntologyNames.HAS_BEEN_MERGED_WITH), uri);
 
         if(uuid != null) {
-            getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER),
+            getSubject().addPropertyValue(getProperty(UBBOntologyNames.PREVIOUS_IDENTIFIER),
                     "uuid:" + uuid);
         }
         if(signature != null) {
-            getSubject().addPropertyValue(getProperty(UBBOntologyNamespaces.PREVIOUS_IDENTIFIER),
+            getSubject().addPropertyValue(getProperty(UBBOntologyNames.PREVIOUS_IDENTIFIER),
                     "identifier:" + signature);
         }
     }
@@ -187,10 +187,10 @@ public class MergeResourceAction extends SetResourceAction {
     private void copyInstanceValues(RDFResource resource) {
         Collection<RDFProperty> properties = resource.getRDFProperties();
         for (RDFProperty property : properties) {
-            if (!property.getName().equals(UBBOntologyNamespaces.UUID) &&
+            if (!property.getName().equals(UBBOntologyNames.UUID) &&
                     /*!property.equals(getOWLModel().getRDFTypeProperty()) &&*/
-                    !property.getName().equals(UBBOntologyNamespaces.IDENTIFIER) &&
-                    !property.getName().equals(UBBOntologyNamespaces.CLASS_HIERARCHY_URI)) {
+                    !property.getName().equals(UBBOntologyNames.IDENTIFIER) &&
+                    !property.getName().equals(UBBOntologyNames.CLASS_HIERARCHY_URI)) {
 
                 Collection existingValues = getSubject().getPropertyValues(property);
                 Collection newValues = resource.getPropertyValues(property);

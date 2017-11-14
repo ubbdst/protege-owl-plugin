@@ -57,12 +57,11 @@ import java.util.*;
  * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top. For classes this can also be used to switch between asserted and
  * inferred view.
  *
- * Modified by Hemed Al Ruwehy to disable editing for instance name
+ * Modified by Hemed Al Ruwehy to disable editing for instance names
  *
  * @author Holger Knublauch <holger@knublauch.com>
  */
-public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
-{
+public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 
 	/**
 	 * @deprecated
@@ -435,7 +434,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 	}
 
 	/**
-	 *Load header label and disable instanceNameComponent for individuals
+	 *Load header label and disable instanceNameComponent for all individuals
 	 */
 	@Override
 	protected void loadHeaderLabel(Instance instance)
@@ -443,9 +442,18 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 		if (instanceNameComponent != null) {
 			instanceNameComponent.setInstance(instance);
 
-			//Disable editing of instanceNameComponent for Individuals
-			if (instance != null && instance instanceof RDFIndividual) {
+			//Disable instanceNameComponent for all Individuals
+			//This will make instance URI not editable
+			if (instance != null) {
+				if (instance instanceof RDFIndividual) {
 					instanceNameComponent.setEnabled(false);
+				}
+				//Disable editing Trash class URI
+				/*if(instance instanceof OWLNamedClass){//Trash is an instance of owl:Class
+				  if(instance.getName().equals(UBBOntologyNames.TRASH_CLASS_NAME)){
+					  instanceNameComponent.setEnabled(false);
+				  }
+				}*/
 			}
 		} else {
 			super.loadHeaderLabel(instance);

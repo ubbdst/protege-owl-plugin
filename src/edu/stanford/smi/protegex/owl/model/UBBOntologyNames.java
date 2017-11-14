@@ -8,14 +8,12 @@ package edu.stanford.smi.protegex.owl.model;
  * I think this is a dirty way to access namespaces,
  * we should have a mechanism to automatically retrive these from the active ontology.
  */
-public class UBBOntologyNamespaces {
+public class UBBOntologyNames {
 
-    //Namespace for the UBB ontology
-    private static final String UBBONT_NAMESPACE =  "http://data.ub.uib.no/ontology/";
 
+    private static final String UBBONT_NAMESPACE =     "http://data.ub.uib.no/ontology/";
     public static final String TITLE =                 "http://purl.org/dc/terms/title";
     public static final String IDENTIFIER  =           "http://purl.org/dc/terms/identifier";
-
     public static final String UUID =                  UBBONT_NAMESPACE + "uuid";
     public static final String TRASH_CLASS_NAME =      UBBONT_NAMESPACE + "Trash";
     public static final String CLASS_HIERARCHY_URI =   UBBONT_NAMESPACE + "classHierarchyURI";

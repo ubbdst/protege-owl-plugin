@@ -441,9 +441,9 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
                 //Build properties that need to be modified before instance is displaced
                 Map<RDFProperty, Object> properties = new HashMap<RDFProperty, Object>();
-                properties.put(owlModel.getRDFProperty(UBBOntologyNamespaces.IDENTIFIER), null);
-                properties.put(owlModel.getRDFProperty(UBBOntologyNamespaces.UUID), uuid);
-                properties.put(owlModel.getRDFProperty(UBBOntologyNamespaces.CLASS_HIERARCHY_URI), classHierarchyURI);
+                properties.put(owlModel.getRDFProperty(UBBOntologyNames.IDENTIFIER), null);
+                properties.put(owlModel.getRDFProperty(UBBOntologyNames.UUID), uuid);
+                properties.put(owlModel.getRDFProperty(UBBOntologyNames.CLASS_HIERARCHY_URI), classHierarchyURI);
 
                 //After copying, modify particular properties for a copied instance
                 InstanceUtil.modifyProperties(copy, properties);
