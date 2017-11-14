@@ -10,12 +10,16 @@ package edu.stanford.smi.protegex.owl.model;
  */
 public class UBBOntologyNamespaces {
 
-    public static final String IDENTIFIER  = "http://purl.org/dc/terms/identifier";
-    public static final String CLASS_HIERARCHY_URI = "http://data.ub.uib.no/ontology/classHierarchyURI";
-    public static final String UUID = "http://data.ub.uib.no/ontology/uuid";
-    public static final String PREVIOUS_IDENTIFIER = "http://data.ub.uib.no/ontology/previousIdentifier";
-    public static final String HAS_BEEN_MERGED_WITH = "http://data.ub.uib.no/ontology/hasBeenMergedWith";
-    public static final String TITLE = "http://purl.org/dc/terms/title";
-    public static final String TRASH_CLASS_NAME = "Trash";
+    //Namespace for the UBB ontology
+    private static final String UBBONT_NAMESPACE =  "http://data.ub.uib.no/ontology/";
+
+    public static final String TITLE =                 "http://purl.org/dc/terms/title";
+    public static final String IDENTIFIER  =           "http://purl.org/dc/terms/identifier";
+
+    public static final String UUID =                  UBBONT_NAMESPACE + "uuid";
+    public static final String TRASH_CLASS_NAME =      UBBONT_NAMESPACE + "Trash";
+    public static final String CLASS_HIERARCHY_URI =   UBBONT_NAMESPACE + "classHierarchyURI";
+    public static final String PREVIOUS_IDENTIFIER =   UBBONT_NAMESPACE + "previousIdentifier";
+    public static final String HAS_BEEN_MERGED_WITH =  UBBONT_NAMESPACE + "hasBeenMergedWith";
 
 }

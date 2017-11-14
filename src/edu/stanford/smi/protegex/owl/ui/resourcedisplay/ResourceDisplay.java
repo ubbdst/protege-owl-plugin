@@ -24,28 +24,6 @@
 
 package edu.stanford.smi.protegex.owl.ui.resourcedisplay;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.model.Project;
@@ -56,13 +34,7 @@ import edu.stanford.smi.protege.ui.InstanceDisplay;
 import edu.stanford.smi.protege.util.ComponentFactory;
 import edu.stanford.smi.protege.util.SelectionListener;
 import edu.stanford.smi.protege.widget.ClsWidget;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
-import edu.stanford.smi.protegex.owl.model.OWLNames;
-import edu.stanford.smi.protegex.owl.model.OWLOntology;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.event.PropertyValueAdapter;
 import edu.stanford.smi.protegex.owl.model.event.PropertyValueListener;
 import edu.stanford.smi.protegex.owl.swrl.ui.actions.FindRulesAction;
@@ -74,6 +46,12 @@ import edu.stanford.smi.protegex.owl.ui.search.FindUsageAction;
 import edu.stanford.smi.protegex.owl.ui.testing.OWLTestInstanceAction;
 import edu.stanford.smi.protegex.owl.ui.widget.InferredModeWidget;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 
 /**
  * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top. For classes this can also be used to switch between asserted and
@@ -457,16 +435,18 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 	}
 
 	/**
-	 *Load header label and disable instance name component
+	 *Load header label and disable instanceNameComponent for individuals
 	 */
 	@Override
 	protected void loadHeaderLabel(Instance instance)
 	{
 		if (instanceNameComponent != null) {
 			instanceNameComponent.setInstance(instance);
-			//Disable entire instanceNameComponent for editing
-			// Is it enough to only disable here?
-			instanceNameComponent.setEnabled(false);
+
+			//Disable editing of instanceNameComponent for Individuals
+			if (instance != null && instance instanceof RDFIndividual) {
+					instanceNameComponent.setEnabled(false);
+			}
 		} else {
 			super.loadHeaderLabel(instance);
 		}
@@ -489,6 +469,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 			}
 		}
 	}
+
 
 	@Override
 	protected void loadHeaderWithCls(Cls cls)
@@ -557,8 +538,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel
 		return typeText.toString();
 	}
 
-	public void notifySelectionListeners()
-	{
+	public void notifySelectionListeners() {
 	}
 
 	@Override

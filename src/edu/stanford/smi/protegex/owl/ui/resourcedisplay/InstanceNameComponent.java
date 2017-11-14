@@ -23,18 +23,15 @@
 
 package edu.stanford.smi.protegex.owl.ui.resourcedisplay;
 
-import java.awt.*;
-import java.util.Iterator;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
 import edu.stanford.smi.protege.event.FrameAdapter;
 import edu.stanford.smi.protege.event.FrameEvent;
 import edu.stanford.smi.protege.event.FrameListener;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.util.Disposable;
+
+import javax.swing.*;
+import java.util.Iterator;
 
 /**
  * A Component that can be used to display type(s) and name of an Instance.
@@ -59,7 +56,7 @@ public class InstanceNameComponent extends JPanel implements Disposable {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         //Disable instance name for editing
         //textField.setDisabledTextColor(Color.orange);
-        //textField.setEnabled(false);
+         textField.setEnabled(true);
         //textField.setBackground(Color.LIGHT_GRAY);
         //textField.setForeground(Color.BLACK);
         add(textField);
