@@ -252,7 +252,7 @@ public class DefaultOWLNamedClass extends DefaultRDFSNamedClass implements OWLNa
 
     @Override
     public Icon getIcon() {
-        if (getLocalName().equals(UBBOntologyNamespaces.TRASH_CLASS_NAME)) {
+        if (getLocalName().equals(NamespaceUtil.getLocalName(UBBOntologyNames.TRASH_CLASS_NAME))) {
             return isEditable() ?
                     OWLIcons.getImageIcon(OWLIcons.TRASH_CLASS_ICON) :
                     OWLIcons.getReadOnlyClsIcon(OWLIcons.getImageIcon(OWLIcons.TRASH_CLASS_ICON));

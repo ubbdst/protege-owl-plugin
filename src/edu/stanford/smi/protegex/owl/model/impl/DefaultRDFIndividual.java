@@ -37,10 +37,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getTrashClass;
-import static edu.stanford.smi.protegex.owl.util.InstanceUtil.stripDatatype;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.isInTrash;
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.stripDatatype;
 
 public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
 
@@ -51,23 +51,6 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     public DefaultRDFIndividual() { }
 
     /**
-     * Returns a local name of this instance
-     *
-     * Note that, this is an experimental feature, it may be removed in the future.
-     */
-    /*private String getHumanReadableName(OWLModel model) {
-        if(humanReadableText == null) {
-            String classURI = getProtegeType().getName();
-            //Generate new browser text
-            String newBrowserText = model.getUniqueFrameName(NamespaceUtil.getLocalName(classURI));
-            //Set this new browser text
-            setHumanReadableText(newBrowserText);
-            return newBrowserText;
-        }
-        return humanReadableText;
-    }*/
-
-    /**
      * Returns a human understandable name of this instance
      *
      * This is an experimental feature, it may be removed in the future.
@@ -75,9 +58,10 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     private String getHumanReadableName() {
         String uuid = getUUIDFromInstanceURI(this);
         if(!uuid.isEmpty()) {
-            if (isInTrash()) {
+            //If it is in Trash, return its full URI
+            if (isInTrash(this)) {
                 Object classHierarchyURI = getPropertyValue(getOWLModel()
-                        .getRDFProperty(UBBOntologyNamespaces.CLASS_HIERARCHY_URI));
+                        .getRDFProperty(UBBOntologyNames.CLASS_HIERARCHY_URI));
                 if (classHierarchyURI != null) {
                   return stripDatatype(classHierarchyURI.toString());
                 }
@@ -94,10 +78,14 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
 
     /**
      * Check if this instance belongs to Trash
+     * @deprecated use InstanceUtil#isInTrash(Instance)
      */
-    private boolean isInTrash() {
-        return getProtegeTypes().contains(getTrashClass(getOWLModel()));
-    }
+    /*private boolean isInTrash() {
+        OWLNamedClass trashClass = getOWLModel().getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+        return trashClass != null && getProtegeTypes().contains(trashClass);
+    }*/
+
+
 
     @Override
     public String getBrowserText() {
@@ -116,7 +104,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     	if(isAnonymous()) {
            iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
         }
-        else if(isInTrash()) {
+        else if(isInTrash(this)) {
             iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
         }
         else {

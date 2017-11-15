@@ -198,12 +198,24 @@ public class InstanceUtil {
      * Get Trash class or create new one if it does not exist
      */
     public static OWLNamedClass getTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
         //If it does not exists, create it.
         if (trashClass == null) {
-            trashClass = model.createOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
+            trashClass = model.createOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
         }
         return trashClass;
+    }
+
+    /**
+     * Check if the given individual belongs to class Trash
+     * @param resource a resource to check
+     */
+    public static boolean isInTrash(RDFIndividual resource){
+        if(resource != null){
+            OWLNamedClass trashClass = resource.getOWLModel().getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+            return trashClass != null && resource.getProtegeTypes().contains(trashClass);
+        }
+        return false;
     }
 
     /**
