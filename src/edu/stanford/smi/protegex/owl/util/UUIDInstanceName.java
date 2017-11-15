@@ -3,6 +3,7 @@ package edu.stanford.smi.protegex.owl.util;
 import edu.stanford.smi.protege.model.KnowledgeBase;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -82,13 +83,15 @@ public class UUIDInstanceName implements InstanceNameGenerator {
     }
 
     /**
-     * Get default namespace
+     * Get default namespace and throw exception if such namespace is not set.
      */
     public String getNamespaceForActiveProject() {
         if(owlModel != null ) {
             String namespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
             if(namespace == null) {
-                return UNDEFINED_NAMESPACE;
+                showErrorMessage(owlModel, "No default namespace found. Please add default namespace before creating new instance");
+                throw new IllegalArgumentException("No default namespace found");
+                //return UNDEFINED_NAMESPACE;
             }
             return appendPathSeperator(namespace).toLowerCase();
         }
@@ -133,5 +136,14 @@ public class UUIDInstanceName implements InstanceNameGenerator {
     @Override
     public String toString() {
         return "Instance URI generator for the University of Bergen Library";
+    }
+
+
+    /**
+     * Display popup error window with a given message
+     */
+    private void showErrorMessage(OWLModel model, String msg) {
+        //Display error message in a popup window
+        ProtegeUI.getModalDialogFactory().showErrorMessageDialog(model, msg);
     }
 }

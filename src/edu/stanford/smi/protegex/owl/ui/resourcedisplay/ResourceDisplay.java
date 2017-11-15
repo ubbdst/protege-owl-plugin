@@ -434,7 +434,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	}
 
 	/**
-	 *Load header label and disable instanceNameComponent for all individuals
+	 *Load header label and disable instanceNameComponent for all individuals and for Trash class
 	 */
 	@Override
 	protected void loadHeaderLabel(Instance instance)
@@ -449,11 +449,11 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 					instanceNameComponent.setEnabled(false);
 				}
 				//Disable editing Trash class URI
-				/*if(instance instanceof OWLNamedClass){//Trash is an instance of owl:Class
+				if(instance instanceof OWLNamedClass){//Trash is an instance of owl:Class
 				  if(instance.getName().equals(UBBOntologyNames.TRASH_CLASS_NAME)){
 					  instanceNameComponent.setEnabled(false);
 				  }
-				}*/
+				}
 			}
 		} else {
 			super.loadHeaderLabel(instance);
