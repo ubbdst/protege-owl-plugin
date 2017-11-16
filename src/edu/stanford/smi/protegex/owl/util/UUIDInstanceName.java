@@ -3,6 +3,7 @@ package edu.stanford.smi.protegex.owl.util;
 import edu.stanford.smi.protege.model.KnowledgeBase;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 
 import java.util.UUID;
@@ -25,7 +26,6 @@ public class UUIDInstanceName implements InstanceNameGenerator {
     private static final String ID_HOLDER             = "id/" ;
     private static final String PATH_SEPARATOR        = "/";
     private static final String UNDEFINED_NAMESPACE   = "undefined_namespace/";
-    private static final String DEFAULT_UBB_NAMESPACE = "http://data.ub.uib.no/";
     private static transient Logger log = Log.getLogger(UUIDInstanceName.class);
     private OWLModel owlModel;
 
@@ -83,19 +83,19 @@ public class UUIDInstanceName implements InstanceNameGenerator {
     }
 
     /**
-     * Get default namespace and throw exception if such namespace is not set.
+     * Get namespace for the active project or throw exception if such namespace is not found.
      */
     public String getNamespaceForActiveProject() {
         if(owlModel != null ) {
             String namespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
             if(namespace == null) {
                 showErrorMessage(owlModel, "No default namespace found. Please add default namespace before creating new instance");
-                throw new IllegalArgumentException("No default namespace found");
+                throw new NullPointerException("No default namespace found");
                 //return UNDEFINED_NAMESPACE;
             }
             return appendPathSeperator(namespace).toLowerCase();
         }
-        return DEFAULT_UBB_NAMESPACE;
+        return UBBOntologyNames.DEFAULT_NAMESPACE;
     }
 
     /**
@@ -108,13 +108,6 @@ public class UUIDInstanceName implements InstanceNameGenerator {
             throw new IllegalArgumentException("OWLModel is null hence cannot check the knowledge base");
         }
         return owlModel.getHeadFrameStore().getFrame(frameName) != null;
-    }
-
-    /**
-     * Get default namespace for the University of Bergen
-     */
-    public static String getUBBDefaultNamespace(){
-        return DEFAULT_UBB_NAMESPACE;
     }
 
 

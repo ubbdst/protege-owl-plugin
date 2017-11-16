@@ -10,8 +10,11 @@ package edu.stanford.smi.protegex.owl.model;
  */
 public class UBBOntologyNames {
 
+    //Default UBB namespace
+    public static final String DEFAULT_NAMESPACE = "http://data.ub.uib.no/";
+
     //Namespace for UBB ontology
-    private static final String UBBONT_NAMESPACE =     "http://data.ub.uib.no/ontology/";
+    public static final String UBBONT_NAMESPACE =     "http://data.ub.uib.no/ontology/";
 
     public static final String UUID =                  UBBONT_NAMESPACE + "uuid";
     public static final String TRASH_CLASS_NAME =      UBBONT_NAMESPACE + "Trash";

@@ -89,7 +89,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
             throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
         */
         } else if (slotValueExists(getSlot(UBBOntologyNames.IDENTIFIER), signature)) {
-            showErrorMessage("Signature \"" + signature + "\" already exists. Try another one");
+            showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
             //Do not continue
             throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
         }
