@@ -46,6 +46,21 @@ public class InstanceUtil {
     }
 
 
+    @SuppressWarnings("deprecation")
+    public static Collection getPropertyValues(RDFResource resource, RDFProperty property, boolean includeSubprop) {
+        OWLModel owlModel = resource.getOWLModel();
+        Collection values;
+        if (includeSubprop) {
+            values = owlModel.getOwnSlotValues(resource, property);
+        } else {
+            values = owlModel.getDirectOwnSlotValues(resource, property);
+        }
+        //return OWLFrameStoreUtils.convertValueListToRDFLiterals(owlModel, values);
+        return values;
+    }
+
+
+
     /**
      * Gets all references of type OWLIndividual of the given resource
      *

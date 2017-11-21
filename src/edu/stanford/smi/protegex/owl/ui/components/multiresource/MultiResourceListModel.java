@@ -23,31 +23,22 @@
 
 package edu.stanford.smi.protegex.owl.ui.components.multiresource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-
-import javax.swing.AbstractListModel;
-
 import edu.stanford.smi.protege.event.FrameAdapter;
 import edu.stanford.smi.protege.event.FrameEvent;
 import edu.stanford.smi.protege.event.FrameListener;
 import edu.stanford.smi.protege.model.Frame;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.server.framestore.RemoteClientFrameStore;
-import edu.stanford.smi.protege.util.ApplicationProperties;
-import edu.stanford.smi.protege.util.Disposable;
-import edu.stanford.smi.protege.util.FrameWithBrowserText;
-import edu.stanford.smi.protege.util.FrameWithBrowserTextComparator;
-import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
 import edu.stanford.smi.protegex.owl.ui.individuals.OWLGetOwnSlotValuesBrowserTextJob;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+
+import javax.swing.*;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * A ListModel representing values of a subject-predicate pair.
@@ -162,9 +153,14 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     			isCached()) {
     		return getValuesFromCache();
     	} else {
-        	OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
+        	//OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
+			OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, true);
         	Collection<FrameWithBrowserText> vals = job.execute();
-        	return new ArrayList<FrameWithBrowserText>(vals);    		
+        	if(vals.size() > 1000) {
+        		return Collections.emptyList();
+			}
+        	//return new ArrayList<FrameWithBrowserText>(vals);
+			return new ArrayList<FrameWithBrowserText>(vals);
     	}
     }
     
@@ -214,6 +210,7 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     //TODO: refactor out
     private Collection getLocalValues() {
     	Collection values = new ArrayList(subject.getPropertyValues(predicate, true));
+		System.out.println("Inside local values : " + values.size());
     	values.addAll(subject.getHasValuesOnTypes(predicate));
     	return values;
     }
