@@ -30,6 +30,7 @@ import edu.stanford.smi.protege.model.Frame;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.server.framestore.RemoteClientFrameStore;
 import edu.stanford.smi.protege.util.*;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
@@ -48,17 +49,21 @@ import java.util.logging.Level;
 public class MultiResourceListModel extends AbstractListModel implements Disposable {
 
 	private static final long serialVersionUID = -7197293909519481988L;
+	int count = 0;
 
 	private RDFProperty predicate;
     private RDFResource subject;
     private List<FrameWithBrowserText> values = new ArrayList<FrameWithBrowserText>();
+	private List<FrameWithBrowserText> listValues = new ArrayList<FrameWithBrowserText>();
+    private boolean isAlreadyAdded = false;
+    private Map<RDFResource, RDFProperty> propertyMap = new HashMap<RDFResource, RDFProperty>();
     
     private FrameListener frameListener;
 
     public MultiResourceListModel(RDFProperty predicate) {
         this.predicate = predicate;
         this.frameListener = getFrameListener();
-        addListener();
+		this.addListener();
     }
 
     @SuppressWarnings("deprecation")
@@ -81,13 +86,13 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     		frameListener = new FrameAdapter() {
     			@Override
     			public void browserTextChanged(FrameEvent event) {
-    				Frame frame = event.getFrame();
+    				/*Frame frame = event.getFrame();
     				for (FrameWithBrowserText fbt : values) {
 						Frame f = fbt.getFrame();
 						if (f != null && f.equals(frame)) {
 							updateValues();
 						}
-					}
+					}*/
     			}
     		};
     	}
@@ -137,31 +142,34 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 
     public void setSubject(RDFResource subject) {
         this.subject = subject;
-        updateValues();
+        //updateValues();    //This causes to call updateValues() twice.
     }
 
 
     public void updateValues() {
-        fireIntervalRemoved(this, 0, values.size());
-        values = getValues();
-        fireIntervalAdded(this, 0, values.size());
+    	//if(propertyMap.get(subject) == null || !propertyMap.get(subject).equals(predicate)) {
+			fireIntervalRemoved(this, 0, values.size());
+			values = getValues();
+			fireIntervalAdded(this, 0, values.size());
+			//count++;
+			System.out.println(count + " Values: " + values.size() + " List values: " + listValues.size() + " for " + subject.getBrowserText() + " on " + predicate.getBrowserText());
+			//propertyMap.put(subject, predicate);
+		//}
     }
 
     private List<FrameWithBrowserText> getValues() {
-    	if (subject != null && useCacheHeuristics() &&
-    			subject.getProject().isMultiUserClient() &&
-    			isCached()) {
-    		return getValuesFromCache();
-    	} else {
-        	//OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
-			OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, true);
-        	Collection<FrameWithBrowserText> vals = job.execute();
-        	if(vals.size() > 1000) {
-        		return Collections.emptyList();
+			if (subject != null && useCacheHeuristics() &&
+					subject.getProject().isMultiUserClient() &&
+					isCached()) {
+				return getValuesFromCache();
+			} else {
+				//OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
+				OWLModel owlModel = subject.getOWLModel();
+				OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(owlModel, subject, predicate, true);
+				Collection<FrameWithBrowserText> vals = job.execute();
+				//listValues = new ArrayList<FrameWithBrowserText>(vals);
+				return new ArrayList<FrameWithBrowserText>(vals);
 			}
-        	//return new ArrayList<FrameWithBrowserText>(vals);
-			return new ArrayList<FrameWithBrowserText>(vals);
-    	}
     }
     
     /**
@@ -210,7 +218,6 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     //TODO: refactor out
     private Collection getLocalValues() {
     	Collection values = new ArrayList(subject.getPropertyValues(predicate, true));
-		System.out.println("Inside local values : " + values.size());
     	values.addAll(subject.getHasValuesOnTypes(predicate));
     	return values;
     }

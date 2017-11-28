@@ -23,31 +23,12 @@
 
 package edu.stanford.smi.protegex.owl.ui.components.multiresource;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JPopupMenu;
-import javax.swing.ListCellRenderer;
-
 import edu.stanford.smi.protege.model.Project;
 import edu.stanford.smi.protege.util.Disposable;
 import edu.stanford.smi.protege.util.FrameWithBrowserText;
 import edu.stanford.smi.protege.util.PopupMenuMouseListener;
 import edu.stanford.smi.protege.util.SelectableList;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
-import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
-import edu.stanford.smi.protegex.owl.model.RDFUntypedResource;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
 import edu.stanford.smi.protegex.owl.model.triplestore.Triple;
 import edu.stanford.smi.protegex.owl.model.triplestore.impl.DefaultTriple;
@@ -57,6 +38,11 @@ import edu.stanford.smi.protegex.owl.ui.TripleSelectable;
 import edu.stanford.smi.protegex.owl.ui.actions.ResourceActionManager;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
 
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
@@ -217,7 +203,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         int[] sels = getSelectedIndices();
         for (int sel : sels) {
             Object value = listModel.getResourceAt(sel);
-            if (value instanceof RDFResource) {
+            if (value != null /*&& value instanceof RDFResource*/) {
                 project.show((RDFResource) value);
             }
         }

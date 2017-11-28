@@ -35,13 +35,17 @@ import edu.stanford.smi.protege.server.framestore.ServerFrameStore;
 import edu.stanford.smi.protege.server.framestore.background.CacheRequestReason;
 import edu.stanford.smi.protege.server.framestore.background.FrameCalculator;
 import edu.stanford.smi.protege.util.FrameWithBrowserText;
+import edu.stanford.smi.protege.util.FrameWithBrowserTextComparator;
 import edu.stanford.smi.protege.util.GetOwnSlotValuesBrowserTextJob;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -54,8 +58,7 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 	private static final long serialVersionUID = 5135524417428952393L;
 	private Frame frame;
 	private Slot slot;
-	private boolean directValues = false;
-	private int limitCall = 0;
+	private static long DEFAULT_LIMIT = 1000;
 
 	public OWLGetOwnSlotValuesBrowserTextJob(KnowledgeBase kb, Frame frame, Slot slot, boolean directValues) {
 		super(kb, frame, slot, directValues);
@@ -67,21 +70,31 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 	@Override
 	protected Collection getValues() {
 		if (frame instanceof RDFResource && slot instanceof RDFProperty) {
+                Collection values = ((RDFResource) frame).getHasValuesOnTypes((RDFProperty) slot);
+                //Collection properties =  ((RDFResource)frame).getPropertyValues((RDFProperty)slot);
+                Collection properties = InstanceUtil.getPropertyValues((RDFResource)frame, (RDFProperty)slot, false);
+                //System.out.println("Get values is called for " + frame.getName() + " on " + slot.getName() + " with size " + properties.size());
+                int listSize = properties.size();
 
-			System.out.println("Get values is called");
-			//int totalVal = ((RDFResource)frame).getPropertyValueCount((RDFProperty)slot);
+                //If maximum limit is exceeded
+                if(listSize > DEFAULT_LIMIT) {
+					int count = 0;
+					showMessageDialog("Too many objects to show for slot \"" + slot.getBrowserText() + "\"" +
+							" of instance \"" + frame.getBrowserText() + "\". " + "Currently showing only " + DEFAULT_LIMIT + " out of " + listSize);
 
-			/*if(totalVal > 1000) {
-				return Collections.emptyList();
-			}*/
+					for (Object o : properties) {
+						values.add(o);
+					    count ++;
+					    if(count == DEFAULT_LIMIT) {
+					    	return values;
+						}
 
-			//Collection values = ((RDFResource)frame).getHasValuesOnTypes((RDFProperty)slot);
-			//Collection properties =  ((RDFResource)frame).getPropertyValues((RDFProperty)slot);
-			Collection properties = InstanceUtil.getPropertyValues((RDFResource)frame, (RDFProperty)slot, false);
-			//values.addAll(properties);
-			//return values;
-			return properties;
-		} else {
+					}
+				}
+                values.addAll(properties);
+                return values;
+            }
+		else {
 			return super.getValues();
 		}
 	}
@@ -106,17 +119,14 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 	}
 
 
-
-
    @Override
+   @SuppressWarnings("unchecked")
 	public Collection<FrameWithBrowserText> run() throws ProtegeException {
-		int count = 0;
-		int limit = 1000;
 		ArrayList var1 = new ArrayList();
 		this.addRequestsToFrameCalculator(this.frame);
-		Collection var2 = this.getValues();
+		Collection values = this.getValues();
 
-	   for (Object var4 : var2) {
+	   for (Object var4 : values) {
 		   if (var4 instanceof Frame) {
 			   Frame var5 = (Frame) var4;
 			   var1.add(new FrameWithBrowserText(var5, var5.getBrowserText(), ((Instance) var5).getDirectTypes()));
@@ -124,14 +134,8 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 		   } else {
 			   var1.add(new FrameWithBrowserText(null, var4.toString(), null));
 		   }
-		   count++;
-
-		   /*if (count == limit) {
-		   	Collections.sort(var1, new FrameWithBrowserTextComparator());
-		   	return var1;
-		   }*/
 	   }
-		//Collections.sort(var1, new FrameWithBrowserTextComparator());
+		Collections.sort(var1, new FrameWithBrowserTextComparator());
 		return var1;
 	}
 
@@ -145,5 +149,13 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 			FrameCalculator var6 = var5.getFrameCalculator();
 			var6.addRequest(var1, var3, CacheRequestReason.USER_REQUESTED_FRAME_VALUES);
 		}
+	}
+
+	/**
+	 * Display popup error window with a given message
+	 */
+	private void showMessageDialog(String msg) {
+		//Display error message in a popup window
+		ProtegeUI.getModalDialogFactory().showMessageDialog((OWLModel) getKnowledgeBase(), msg);
 	}
 }
