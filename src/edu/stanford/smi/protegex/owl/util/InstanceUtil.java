@@ -55,8 +55,8 @@ public class InstanceUtil {
         } else {
             values = owlModel.getDirectOwnSlotValues(resource, property);
         }
-        //return OWLFrameStoreUtils.convertValueListToRDFLiterals(owlModel, values);
-        return values;
+        return OWLFrameStoreUtils.convertValueListToRDFLiterals(owlModel, values);
+        //return values;
     }
 
 

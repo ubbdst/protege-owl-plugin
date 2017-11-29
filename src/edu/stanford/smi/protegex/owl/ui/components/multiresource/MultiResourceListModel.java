@@ -34,7 +34,7 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
-import edu.stanford.smi.protegex.owl.ui.individuals.OWLGetOwnSlotValuesBrowserTextJob;
+import edu.stanford.smi.protegex.owl.ui.individuals.OWLGetOwnSlotValuesJob;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 
 import javax.swing.*;
@@ -53,13 +53,9 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 
 	private RDFProperty predicate;
     private RDFResource subject;
-    private List<FrameWithBrowserText> values = new ArrayList<FrameWithBrowserText>();
-	private List<FrameWithBrowserText> listValues = new ArrayList<FrameWithBrowserText>();
-    private boolean isAlreadyAdded = false;
-    private Map<RDFResource, RDFProperty> propertyMap = new HashMap<RDFResource, RDFProperty>();
-    
+	//private List<FrameWithBrowserText> values = new ArrayList<FrameWithBrowserText>();
+	private List<RDFResource> values = new ArrayList<RDFResource>();
     private FrameListener frameListener;
-
     public MultiResourceListModel(RDFProperty predicate) {
         this.predicate = predicate;
         this.frameListener = getFrameListener();
@@ -87,12 +83,18 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     			@Override
     			public void browserTextChanged(FrameEvent event) {
     				Frame frame = event.getFrame();
-    				for (FrameWithBrowserText fbt : values) {
+					for (RDFResource value  : values) {
+						if (value != null && value.equals(frame)) {
+							updateValues();
+						}
+					}
+					//Original
+    				/*for (FrameWithBrowserText fbt : values) {
 						Frame f = fbt.getFrame();
 						if (f != null && f.equals(frame)) {
 							updateValues();
 						}
-					}
+					}*/
     			}
     		};
     	}
@@ -107,10 +109,21 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
         return predicate;
     }
 
-    public RDFResource getResourceAt(int row) {
+    //Original
+    /*public RDFResource getResourceAt(int row) {
     	FrameWithBrowserText fbt = (FrameWithBrowserText) getElementAt(row);
         return (RDFResource) fbt.getFrame();
+    }*/
+
+
+	/**
+	 * Created by Hemed
+	 */
+	public RDFResource getResourceAt(int row) {
+    	Object fbt = getElementAt(row);
+        return (RDFResource) fbt;
     }
+
 
     public int getRowOf(Object value) {
     	if (value instanceof RDFResource) {
@@ -142,35 +155,43 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 
     public void setSubject(RDFResource subject) {
         this.subject = subject;
-        //updateValues();    //This causes to call updateValues() twice.
+        //updateValues(); //This causes to call updateValues() twice.
     }
 
 
     public void updateValues() {
-    	//if(propertyMap.get(subject) == null || !propertyMap.get(subject).equals(predicate)) {
 			fireIntervalRemoved(this, 0, values.size());
 			values = getValues();
 			fireIntervalAdded(this, 0, values.size());
-			count++;
-			System.out.println(count + " Values size: " + values.size() +  " for " + subject.getBrowserText() + " on " + predicate.getBrowserText());
-			//propertyMap.put(subject, predicate);
-		//}
     }
 
-    private List<FrameWithBrowserText> getValues() {
-			if (subject != null && useCacheHeuristics() &&
-					subject.getProject().isMultiUserClient() &&
-					isCached()) {
-				return getValuesFromCache();
-			} else {
-				//OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
-				OWLModel owlModel = subject.getOWLModel();
-				OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(owlModel, subject, predicate, true);
-				Collection<FrameWithBrowserText> vals = job.execute();
-				//listValues = new ArrayList<FrameWithBrowserText>(vals);
-				return new ArrayList<FrameWithBrowserText>(vals);
-			}
+
+    //Original function
+	/*private List<FrameWithBrowserText> getValues() {
+		if (subject != null && useCacheHeuristics() &&
+				subject.getProject().isMultiUserClient() &&
+				isCached()) {
+			return getValuesFromCache();
+		} else {
+			OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
+			Collection<FrameWithBrowserText> vals = job.execute();
+			return new ArrayList<FrameWithBrowserText>(vals);
+		}
+	 }*/
+
+
+	/**
+	 * Loading a big list from cache was very slow
+	 */
+	private List getValues() {
+		if(subject != null) {
+			OWLModel owlModel = subject.getOWLModel();
+			OWLGetOwnSlotValuesJob job = new OWLGetOwnSlotValuesJob(owlModel, subject, predicate, false);
+			return new ArrayList(job.execute());
+		}
+		return Collections.emptyList();
     }
+
     
     /**
      * This is a heuristic if the values of the (subj, pred) are cached..
