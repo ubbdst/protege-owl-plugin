@@ -86,13 +86,13 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     		frameListener = new FrameAdapter() {
     			@Override
     			public void browserTextChanged(FrameEvent event) {
-    				/*Frame frame = event.getFrame();
+    				Frame frame = event.getFrame();
     				for (FrameWithBrowserText fbt : values) {
 						Frame f = fbt.getFrame();
 						if (f != null && f.equals(frame)) {
 							updateValues();
 						}
-					}*/
+					}
     			}
     		};
     	}
@@ -151,8 +151,8 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 			fireIntervalRemoved(this, 0, values.size());
 			values = getValues();
 			fireIntervalAdded(this, 0, values.size());
-			//count++;
-			System.out.println(count + " Values: " + values.size() + " List values: " + listValues.size() + " for " + subject.getBrowserText() + " on " + predicate.getBrowserText());
+			count++;
+			System.out.println(count + " Values size: " + values.size() +  " for " + subject.getBrowserText() + " on " + predicate.getBrowserText());
 			//propertyMap.put(subject, predicate);
 		//}
     }

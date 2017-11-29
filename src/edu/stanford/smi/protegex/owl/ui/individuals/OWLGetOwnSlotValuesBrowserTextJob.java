@@ -42,6 +42,7 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
+import edu.stanford.smi.protegex.owl.util.SubjectPredicateStore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,13 +59,12 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
 	private static final long serialVersionUID = 5135524417428952393L;
 	private Frame frame;
 	private Slot slot;
-	private static long DEFAULT_LIMIT = 1000;
+	private static long DEFAULT_LIMIT = 2;
 
 	public OWLGetOwnSlotValuesBrowserTextJob(KnowledgeBase kb, Frame frame, Slot slot, boolean directValues) {
 		super(kb, frame, slot, directValues);
 		this.frame = frame;
 		this.slot = slot;
-		this.directValues = directValues;
 	}
 
 	@Override
@@ -79,8 +79,13 @@ public class OWLGetOwnSlotValuesBrowserTextJob extends GetOwnSlotValuesBrowserTe
                 //If maximum limit is exceeded
                 if(listSize > DEFAULT_LIMIT) {
 					int count = 0;
-					showMessageDialog("Too many objects to show for slot \"" + slot.getBrowserText() + "\"" +
-							" of instance \"" + frame.getBrowserText() + "\". " + "Currently showing only " + DEFAULT_LIMIT + " out of " + listSize);
+
+					if(!SubjectPredicateStore.exists((RDFResource)frame, (RDFProperty)slot)) {
+                        showMessageDialog("Too many objects to show in the slot \"" + slot.getBrowserText() + "\"" +
+                                " of instance \"" + frame.getBrowserText() + "\". " + "Currently showing only " + DEFAULT_LIMIT + " out of " + listSize);
+                    }
+                    //Add to the store
+					SubjectPredicateStore.add((RDFResource)frame, (RDFProperty)slot);
 
 					for (Object o : properties) {
 						values.add(o);
