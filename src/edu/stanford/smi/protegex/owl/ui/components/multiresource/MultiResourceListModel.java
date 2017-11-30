@@ -49,13 +49,13 @@ import java.util.logging.Level;
 public class MultiResourceListModel extends AbstractListModel implements Disposable {
 
 	private static final long serialVersionUID = -7197293909519481988L;
-	int count = 0;
 
 	private RDFProperty predicate;
     private RDFResource subject;
 	//private List<FrameWithBrowserText> values = new ArrayList<FrameWithBrowserText>();
 	private List<RDFResource> values = new ArrayList<RDFResource>();
     private FrameListener frameListener;
+
     public MultiResourceListModel(RDFProperty predicate) {
         this.predicate = predicate;
         this.frameListener = getFrameListener();
@@ -83,6 +83,7 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     			@Override
     			public void browserTextChanged(FrameEvent event) {
     				Frame frame = event.getFrame();
+					System.out.println("Browser text changed. Size: " + values.size());
 					for (RDFResource value  : values) {
 						if (value != null && value.equals(frame)) {
 							updateValues();
@@ -100,6 +101,12 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
     	}
     	return frameListener;
     }
+
+
+
+    /*private FrameListener getFrameListener() {
+    	return frameListener;
+	}*/
 
 	public Object getElementAt(int index) {
     	return  values.get(index);
@@ -161,7 +168,10 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 
     public void updateValues() {
 			fireIntervalRemoved(this, 0, values.size());
-			values = getValues();
+			values = new ArrayList(getValues());
+			 //getValues();
+			//values.removeAll(valuesColl);
+			//values.addAll(valuesColl);
 			fireIntervalAdded(this, 0, values.size());
     }
 
@@ -183,14 +193,17 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 	/**
 	 * Loading a big list from cache was very slow
 	 */
-	private List getValues() {
+	private Collection getValues() {
 		if(subject != null) {
 			OWLModel owlModel = subject.getOWLModel();
 			OWLGetOwnSlotValuesJob job = new OWLGetOwnSlotValuesJob(owlModel, subject, predicate, false);
-			return new ArrayList(job.execute());
+			//OWLGetOwnSlotValuesBrowserTextJob job = new OWLGetOwnSlotValuesBrowserTextJob(subject.getOWLModel(), subject, predicate, false);
+			return job.execute();
 		}
 		return Collections.emptyList();
     }
+
+
 
     
     /**
@@ -256,5 +269,13 @@ public class MultiResourceListModel extends AbstractListModel implements Disposa
 			Log.getLogger().log(Level.WARNING, "Could not remove KB listener from multi resource widget for: " + predicate, e);
 		}
     }
+
+
+    //Test classes
+	/*private Collection<FrameWithBrowserText> getFramesWithBrowserText() {
+		GetInstancesAndBrowserTextJob job = new GetInstancesAndBrowserTextJob(subject.getOWLModel(), subject.getProtegeTypes(), false);
+		return job.execute();
+	}*/
+
     
 }
