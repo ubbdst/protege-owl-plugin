@@ -41,7 +41,7 @@ public class MergeResourceWidget extends AbstractPropertyValuesWidget {
 
     public MergeResourceWidget() {
         setPreferredColumns(2);
-        setPreferredRows(2);
+        setPreferredRows(1);
     }
 
 
