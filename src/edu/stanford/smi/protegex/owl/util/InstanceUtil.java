@@ -13,24 +13,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.DATATYPE_PREFIX;
-import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.LANGUAGE_PREFIX;
-import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.SEPARATOR;
+import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.*;
+import static edu.stanford.smi.protegex.owl.util.UUIDInstanceName.appendPathSeperator;
 
 /**
  * A static utility class for some convenience  methods
  *
  * @author Hemed Al Ruwehy
- *         University of Bergen Library
- *         <p>
- *         28-04-2017
+ * University of Bergen Library
+ * <p>
+ * 28-04-2017
  */
 public class InstanceUtil {
 
-    private static transient Logger log = Log.getLogger(InstanceUtil.class);
     public static final String PATH_SEPARATOR = "/";
+    private static transient Logger log = Log.getLogger(InstanceUtil.class);
 
-    private InstanceUtil() { }
+    private InstanceUtil() {
+    }
 
 
     /**
@@ -53,14 +53,14 @@ public class InstanceUtil {
      * @return a map which contains resource and property to which this resource is referred to
      */
     @SuppressWarnings("unchecked")
-    public static Map<RDFResource, RDFProperty> getInstanceReferences(RDFResource resource){
+    public static Map<RDFResource, RDFProperty> getInstanceReferences(RDFResource resource) {
         Map<RDFResource, RDFProperty> instancesAndProperties = new HashMap();
         Collection<Reference> references = resource.getReferences();
-        for(Reference reference : references) {
-            if(reference.getFrame() instanceof OWLIndividual){
+        for (Reference reference : references) {
+            if (reference.getFrame() instanceof OWLIndividual) {
                 RDFResource subject = (RDFResource) reference.getFrame();
                 RDFProperty predicate = (RDFProperty) reference.getSlot();
-                if(subject != null && predicate != null) {
+                if (subject != null && predicate != null) {
                     instancesAndProperties.put(subject, predicate);
                 }
             }
@@ -105,7 +105,6 @@ public class InstanceUtil {
             }
         }
     }*/
-
     public static void modifyProperties(Instance instance, Map<RDFProperty, Object> propertiesMap) {
         for (Map.Entry<RDFProperty, Object> entry : propertiesMap.entrySet()) {
             if (entry.getValue() != null) {
@@ -128,7 +127,7 @@ public class InstanceUtil {
         }
         String typeName = className.replaceAll(regex, "$1");
         //Lowercase the class label
-        if(typeName != null && !typeName.isEmpty()){
+        if (typeName != null && !typeName.isEmpty()) {
             typeName = typeName.toLowerCase();
         }
         return getNamespace(model) + "instance" + PATH_SEPARATOR + typeName + PATH_SEPARATOR;
@@ -140,7 +139,7 @@ public class InstanceUtil {
      */
     @SuppressWarnings("unchecked")
     public static String getClassURIPrefix(Instance instance) {
-        OWLModel owlModel = (OWLModel)instance.getKnowledgeBase();
+        OWLModel owlModel = (OWLModel) instance.getKnowledgeBase();
         Collection<Cls> rdfTypes = instance.getDirectTypes();
         int iterations = 0;
          /*
@@ -151,7 +150,7 @@ public class InstanceUtil {
             iterations++;
             String className = clazz.getName();
             if (className.equals(RDFClassType.CONCEPT.getName())) {
-                return  getNamespace(owlModel) + "topic" + PATH_SEPARATOR;
+                return getNamespace(owlModel) + "topic" + PATH_SEPARATOR;
             } else if (className.equals(RDFClassType.CONCEPT_SCHEME.getName())) {
                 return getNamespace(owlModel) + "conceptscheme" + PATH_SEPARATOR;
             } else if (className.equals(RDFClassType.PROXY_COLLECTION.getName())) {
@@ -170,7 +169,7 @@ public class InstanceUtil {
     }
 
     /**
-     * Get active namespace for the active project
+     * Gets active namespace for the active project
      */
     private static String getNamespace(OWLModel model) {
         return new UUIDInstanceName(model).getNamespaceForActiveProject();
@@ -195,24 +194,67 @@ public class InstanceUtil {
 
 
     /**
-     * Get Trash class or create new one if it does not exist
+     * Gets Trash class with Momayo namespace or null if it does not exist
      */
-    public static OWLNamedClass getTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = model.getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
-        //If it does not exists, create it.
+    public static OWLNamedClass getMomayoTrashClass(OWLModel model) {
+        return model.getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+    }
+
+    /**
+     * Gets Trash class or null if it does not exist
+     */
+    public static OWLNamedClass getOWLClass(OWLModel model, String name) {
+        return model.getOWLNamedClass(name);
+    }
+
+    /**
+     * Gets RDF property or throw an exception if it's name cannot be found in the knowledgebase
+     */
+    public static RDFProperty getRDFProperty(OWLModel model, String name) {
+        RDFProperty property = model.getRDFProperty(name);
+        if (property == null) {
+            throw new IllegalArgumentException(
+                    "Cannot find property with name [" + name + "] in the ontology");
+        }
+        return property;
+    }
+
+
+    /**
+     * Gets Trash class or create new one if it does not exist
+     */
+    public static OWLNamedClass getOrCreateTrashClass(OWLModel model) {
+        OWLNamedClass trashClass = getMomayoTrashClass(model);
+        //If it does not exist, create the default version of the Trash
         if (trashClass == null) {
-            trashClass = model.createOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+            trashClass = getDefaultTrashClass(model);
         }
         return trashClass;
     }
 
+
     /**
-     * Check if the given individual belongs to class Trash
+     * Gets default Trash class. If Momayo Trash class is not defined in the ontology, generate new Trash class
+     * based on the active ontology
+     */
+    public static OWLNamedClass getDefaultTrashClass(OWLModel model) {
+        OWLNamedClass trashClass = getOWLClass(model, "Trash");
+        //If it does not exists, create one.
+        if (trashClass == null) {
+            trashClass = model.createOWLNamedClass("Trash");
+        }
+        return trashClass;
+    }
+
+
+    /**
+     * Check if the given individual belongs to a Momayo class Trash
+     *
      * @param resource a resource to check
      */
-    public static boolean isInTrash(RDFIndividual resource){
-        if(resource != null){
-            OWLNamedClass trashClass = resource.getOWLModel().getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+    public static boolean isInTrash(RDFIndividual resource) {
+        if (resource != null) {
+            OWLNamedClass trashClass = getMomayoTrashClass(resource.getOWLModel());
             return trashClass != null && resource.getProtegeTypes().contains(trashClass);
         }
         return false;
@@ -223,7 +265,6 @@ public class InstanceUtil {
      * See http://www.datypic.com/sc/xsd/t-xsd_language.html.
      *
      * @param language a language tag to validate
-     *
      * @return true if language tag is valid, otherwise false.
      */
     public static boolean isValidXSDLanguage(String language) {
@@ -231,7 +272,7 @@ public class InstanceUtil {
         if (language == null || language.trim().length() == 0) {
             return false;
         }
-        if(language.matches(xsdLangRegex)) {
+        if (language.matches(xsdLangRegex)) {
             return true;
         }
         return false;
@@ -240,21 +281,34 @@ public class InstanceUtil {
     /**
      * We know that value of this widget is of data type xsd:anyURI and there is no need for users to see
      * the full URI including datatype in the UI. Therefore, we are stripping out datatype part for easy readability.
-
+     *
      * @param rawValue a string with data type
      *                 example: ~@http://www.w3.org/2001/XMLSchema#anyURI http://data.ub.uib.no/instance/document/ubb-ms-02
-     *
      * @return a string where datatype is stripped.
-     *                 example: http://data.ub.uib.no/instance/document/ubb-ms-02
+     * example: http://data.ub.uib.no/instance/document/ubb-ms-02
      */
     public static String stripDatatype(String rawValue) {
-        if(rawValue == null) {
+        if (rawValue == null) {
             return "";
         }
         if (rawValue.startsWith(LANGUAGE_PREFIX) || rawValue.startsWith(DATATYPE_PREFIX)) {
             return rawValue.substring(rawValue.indexOf(SEPARATOR) + 1).trim();
         }
         return rawValue;
+    }
+
+
+    /**
+     * Get namespace for the active project, otherwise return default namespace
+     */
+    public String getNamespaceForActiveProject(OWLModel owlModel) {
+        if (owlModel != null) {
+            String namespace = owlModel.getTripleStoreModel().getActiveTripleStore().getDefaultNamespace();
+            if (namespace != null) {
+                return appendPathSeperator(namespace).toLowerCase();
+            }
+        }
+        return UBBOntologyNames.DEFAULT_NAMESPACE;
     }
 }
 

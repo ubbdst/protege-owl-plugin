@@ -130,7 +130,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      * Get RDF property (this slot)
      */
     private RDFProperty getPredicate() {
-        return getOWLModel().getRDFProperty(UBBOntologyNames.CLASS_HIERARCHY_URI);
+        return InstanceUtil.getRDFProperty(getOWLModel(), UBBOntologyNames.CLASS_HIERARCHY_URI);
     }
 
     /**

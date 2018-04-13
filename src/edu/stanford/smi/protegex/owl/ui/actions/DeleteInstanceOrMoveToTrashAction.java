@@ -63,10 +63,13 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Show modal dialog with OK/Cancel options
      */
     private boolean isMoveToTrashConfirmed(Instance instance) {
-        String text =  "The instance " +   "\"" + instance.getBrowserText() + "\"" + " of class " +
+        String text =  "Instance " +   "\"" + instance.getBrowserText() + "\"" + " of class " +
                 instance.getDirectType().getBrowserText() + " will be moved to Trash";
 
-        int option = ModalDialog.showMessageDialog((JComponent)this.getSelectable(), text, "Move to trash",
+        int option = ModalDialog.showMessageDialog(
+                (JComponent)this.getSelectable(),
+                text,
+                "Move to trash",
                 ModalDialogFactory.MODE_OK_CANCEL);
 
         return option == ModalDialogFactory.OPTION_OK;
@@ -101,15 +104,14 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
     }
 
     /**
-     * Moves instance to a specified class
+     * Moves instance to a specified OWL class
      *
      * @param instance an instance to move
      * @param clazz a destination class
      */
     public static void moveInstance(Instance instance, OWLNamedClass clazz) {
-        String targetClassName = clazz.getLocalName();
         instance.setDirectType(clazz);
-        Log.getLogger().info("Instance " + instance.getName() + " moved to " + targetClassName);
+        Log.getLogger().info("Instance " + instance.getName() + " moved to " + clazz.getLocalName());
     }
 
 
@@ -171,7 +173,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * @param sourceInstance instance to move or delete
      */
     protected void deleteOrMove(Instance sourceInstance) {
-        OWLNamedClass targetCls = InstanceUtil.getTrashClass(getOWLModel(sourceInstance));
+        OWLNamedClass targetCls = InstanceUtil.getOrCreateTrashClass(getOWLModel(sourceInstance));
         //If instance belongs to class Trash and deletion is confirmed,
         //then delete permanently
         if (sourceInstance.hasDirectType(targetCls)) {

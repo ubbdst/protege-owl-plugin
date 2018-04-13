@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
-import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getTrashClass;
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getOrCreateTrashClass;
 
 /**
  * A class that performs merge action
@@ -39,7 +39,7 @@ public class MergeResourceAction extends SetResourceAction {
      * Moves a given instance to class Trash
      */
     private static void moveToTrash(RDFResource resource) {
-        resource.setProtegeType(getTrashClass(resource.getOWLModel()));
+        resource.setProtegeType(getOrCreateTrashClass(resource.getOWLModel()));
     }
 
     /**
@@ -230,10 +230,10 @@ public class MergeResourceAction extends SetResourceAction {
         return ProtegeUI.getModalDialogFactory().showConfirmDialog(resource.getOWLModel(), text, "Confirm deletion");
     }
 
-
     private RDFProperty getProperty(String s) {
-        return getOWLModel().getRDFProperty(s);
+        return InstanceUtil.getRDFProperty(getOWLModel(), s);
     }
+
 
     protected OWLModel getOWLModel() {
         return getSubject().getOWLModel();

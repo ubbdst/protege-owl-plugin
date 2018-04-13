@@ -428,7 +428,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 final String newName = generator.generateUniqueName();
                 //log.info("Copying instance: " + instance.getName() + " to " + newName);
                 Instance copy = (Instance) super.copy(instance, isDeep).rename(newName);
-                log.info("Copied instance: " + instance.getName() + " to " + copy.getName());
+                log.info("Copied instance " + instance.getName() + " to " + copy.getName());
 
                 //Get UUID from instance URI
                 String uuid = UUIDWidget.getUUIDFromInstanceURI(copy);
@@ -453,8 +453,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         };
         return copyAction;
     }
-
-
 
     protected Action createReferencersAction() {
         return new ReferencersAction(ResourceKey.INSTANCE_VIEW_REFERENCES, this);
