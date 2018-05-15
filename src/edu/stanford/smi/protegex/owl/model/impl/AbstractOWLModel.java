@@ -120,7 +120,7 @@ public abstract class AbstractOWLModel extends DefaultKnowledgeBase
 
     public static final String DEFAULT_TODO_PREFIX = "TODO";
 
-    public static final String[] DEFAULT_USED_LANGUAGES = {"de", "en", "es", "fr", "it", "nl", "pt", "ru" };
+    public static final String[] DEFAULT_USED_LANGUAGES = {"no", "en", "de", "es", "fr", "it", "nl", "pt", "ru" };
 
     public static final String ANONYMOUS_BASE = "@";
 
