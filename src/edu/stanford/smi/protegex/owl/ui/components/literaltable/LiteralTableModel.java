@@ -26,6 +26,7 @@ package edu.stanford.smi.protegex.owl.ui.components.literaltable;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.ComponentUtil;
 import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditor;
 import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditorManager;
@@ -362,6 +363,10 @@ public class LiteralTableModel extends AbstractTableModel {
             newValue =  owlModel.createRDFSLiteral(lexicalValue, value.trim());
         }
         else {
+            //Bring pop up message to the user
+            if(value != null && !value.trim().isEmpty()){
+                ProtegeUI.getModalDialogFactory().showErrorMessageDialog(owlModel, "Invalid language tag \"" + value + "\"");
+            }
             newValue = lexicalValue;
         }
         values.set(rowIndex, newValue);

@@ -36,6 +36,9 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         super(key, selectable);
     }
 
+    public DeleteInstanceOrMoveToTrashAction(ResourceKey key) {
+        super(key, null);
+    }
 
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -63,8 +66,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Show modal dialog with OK/Cancel options
      */
     private boolean isMoveToTrashConfirmed(Instance instance) {
-        String text =  "Instance " +   "\"" + instance.getBrowserText() + "\"" + " of class " +
-                instance.getDirectType().getBrowserText() + " will be moved to Trash";
+        String text =  "Instance " +   "\"" + instance.getBrowserText() + "\""  + " will be moved to Trash";
 
         int option = ModalDialog.showMessageDialog(
                 (JComponent)this.getSelectable(),
@@ -146,7 +148,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         Collection selectedResources = getSelection();
         for (Object selection : selectedResources) {
             Instance selectedInstance = (Instance) selection;
-            deleteOrMove(selectedInstance);
+            deleteOrMoveToTrash(selectedInstance);
         }
     }
 
@@ -172,7 +174,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      *
      * @param sourceInstance instance to move or delete
      */
-    protected void deleteOrMove(Instance sourceInstance) {
+    public void deleteOrMoveToTrash(Instance sourceInstance) {
         OWLNamedClass targetCls = InstanceUtil.getOrCreateTrashClass(getOWLModel(sourceInstance));
         //If instance belongs to class Trash and deletion is confirmed,
         //then delete permanently

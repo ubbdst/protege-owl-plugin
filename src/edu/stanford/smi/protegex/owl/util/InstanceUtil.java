@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.*;
+import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction.moveInstance;
 import static edu.stanford.smi.protegex.owl.util.UUIDInstanceName.appendPathSeperator;
 
 /**
@@ -246,6 +247,15 @@ public class InstanceUtil {
         return trashClass;
     }
 
+    /**
+     * Moves instance to a Trash class
+     *
+     * @param instance an instance to move
+     */
+    public static void moveInstanceToTrash(RDFResource instance) {
+        moveInstance(instance,  InstanceUtil.getOrCreateTrashClass(instance.getOWLModel()));
+    }
+
 
     /**
      * Check if the given individual belongs to a Momayo class Trash
@@ -269,13 +279,10 @@ public class InstanceUtil {
      */
     public static boolean isValidXSDLanguage(String language) {
         String xsdLangRegex = "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$";
-        if (language == null || language.trim().length() == 0) {
+        if (language == null || language.trim().isEmpty()) {
             return false;
         }
-        if (language.matches(xsdLangRegex)) {
-            return true;
-        }
-        return false;
+        return language.matches(xsdLangRegex);
     }
 
     /**
