@@ -276,8 +276,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
     private boolean isMoveToTrashConfirmed(RDFResource resource) {
         return ProtegeUI.getModalDialogFactory().showConfirmDialog(
                 listModel.getSubject().getOWLModel(),
-                "Are you sure you want to move instance " +
-                        "\"" + resource.getBrowserText() + "\"  to Trash?",
+                "Are you sure you want to move instance \"" + resource.getBrowserText() + "\" to Trash?",
                 "Confirm moving to trash");
     }
 

@@ -54,7 +54,7 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
     };
 
 
-    private Action moveToTrashAction = new AbstractAction("Move to trash",  OWLIcons.getTrashIndividualIcon()) {
+    private Action moveToTrashAction = new AbstractAction("Move to trash",  OWLIcons.getTrashClassIcon()) {
         public void actionPerformed(ActionEvent e) {
             handleMoveToTrash();
         }

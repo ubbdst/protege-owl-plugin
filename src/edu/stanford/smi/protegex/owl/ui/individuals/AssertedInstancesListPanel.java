@@ -37,7 +37,10 @@ import edu.stanford.smi.protege.ui.ConfigureAction;
 import edu.stanford.smi.protege.ui.FrameRenderer;
 import edu.stanford.smi.protege.ui.HeaderComponent;
 import edu.stanford.smi.protege.util.*;
-import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
@@ -408,7 +411,9 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     protected Action createDeleteAction() {
         //deleteAction = new DeleteInstancesAction(this);
-        deleteAction = new DeleteInstanceOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
+        //deleteAction = new DeleteInstanceOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
+        deleteAction = new DeleteInstanceOrMoveToTrashAction(
+                "Delete instance", OWLIcons.getDeleteIcon(), this);
         return deleteAction;
     }
 
@@ -560,11 +565,11 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     private void updateButtons() {
         Cls cls = CollectionUtilities.getFirstItem(classes);
-        createAction.setEnabled(cls == null ? false : cls.isConcrete());
-        createAnonymousAction.setEnabled(cls == null ? false : cls.isConcrete());
+        createAction.setEnabled(cls!= null && cls.isConcrete());
+        createAnonymousAction.setEnabled(cls != null && cls.isConcrete());
 
         Instance instance = (Instance) getSoleSelection();
-        boolean allowed = instance != null && instance instanceof SimpleInstance;
+        boolean allowed = instance instanceof SimpleInstance;
         copyAction.setAllowed(allowed);
     }
 

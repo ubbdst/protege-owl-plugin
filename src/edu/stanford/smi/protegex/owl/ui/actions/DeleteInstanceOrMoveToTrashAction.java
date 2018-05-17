@@ -19,9 +19,9 @@ import java.util.Collection;
 /**
  * Actions for either deleting or moving an instance to Trash.
  *
- * The idea is that, if instance belongs directly to class Trash, and deletion is triggered, then
- * delete the instance entirely. On the other hand, if an instance belongs to a class other than Trash,
- * and deletion is triggered, move the instance to class Trash.
+ * The idea is that, if instance belongs directly to class Trash, and deletion is confirmed, then
+ * delete the instance permanently. On the other hand, if an instance belongs to a class other than Trash,
+ * and deletion is confirmed, move the instance to class Trash.
  * This came as a request from the University of Bergen Library to avoid deletion mistakes.
  *
  * @author Hemed Al Ruwehy
@@ -38,6 +38,10 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
 
     public DeleteInstanceOrMoveToTrashAction(ResourceKey key) {
         super(key, null);
+    }
+
+    public DeleteInstanceOrMoveToTrashAction(String text, Icon icon, Selectable selectable) {
+        super(text, icon, selectable);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package edu.stanford.smi.protegex.owl.util;
 
+import com.hp.hpl.jena.shared.NotFoundException;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.model.Reference;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -14,7 +16,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.*;
-import static edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction.moveInstance;
 import static edu.stanford.smi.protegex.owl.util.UUIDInstanceName.appendPathSeperator;
 
 /**
@@ -214,8 +215,7 @@ public class InstanceUtil {
     public static RDFProperty getRDFProperty(OWLModel model, String name) {
         RDFProperty property = model.getRDFProperty(name);
         if (property == null) {
-            throw new IllegalArgumentException(
-                    "Cannot find property with name [" + name + "] in the ontology");
+            throw new NotFoundException("Cannot find property with name [" + name + "] in the ontology");
         }
         return property;
     }
@@ -253,7 +253,7 @@ public class InstanceUtil {
      * @param instance an instance to move
      */
     public static void moveInstanceToTrash(RDFResource instance) {
-        moveInstance(instance,  InstanceUtil.getOrCreateTrashClass(instance.getOWLModel()));
+        DeleteInstanceOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
     }
 
 
