@@ -46,7 +46,6 @@ import edu.stanford.smi.protegex.owl.ui.search.FindUsageAction;
 import edu.stanford.smi.protegex.owl.ui.testing.OWLTestInstanceAction;
 import edu.stanford.smi.protegex.owl.ui.widget.InferredModeWidget;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
-import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,6 +83,11 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	public final static int DEFAULT_TYPE_INSTANCE = ResourcePanel.DEFAULT_TYPE_INDIVIDUAL;
 
 	private AddPropertyWidgetToFormAction addPropertyWidgetToFormAction;
+
+	/**
+	 * Overriding the original instance browser color
+	 */
+	private Color instanceBrowserColor = new Color(124, 26, 123);
 
 	//private Color instanceBrowserColor = new Color(37, 56, 88);
     //private Color instanceBrowserColor = new Color(219, 70, 19);
@@ -244,6 +248,10 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 
 	public void clearSelection()
 	{
+	}
+
+	public Color getInstanceBrowserColor() {
+		return instanceBrowserColor;
 	}
 
 	protected void reworkHeaderComponent()
@@ -500,7 +508,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 		getHeaderComponent().setTitle(getTitleString(instance, "INDIVIDUAL EDITOR"), false);
 		getHeaderComponent().setComponentLabel("For Individual:");
 		//Override default color
-		getHeaderComponent().setColor(InstanceUtil.INSTANCE_BROWSER_COLOR);
+		getHeaderComponent().setColor(getInstanceBrowserColor());
 	}
 
 	@Override

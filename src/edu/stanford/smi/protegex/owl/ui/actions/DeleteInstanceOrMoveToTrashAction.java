@@ -75,7 +75,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         int option = ModalDialog.showMessageDialog(
                 (JComponent)this.getSelectable(),
                 text,
-                "Move to trash",
+                "Move to Trash",
                 ModalDialogFactory.MODE_OK_CANCEL);
 
         return option == ModalDialogFactory.OPTION_OK;
