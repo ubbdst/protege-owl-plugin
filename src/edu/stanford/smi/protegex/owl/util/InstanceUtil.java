@@ -8,6 +8,7 @@ import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
 
+import java.awt.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -30,10 +31,10 @@ public class InstanceUtil {
 
     public static final String PATH_SEPARATOR = "/";
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
+    public static final Color INSTANCE_BROWSER_COLOR = new Color(124, 26, 123);
 
     private InstanceUtil() {
     }
-
 
     /**
      * Remove a given property value from an instance
