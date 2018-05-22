@@ -10,6 +10,7 @@ import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import java.awt.*;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -121,7 +122,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
                 newValue = classHierarchyPrefix + uuid;
             }
             else {//Should we encode URI?, doing so it may skip validation.
-                newValue = classHierarchyPrefix + newValue.toLowerCase();
+                newValue = classHierarchyPrefix + InstanceUtil.encodeUrl(newValue.toLowerCase(Locale.ROOT));
             }
             //Do not proceed if new value is not a valid URI
             if(isValidUri(newValue)) {
@@ -210,7 +211,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
       * A wrapper for validating URI
      */
     protected static boolean isValidUri(String name){
-        return ClassHierarchyURIWidget.isValidUriAndWithoutSegment(name);
+        return ClassHierarchyURIWidget.isValidUrl(name);
     }
 
     /**

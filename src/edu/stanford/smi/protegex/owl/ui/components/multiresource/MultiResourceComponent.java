@@ -92,7 +92,7 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
          }
          
          lc.addHeaderButton(removeAction);
-         lc.addHeaderButton(moveToTrashAction);
+         //lc.addHeaderButton(moveToTrashAction);
          add(BorderLayout.CENTER, lc);
          updateActions();
 	}

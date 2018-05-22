@@ -51,10 +51,10 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      *
      * @param name a name to be checked for validity
      */
-    public static boolean isValidUriAndWithoutSegment(String name) {
-        String[] schemes = {"http", "https"};
-        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
-        //UrlValidator urlValidator = new UrlValidator(schemes);
+    public static boolean isValidUrl(String name) {
+        String[] schemes = {"http", "https", "file", "ftp"};
+        //UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
+        UrlValidator urlValidator = new UrlValidator();
         return urlValidator.isValid(name);
 
     }
