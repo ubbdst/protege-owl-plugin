@@ -31,6 +31,7 @@ import edu.stanford.smi.protegex.owl.model.event.PropertyValueListener;
 import edu.stanford.smi.protegex.owl.model.event.ResourceListener;
 import edu.stanford.smi.protegex.owl.model.visitor.OWLModelVisitor;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
 import java.util.Collection;
@@ -39,7 +40,6 @@ import java.util.Set;
 
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
-import static edu.stanford.smi.protegex.owl.util.InstanceUtil.isInTrash;
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.stripDatatype;
 
 public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
@@ -59,7 +59,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
         String uuid = getUUIDFromInstanceURI(this);
         if(!uuid.isEmpty()) {
             //If it is in Trash, return its full URI
-            if (isInTrash(this)) {
+            if (InstanceUtil.isInTrash(this)) {
                 Object classHierarchyURI = getPropertyValue(getOWLModel()
                         .getRDFProperty(UBBOntologyNames.CLASS_HIERARCHY_URI));
                 if (classHierarchyURI != null) {
@@ -71,20 +71,9 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
       return "";
     }
 
-
     public void accept(OWLModelVisitor visitor) {
         visitor.visitRDFIndividual(this);
     }
-
-    /**
-     * Check if this instance belongs to Trash
-     * @deprecated use InstanceUtil#isInTrash(Instance)
-     */
-    /*private boolean isInTrash() {
-        OWLNamedClass trashClass = getOWLModel().getOWLNamedClass(UBBOntologyNamespaces.TRASH_CLASS_NAME);
-        return trashClass != null && getProtegeTypes().contains(trashClass);
-    }*/
-
 
 
     @Override
@@ -104,7 +93,7 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     	if(isAnonymous()) {
            iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
         }
-        else if(isInTrash(this)) {
+        else if(InstanceUtil.isInTrash(this)) {
             iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
         }
         else {
