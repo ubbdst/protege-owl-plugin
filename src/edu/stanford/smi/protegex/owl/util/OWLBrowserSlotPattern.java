@@ -31,17 +31,31 @@ import edu.stanford.smi.protegex.owl.model.impl.AbstractOWLModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * The OWL browser slot pattern used to display the name of OWL elements. It treats the RDFSLiterals
  * in a special manner based on the default language.
+ * <p>
+ * Additional logic:
+ * <p>
+ * - If only one slot value exists, take it regardless of language
+ * - If default lang is set, and there are more than one values, take the one with default lang (work out of box)
+ * - If default lang not set, and we have more one values, do language priority.
  *
  * @author Tania
+ * @author Hemed
  */
 public class OWLBrowserSlotPattern extends BrowserSlotPattern {
-    private boolean slotHasSingleValue = false;
+    /**
+     * Flag to check whether a property has single value
+     */
+    private boolean hasSingleValue;
+
+    /**
+     * List of values when no default language set
+     */
+    private List<RDFSLiteral> otherValues;
 
     public OWLBrowserSlotPattern(BrowserSlotPattern pattern) {
         super(pattern.getElements());
@@ -60,7 +74,6 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     public String getBrowserText(Instance instance) {
         KnowledgeBase kb = instance.getKnowledgeBase();
         StringBuffer buffer = new StringBuffer();
-
         for (Object o : getElements()) {
             if (kb instanceof OWLModel && o.equals(kb.getSystemFrames().getNameSlot())) {
                 buffer.append(NamespaceUtil.getPrefixedName((OWLModel) kb, instance.getName()));
@@ -74,9 +87,9 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     }
 
     private String getText(Slot slot, Instance instance) {
-        String text = null;
+        String text;
+        Collection values;
         String defaultLang = null;
-        Collection values = null;
 
         if (slot instanceof RDFProperty) {
             values = ((RDFResource) instance).getPropertyValues((RDFProperty) slot);
@@ -86,10 +99,11 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         }
 
         if (values.size() > 1) { // multiple values
-            slotHasSingleValue = false;
+            hasSingleValue = false;
             // TODO: find a more efficient implementation of this!!
             Collection rdfLabelsWithNullLang = new ArrayList();
             Collection rdfLabelsWithNonNullLang = new ArrayList();
+            otherValues = new ArrayList<>();
 
             StringBuffer buffer = new StringBuffer();
             int valuesNo = 0;
@@ -98,8 +112,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
                 valuesNo = getBrowserTextFromValues(instance, values, null, buffer);
             } else {//default language set
 
-                for (Iterator iter = values.iterator(); iter.hasNext(); ) {
-                    Object o = iter.next();
+                for (Object o : values) {
                     if (o instanceof RDFSLiteral && ((RDFSLiteral) o).getLanguage() == null || o instanceof String) {
                         rdfLabelsWithNullLang.add(o);
                     } else {
@@ -121,11 +134,21 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
 
             if (valuesNo > 0) {
                 text = buffer.toString();
-            } else {
+            }
+            else if (otherValues.size() > 0) {
+                //Get values from priority list
+                text = getInitialTextFromPriorityList(otherValues);
+                if (text.isEmpty()) {
+                    //If no priority list, return everything
+                    text = otherValues.toString();
+                }
+            }
+            else {
+                //Fallback is the instance URI prefix
                 text = NamespaceUtil.getPrefixedName((OWLModel) instance.getKnowledgeBase(), instance.getName());
             }
         } else { // single value
-            slotHasSingleValue = true;
+            hasSingleValue = true;
             Object o = CollectionUtilities.getFirstItem(values);
             text = getText(o, instance, defaultLang);
             if (text == null) {
@@ -170,15 +193,14 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
             //text = getLangBrowserText(o, lang);
             text = getBrowserText(o, instance, lang);
         } else {
-            text = o.toString();
-            text = ParserUtils.quoteIfNeeded(text);
+            text = ParserUtils.quoteIfNeeded(o.toString());
         }
         return text;
     }
 
 
     private String getDefaultLanguage(KnowledgeBase kb) {
-        if ( !(kb instanceof OWLModel)) {
+        if (!(kb instanceof OWLModel)) {
             return null;
         }
         return ((OWLModel) kb).getDefaultLanguage();
@@ -213,7 +235,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     }
 
     /**
-     * Gets browser text and treat RDFIndividual with only one property value differently
+     * If property has only one value, return that value regardless of the language
      */
     private String getBrowserText(Object value, Instance instance, String defaultLanguage) {
         if (!(value instanceof RDFSLiteral)) {
@@ -222,17 +244,29 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
 
         RDFSLiteral rdfsLiteral = (RDFSLiteral) value;
 
-        // SPECIAL CASE FOR INDIVIDUALS
-        // If instance is of type individual and slot has only one value, then do not care about the language,
-        // just return the value
+        // SPECIAL CASE FOR SINGLE VALUE PROPERTIES
+        // If slot has only one value, then do not care about the language used, just return that value
         // This came as a request from UBB, such that, slot values can be seen and searched
         // within the Protege browser (since search depends on browser texts).
         // Hemed, 23.05.2018
-        if (instance instanceof RDFIndividual && slotHasSingleValue) {
+        if (hasSingleValue) {
             return ParserUtils.quoteIfNeeded(rdfsLiteral.getString());
         }
-        // Otherwise, decide display value based on literal language and default language
-        return getLangBrowserText(rdfsLiteral, defaultLanguage);
+
+        //Get display value based on language
+        String displayText = getLangBrowserText(rdfsLiteral, defaultLanguage);
+
+        // SPECIAL CASE FOR INDIVIDUALS
+        // This stage will be reached when literal contains non-null language
+        // and that language is not the same as the default language
+        // In this case, we want to return any value which has one of the priority languages
+        // (in order of priority)
+
+        if (displayText == null && instance instanceof RDFIndividual) {
+            otherValues.add(rdfsLiteral);
+        }
+
+        return displayText;
     }
 
     /**
@@ -249,11 +283,6 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
                 return ParserUtils.quoteIfNeeded(literal.getString());
             }
         }
-
-        //Deal with priorities (not working as expected)
-       /*if(hasPriorityLang(literal)) {
-            return ParserUtils.quoteIfNeeded(getTextForPriorityLang(literal));
-        }*/
         return null;
     }
 
@@ -262,34 +291,21 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         return "OWLBrowserSlotPattern(" + getSerialization() + ")";
     }
 
-    //TODO:  Hemed, 23.05.2018
-    // If only one value exists, take it regardless of language
-    // If default lang is set, and we have more than one values, take the one with default lang
-    // If default lang not set, an we have more than two values, do language priority.
-    // ( or just take the random 2 values)
-
-
     /**
-     * Checks if this literal contains priority language
+     * Gets first text for a literal which has priority language
      */
-    private boolean hasPriorityLang(RDFSLiteral literal) {
+    // Here we are returning the first match. If more than one values have the same language,
+    // only the first one will be returned.
+    // Maybe we need to return a list of all of them? Vi får se :)
+    private String getInitialTextFromPriorityList(List<RDFSLiteral> literals) {
         for (String lang : AbstractOWLModel.DEFAULT_USED_LANGUAGES) {
-            if (lang.equals(literal.getLanguage())) {
-                return true;
+            for (RDFSLiteral literal : literals) {
+                if (literal.getLanguage().equalsIgnoreCase(lang)) {
+                    return literal.getString();
+                }
             }
         }
-        return false;
+        return "";
     }
 
-    /**
-     * Gets text for a literal which has priority language
-     */
-    private String getTextForPriorityLang(RDFSLiteral literal) {
-        for (String lang : AbstractOWLModel.DEFAULT_USED_LANGUAGES) {
-            if (lang.equals(literal.getLanguage())) {
-                return literal.getString();
-            }
-        }
-        return null;
-    }
 }
