@@ -69,6 +69,13 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         super(slot);
     }
 
+    /**
+     * Inserts first and last bracket for the given String buffer object
+     */
+    private static void insertBrackets(StringBuffer buffer) {
+        buffer.insert(0, "[");
+        buffer.insert(buffer.length(), "]");
+    }
 
     @Override
     public String getBrowserText(Instance instance) {
@@ -86,6 +93,13 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         return buffer.length() == 0 ? null : buffer.toString();
     }
 
+    /**
+     * Gets browser text for the given slot of the given instance
+     *
+     * @param slot     a slot where we need to get the browser text
+     * @param instance an instance where that slot belongs to
+     * @return a browser text
+     */
     private String getText(Slot slot, Instance instance) {
         String text;
         Collection values;
@@ -103,7 +117,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
             // TODO: find a more efficient implementation of this!!
             Collection rdfLabelsWithNullLang = new ArrayList();
             Collection rdfLabelsWithNonNullLang = new ArrayList();
-            otherValues = new ArrayList<>();
+            otherValues = new ArrayList<RDFSLiteral>();
 
             StringBuffer buffer = new StringBuffer();
             int valuesNo = 0;
@@ -128,22 +142,19 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
             }
 
             if (valuesNo > 1) {
-                buffer.insert(0, "[");
-                buffer.insert(buffer.length(), "]");
+                insertBrackets(buffer);
             }
 
             if (valuesNo > 0) {
                 text = buffer.toString();
-            }
-            else if (otherValues.size() > 0) {
+            } else if (otherValues.size() > 0) {
                 //Get values from priority list
                 text = getInitialTextFromPriorityList(otherValues);
                 if (text.isEmpty()) {
-                    //If no priority list, return everything
-                    text = otherValues.toString();
+                    //If no priority list, return everything limited to 2 values
+                    text = getBrowserTextFromLiterals(otherValues, 2);
                 }
-            }
-            else {
+            } else {
                 //Fallback is the instance URI prefix
                 text = NamespaceUtil.getPrefixedName((OWLModel) instance.getKnowledgeBase(), instance.getName());
             }
@@ -156,7 +167,6 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
                 text = "";
             }
         }
-
         return text;
     }
 
@@ -198,14 +208,12 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         return text;
     }
 
-
     private String getDefaultLanguage(KnowledgeBase kb) {
         if (!(kb instanceof OWLModel)) {
             return null;
         }
         return ((OWLModel) kb).getDefaultLanguage();
     }
-
 
     /**
      * Original method from Tania
@@ -248,7 +256,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         // If slot has only one value, then do not care about the language used, just return that value
         // This came as a request from UBB, such that, slot values can be seen and searched
         // within the Protege browser (since search depends on browser texts).
-        // Hemed, 23.05.2018
+        // - Hemed, 23.05.2018
         if (hasSingleValue) {
             return ParserUtils.quoteIfNeeded(rdfsLiteral.getString());
         }
@@ -262,8 +270,10 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         // In this case, we want to return any value which has one of the priority languages
         // (in order of priority)
 
-        if (displayText == null && instance instanceof RDFIndividual) {
-            otherValues.add(rdfsLiteral);
+        if (displayText == null) {
+            if (instance instanceof RDFIndividual) {
+                otherValues.add(rdfsLiteral);
+            }
         }
 
         return displayText;
@@ -298,14 +308,56 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     // only the first one will be returned.
     // Maybe we need to return a list of all of them? Vi får se :)
     private String getInitialTextFromPriorityList(List<RDFSLiteral> literals) {
+        List<RDFSLiteral> matches = new ArrayList<RDFSLiteral>();
+        boolean isMatchFound = false;
         for (String lang : AbstractOWLModel.DEFAULT_USED_LANGUAGES) {
             for (RDFSLiteral literal : literals) {
                 if (literal.getLanguage().equalsIgnoreCase(lang)) {
-                    return literal.getString();
+                    matches.add(literal);
+                    isMatchFound = true;
                 }
             }
+            if (isMatchFound) {
+                break;
+            }
+        }
+        if (matches.size() > 0) {
+            return getBrowserTextFromLiterals(matches, matches.size());
         }
         return "";
     }
+
+    /**
+     * Prints the browser texts from the list of literals
+     *
+     * @param literals list of literals
+     * @param limit    maximum number of texts to be returned
+     * @return a string buffer where string literal is appended
+     */
+    private String getBrowserTextFromLiterals(List<RDFSLiteral> literals, int limit) {
+        StringBuffer buffer = new StringBuffer();
+        boolean isFirst = true;
+        int size = literals.size();
+
+        for (int i = 0; i < size && i < limit; i++) {
+            String partialText = ParserUtils.quoteIfNeeded(literals.get(i).getString());
+            if (partialText != null) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    buffer.append(", ");
+                }
+                buffer.append(partialText);
+            }
+        }
+        if (literals.size() > 1) {
+            if (limit < size) {
+                buffer.append(", ...");
+            }
+            insertBrackets(buffer);
+        }
+        return buffer.toString();
+    }
+
 
 }

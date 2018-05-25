@@ -23,6 +23,7 @@
 
 package edu.stanford.smi.protegex.owl.ui.components.literaltable;
 
+import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.triplestore.TripleStoreModel;
@@ -33,6 +34,7 @@ import edu.stanford.smi.protegex.owl.ui.editors.PropertyValueEditorManager;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.isValidXSDLanguage;
 
@@ -63,8 +65,10 @@ public class LiteralTableModel extends AbstractTableModel {
 
     private RDFResource subject;
 
-    private List values = Collections.EMPTY_LIST;
+    private static transient Logger log = Log.getLogger(LiteralTableModel.class);
 
+
+    private List values = Collections.EMPTY_LIST;
 
     public LiteralTableModel(RDFProperty predicate) {
         this.owlModel = predicate.getOWLModel();
@@ -139,11 +143,9 @@ public class LiteralTableModel extends AbstractTableModel {
         return predicate;
     }
 
-
     private RDFSLiteral getRDFSLiteral(int rowIndex) {
         return (RDFSLiteral) values.get(rowIndex);
     }
-
 
     public int getRow(Object value) {
         if (!(value instanceof RDFSLiteral)) {
@@ -296,8 +298,16 @@ public class LiteralTableModel extends AbstractTableModel {
         }
     }
 
-
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+
+        if(rowIndex > 0 && rowIndex == values.size()) {
+            // There is a weird behaviour when trying to delete value in the list model.
+            // This causes row index to be equal to list size (which I don't know why)
+            // This hack tries to solve it
+            // Hemed, 25.05.2017
+            log.warning("Encountered error for row index: " + rowIndex + " size: " + values.size() + " for " + aValue);
+            rowIndex = values.size() - 1;
+        }
         RDFSLiteral oldLiteral = getRDFSLiteral(rowIndex);
         if (columnIndex == COL_VALUE) {
             //Do not allow empty value to be saved.
