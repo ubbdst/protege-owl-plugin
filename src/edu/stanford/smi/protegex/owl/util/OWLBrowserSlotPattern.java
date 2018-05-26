@@ -37,14 +37,14 @@ import java.util.List;
  * The OWL browser slot pattern used to display the name of OWL elements. It treats the RDFSLiterals
  * in a special manner based on the default language.
  * <p>
- * Additional logic:
+ * Additional logic from UBB:
  * <p>
  * - If only one slot value exists, take it regardless of language
  * - If default lang is set, and there are more than one values, take the one with default lang (work out of box)
  * - If default lang not set, and we have more one values, do language priority.
  *
  * @author Tania
- * @author Hemed
+ * @author Hemed Ali
  */
 public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     /**
@@ -147,11 +147,10 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
 
             if (valuesNo > 0) {
                 text = buffer.toString();
-            } else if (otherValues.size() > 0) {
-                //Get values from priority list
-                text = getInitialTextFromPriorityList(otherValues);
+            } else if (otherValues.size() > 0) { //do language priority thing
+                text = getBrowserTextForPriorityLang(otherValues);
                 if (text.isEmpty()) {
-                    //If no priority list, return everything limited to 2 values
+                    //If no priority list, return 2 values
                     text = getBrowserTextFromLiterals(otherValues, 2);
                 }
             } else {
@@ -256,7 +255,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         // If slot has only one value, then do not care about the language used, just return that value
         // This came as a request from UBB, such that, slot values can be seen and searched
         // within the Protege browser (since search depends on browser texts).
-        // - Hemed, 23.05.2018
+        // Hemed, 23.05.2018
         if (hasSingleValue) {
             return ParserUtils.quoteIfNeeded(rdfsLiteral.getString());
         }
@@ -265,17 +264,13 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         String displayText = getLangBrowserText(rdfsLiteral, defaultLanguage);
 
         // SPECIAL CASE FOR INDIVIDUALS
-        // This stage will be reached when literal contains non-null language
-        // and that language is not the same as the default language
-        // In this case, we want to return any value which has one of the priority languages
-        // (in order of priority)
-
+        // This stage will be reached when literal contains non-null language and the language
+        // is not the same as the default language
         if (displayText == null) {
             if (instance instanceof RDFIndividual) {
                 otherValues.add(rdfsLiteral);
             }
         }
-
         return displayText;
     }
 
@@ -302,12 +297,12 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     }
 
     /**
-     * Gets first text for a literal which has priority language
+     * Gets text for literals that contain priority language
+     *
+     * @param literals a list of literals
+     * @return a browser text if one or more literals contain priority language
      */
-    // Here we are returning the first match. If more than one values have the same language,
-    // only the first one will be returned.
-    // Maybe we need to return a list of all of them? Vi får se :)
-    private String getInitialTextFromPriorityList(List<RDFSLiteral> literals) {
+    private String getBrowserTextForPriorityLang(List<RDFSLiteral> literals) {
         List<RDFSLiteral> matches = new ArrayList<RDFSLiteral>();
         boolean isMatchFound = false;
         for (String lang : AbstractOWLModel.DEFAULT_USED_LANGUAGES) {
@@ -328,7 +323,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     }
 
     /**
-     * Prints the browser texts from the list of literals
+     * Constructs the browser texts from the list of literals
      *
      * @param literals list of literals
      * @param limit    maximum number of texts to be returned
