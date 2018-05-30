@@ -100,6 +100,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
      * @param instance an instance where that slot belongs to
      * @return a browser text
      */
+    @SuppressWarnings("unchecked")
     private String getText(Slot slot, Instance instance) {
         String text;
         Collection values;
@@ -133,18 +134,16 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
                         rdfLabelsWithNonNullLang.add(o);
                     }
                 }
-
+                //Favour labels with non-null language
                 valuesNo = getBrowserTextFromValues(instance, rdfLabelsWithNonNullLang, defaultLang, buffer);
 
-                if (valuesNo == 0) {
+                if (valuesNo == 0) {// if no labels with non-null lang, take the one with empty lang
                     valuesNo = getBrowserTextFromValues(instance, rdfLabelsWithNullLang, defaultLang, buffer);
                 }
             }
-
             if (valuesNo > 1) {
                 insertBrackets(buffer);
             }
-
             if (valuesNo > 0) {
                 text = buffer.toString();
             } else if (otherValues.size() > 0) { //do language priority thing
@@ -316,8 +315,9 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
                 break;
             }
         }
-        if (matches.size() > 0) {
-            return getBrowserTextFromLiterals(matches, matches.size());
+        int numberOfMatches = matches.size();
+        if (numberOfMatches > 0) {
+            return getBrowserTextFromLiterals(matches, numberOfMatches);
         }
         return "";
     }

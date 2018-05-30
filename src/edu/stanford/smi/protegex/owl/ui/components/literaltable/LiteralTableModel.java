@@ -1,6 +1,6 @@
 /*
  * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License");  you may not use this file except in 
+ * Version 1.1 (the "License");  you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
  *
@@ -56,18 +56,11 @@ public class LiteralTableModel extends AbstractTableModel {
     public final static int COL_TYPE = 1;
 
     public final static int COL_COUNT = 2;
-
-    private OWLModel owlModel;
-
-    private RDFProperty predicate;
-
-    private Boolean stringProperty = null;
-
-    private RDFResource subject;
-
     private static transient Logger log = Log.getLogger(LiteralTableModel.class);
-
-
+    private OWLModel owlModel;
+    private RDFProperty predicate;
+    private Boolean stringProperty = null;
+    private RDFResource subject;
     private List values = Collections.EMPTY_LIST;
 
     public LiteralTableModel(RDFProperty predicate) {
@@ -75,21 +68,17 @@ public class LiteralTableModel extends AbstractTableModel {
         this.predicate = predicate;
     }
 
-
     public int getColumnCount() {
         return COL_COUNT;
     }
 
-
     public Class getColumnClass(int columnIndex) {
         if (columnIndex == COL_VALUE) {
             return Object.class;
-        }
-        else {
+        } else {
             if (isStringProperty()) {
                 return String.class;
-            }
-            else {
+            } else {
                 return RDFSDatatype.class;
             }
         }
@@ -99,12 +88,10 @@ public class LiteralTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         if (column == COL_VALUE) {
             return "Value";
-        }
-        else {
+        } else {
             if (isStringProperty()) {
                 return "Lang";
-            }
-            else {
+            } else {
                 return "Type";
             }
         }
@@ -164,36 +151,36 @@ public class LiteralTableModel extends AbstractTableModel {
         return subject;
     }
 
+    public void setSubject(RDFResource subject) {
+        this.subject = subject;
+        stringProperty = null;
+        updateValues();
+    }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (columnIndex == COL_VALUE) {
             Object value = getObject(rowIndex);
             if (value instanceof RDFResource) {
                 return value; // ((RDFResource) value).getBrowserText();
-            }
-            else {
+            } else {
                 RDFSLiteral literal = getRDFSLiteral(rowIndex);
                 return literal.toString().trim();
             }
-        }
-        else {
+        } else {
             if (isStringProperty()) {
                 RDFSLiteral literal = getRDFSLiteral(rowIndex);
                 return literal.getLanguage();
-            }
-            else {
+            } else {
                 Object value = getObject(rowIndex);
                 if (value instanceof RDFResource) {
                     return null;
-                }
-                else {
+                } else {
                     RDFSLiteral literal = getRDFSLiteral(rowIndex);
                     return literal.getDatatype();
                 }
             }
         }
     }
-
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (getObject(rowIndex) instanceof RDFResource) {
@@ -212,24 +199,20 @@ public class LiteralTableModel extends AbstractTableModel {
                     PropertyValueEditor editor = getEditor(value);
                     if (editor != null && editor.mustEdit(subject, predicate, value)) {
                         return false;
-                    }
-                    else {
+                    } else {
                         return true;
                     }
                 }
-            }
-            else {
+            } else {
                 if (isStringProperty()) {
                     return true;
-                }
-                else {
+                } else {
                     return !ComponentUtil.isRangeDefined(subject, predicate);
                 }
             }
         }
         return false;
     }
-
 
     public boolean isDeleteEnabled(int[] selectedRows) {
         TripleStoreModel tsm = owlModel.getTripleStoreModel();
@@ -247,14 +230,12 @@ public class LiteralTableModel extends AbstractTableModel {
         return deleteEnabled;
     }
 
-
     public boolean isStringProperty() {
         if (stringProperty == null) {
             stringProperty = new Boolean(isStringPropertyHelper());
         }
         return stringProperty.booleanValue();
     }
-
 
     private boolean isStringPropertyHelper() {
         final RDFSDatatype datatype = owlModel.getXSDstring();
@@ -273,14 +254,6 @@ public class LiteralTableModel extends AbstractTableModel {
         return datatype.equals(predicate.getRange());
     }
 
-
-    public void setSubject(RDFResource subject) {
-        this.subject = subject;
-        stringProperty = null;
-        updateValues();
-    }
-
-
     private void setTypeAt(Object aValue, int rowIndex) {
         RDFSDatatype datatype = (RDFSDatatype) aValue;
         if (!getRDFSLiteral(rowIndex).getDatatype().equals(datatype)) {
@@ -298,53 +271,66 @@ public class LiteralTableModel extends AbstractTableModel {
         }
     }
 
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 
-        if(rowIndex > 0 && rowIndex == values.size()) {
-            // There is a weird behaviour when trying to delete value in the list model.
-            // This causes row index to be equal to list size (which I don't know why)
-            // This hack tries to solve it
-            // Hemed, 25.05.2017
-            log.warning("Encountered error for row index: " + rowIndex + " size: " + values.size() + " for " + aValue);
-            rowIndex = values.size() - 1;
+    /**
+     * Attempts to fix row index overflow
+     */
+    private int fixRowIndexOverflow(int rowIndex) {
+        if (isRowIndexOverflow(rowIndex)) {
+            int overflow = rowIndex - getRowCount();
+            if (overflow == 0) { // they are equal
+                rowIndex = getRowCount() - 1;
+            } else if (overflow > 0) { // there is overflow of greater than 0
+                rowIndex = getRowCount() - overflow - 1;
+            }
+        }
+        return rowIndex;
+    }
+
+    /**
+     * Checks if there is index overflow
+     */
+    private boolean isRowIndexOverflow(int rowIndex) {
+        return rowIndex > 0 && rowIndex >= getRowCount();
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        // There is a weird behaviour when trying to delete value in the list model which
+        // causes row index to be equal or greater than the list size.
+        // This is an attempt to fix it
+        if (isRowIndexOverflow(rowIndex)) {
+            log.warning("Index overflow for rowIndex: " + rowIndex + " size: " + getRowCount()
+                    + " for " + aValue + ". Attempting to fix...");
+            rowIndex = fixRowIndexOverflow(rowIndex);
         }
         RDFSLiteral oldLiteral = getRDFSLiteral(rowIndex);
         if (columnIndex == COL_VALUE) {
-            //Do not allow empty value to be saved.
-            //Side effect: by adding this, users will not be able to put language tag first before the actual value.
-            /*if(aValue == null || aValue.toString().trim().isEmpty()){
-                subject.removePropertyValue(predicate, aValue);
-                return;
-            }*/
-
             if (aValue instanceof RDFSLiteral) {
                 values.set(rowIndex, aValue.toString().trim());
-            }
-            else {
+            } else {
                 final String lexicalValue = ((String) aValue).trim();
                 RDFSLiteral newValue;
                 RDFSDatatype datatype = oldLiteral.getDatatype();
 
                 if (datatype.equals(owlModel.getXSDstring())) {
-                	newValue = DefaultRDFSLiteral.create(owlModel, lexicalValue, oldLiteral.getLanguage());
+                    newValue = DefaultRDFSLiteral.create(owlModel, lexicalValue, oldLiteral.getLanguage());
                 } else {
-                	newValue = owlModel.createRDFSLiteral(lexicalValue, datatype);
+                    newValue = owlModel.createRDFSLiteral(lexicalValue, datatype);
                 }
                 values.set(rowIndex, newValue);
             }
             subject.setPropertyValues(predicate, getNewValues(rowIndex));  // Will fire back events etc
-        }
-        else {
+        } else {
             if (isStringProperty()) {
                 setLangAt((String) aValue, rowIndex);
-            }
-            else {
+            } else {
                 setTypeAt(aValue, rowIndex);
             }
         }
     }
 
-     //Original code
+
+    //Original code
     /*
      private void setLangAt(String value, int rowIndex) {
         final String lexicalValue = (String) getValueAt(rowIndex, COL_VALUE);
@@ -361,20 +347,15 @@ public class LiteralTableModel extends AbstractTableModel {
     }
     */
 
-
-    /*
-     * Modified by Hemed Al Ruwehy
-     * 2017-09-13
-     */
+     // Modified by Hemed Al Ruwehy 2017-09-13
     private void setLangAt(String value, int rowIndex) {
-        final String lexicalValue = (String)getValueAt(rowIndex, COL_VALUE);
+        final String lexicalValue = (String) getValueAt(rowIndex, COL_VALUE);
         Object newValue;
-        if(isValidXSDLanguage(value)) {//Validate xsd:language
-            newValue =  owlModel.createRDFSLiteral(lexicalValue, value.trim());
-        }
-        else {
+        if (isValidXSDLanguage(value)) {//Validate xsd:language
+            newValue = owlModel.createRDFSLiteral(lexicalValue, value.trim());
+        } else {
             //Bring pop up message to the user
-            if(value != null && !value.trim().isEmpty()){
+            if (value != null && !value.trim().isEmpty()) {
                 ProtegeUI.getModalDialogFactory().showErrorMessageDialog(owlModel, "Invalid language tag \"" + value + "\"");
             }
             newValue = lexicalValue;
@@ -386,7 +367,7 @@ public class LiteralTableModel extends AbstractTableModel {
 
     public void setValues(Collection newValues) {
         values = new ArrayList();
-        for (Iterator it = newValues.iterator(); it.hasNext();) {
+        for (Iterator it = newValues.iterator(); it.hasNext(); ) {
             Object value = it.next();
             if (!(value instanceof RDFResource) &&
                     !(value instanceof RDFSLiteral)) {
@@ -402,7 +383,7 @@ public class LiteralTableModel extends AbstractTableModel {
         if (predicate != null && subject != null) {
             List newValues = new ArrayList(subject.getPropertyValues(predicate, true));
             Collection hasValues = subject.getHasValuesOnTypes(predicate);
-            for (Iterator it = hasValues.iterator(); it.hasNext();) {
+            for (Iterator it = hasValues.iterator(); it.hasNext(); ) {
                 Object hasValue = it.next();
                 if (!newValues.contains(hasValue)) {
                     newValues.add(hasValue);
