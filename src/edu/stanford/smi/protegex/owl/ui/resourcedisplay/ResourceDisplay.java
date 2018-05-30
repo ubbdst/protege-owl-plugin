@@ -54,7 +54,8 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 /**
- * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top. For classes this can also be used to switch between asserted and
+ * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top.
+ * For classes this can also be used to switch between asserted and
  * inferred view.
  *
  * Modified by Hemed Al Ruwehy to disable editing for instance names
@@ -82,6 +83,14 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	public final static int DEFAULT_TYPE_INSTANCE = ResourcePanel.DEFAULT_TYPE_INDIVIDUAL;
 
 	private AddPropertyWidgetToFormAction addPropertyWidgetToFormAction;
+
+	/**
+	 * Overriding the original instance browser color
+	 */
+	private Color instanceBrowserColor = new Color(124, 26, 123);
+
+	//private Color instanceBrowserColor = new Color(37, 56, 88);
+    //private Color instanceBrowserColor = new Color(219, 70, 19);
 
 	private JComponent centerComponent;
 
@@ -239,6 +248,10 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 
 	public void clearSelection()
 	{
+	}
+
+	public Color getInstanceBrowserColor() {
+		return instanceBrowserColor;
 	}
 
 	protected void reworkHeaderComponent()
@@ -434,7 +447,8 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	}
 
 	/**
-	 *Load header label and disable instanceNameComponent for all individuals and for Trash class
+	 * Loads header label and disable instanceNameComponent for all individuals and for Trash class
+	 * -Hemed
 	 */
 	@Override
 	protected void loadHeaderLabel(Instance instance)
@@ -493,6 +507,8 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 		super.loadHeaderWithSimpleInstance(instance);
 		getHeaderComponent().setTitle(getTitleString(instance, "INDIVIDUAL EDITOR"), false);
 		getHeaderComponent().setComponentLabel("For Individual:");
+		//Override default color
+		getHeaderComponent().setColor(getInstanceBrowserColor());
 	}
 
 	@Override

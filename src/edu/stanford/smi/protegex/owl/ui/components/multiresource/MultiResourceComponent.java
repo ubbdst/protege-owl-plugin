@@ -23,15 +23,6 @@
 
 package edu.stanford.smi.protegex.owl.ui.components.multiresource;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JScrollPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
@@ -40,21 +31,32 @@ import edu.stanford.smi.protegex.owl.ui.components.AddResourcesWithBrowserTextAc
 import edu.stanford.smi.protegex.owl.ui.components.AddablePropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
  */
 public class MultiResourceComponent extends AddablePropertyValuesComponent {
 
     private Action createAction;
-    
     private Action addAction;
-
     private MultiResourceList list;
      
 
     private Action removeAction = new AbstractAction("Remove selected values", OWLIcons.getRemoveIcon(OWLIcons.RDF_INDIVIDUAL)) {
         public void actionPerformed(ActionEvent e) {
             handleRemove();
+        }
+    };
+
+
+    private Action moveToTrashAction = new AbstractAction("Move to Trash",  OWLIcons.getTrashClassIcon()) {
+        public void actionPerformed(ActionEvent e) {
+            handleMoveToTrash();
         }
     };
 
@@ -90,6 +92,7 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
          }
          
          lc.addHeaderButton(removeAction);
+         //lc.addHeaderButton(moveToTrashAction);
          add(BorderLayout.CENTER, lc);
          updateActions();
 	}
@@ -117,6 +120,13 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
         list.handleRemove();
     }
 
+    /**
+     * Handles moving the instance to Trash class
+     */
+    protected void handleMoveToTrash() {
+        list.handleMovingToTrash();
+    }
+
 
     public boolean isCreateEnabled() {
         return !isEnumerationProperty();
@@ -138,12 +148,11 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
 
     private void updateActions() {    	
     	boolean isReadOnly = isReadOnly();
-    	
         if (createAction != null) {
             createAction.setEnabled(!isReadOnly && isCreateEnabled());
         }
         removeAction.setEnabled(!isReadOnly && list.isRemoveEnabled());
-        
+        moveToTrashAction.setEnabled(!isReadOnly && list.isRemoveEnabled());
         addAction.setEnabled(!isReadOnly);        
     }
     

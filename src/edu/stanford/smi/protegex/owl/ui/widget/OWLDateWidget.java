@@ -23,21 +23,8 @@
 
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.toedter.calendar.JDateChooser;
-
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Facet;
 import edu.stanford.smi.protege.model.Instance;
@@ -52,6 +39,15 @@ import edu.stanford.smi.protegex.owl.model.RDFSDatatype;
 import edu.stanford.smi.protegex.owl.model.RDFSLiteral;
 import edu.stanford.smi.protegex.owl.model.impl.XMLSchemaDatatypes;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
@@ -113,7 +109,6 @@ public class OWLDateWidget extends AbstractPropertyWidget {
     public static Date getDate(String s) {
         if (s == null) { return null; }
         Date date = new Date();
-
         int index = s.indexOf("T");
         if (index >= 0) {
             s = s.substring(0, index);
@@ -123,6 +118,7 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         if (zindex >= 0) {
             s = s.substring(0, zindex);
         }
+
         String[] ss = s.split("-");
         if (ss.length >= 3) {
             try {
@@ -138,10 +134,10 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         return date;
     }
 
-
     public void initialize() {
         setLayout(new BorderLayout());
         dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("yyyy-MM-dd");
         lc = new LabeledComponent(getRDFProperty().getBrowserText(), getCenterComponent());
         lc.addHeaderButton(setAction);
         lc.addHeaderButton(deleteAction);
@@ -150,7 +146,7 @@ public class OWLDateWidget extends AbstractPropertyWidget {
     }
 
 
-    private void setDateChooserValue() {
+    public void setDateChooserValue() {
         RDFResource resource = getEditedResource();
         RDFProperty property = getRDFProperty();
         Object value = resource.getPropertyValue(property);
@@ -166,7 +162,7 @@ public class OWLDateWidget extends AbstractPropertyWidget {
     }
 
 
-    private void setPropertyValue(Date date) {
+    public void setPropertyValue(Date date) {
         RDFResource resource = getEditedResource();
         RDFProperty property = getRDFProperty();
         if (resource != null && property != null) {

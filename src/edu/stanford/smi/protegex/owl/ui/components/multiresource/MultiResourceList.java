@@ -1,6 +1,6 @@
 /*
  * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License");  you may not use this file except in 
+ * Version 1.1 (the "License");  you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
  *
@@ -23,31 +23,12 @@
 
 package edu.stanford.smi.protegex.owl.ui.components.multiresource;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JComponent;
-import javax.swing.JPopupMenu;
-import javax.swing.ListCellRenderer;
-
 import edu.stanford.smi.protege.model.Project;
 import edu.stanford.smi.protege.util.Disposable;
 import edu.stanford.smi.protege.util.FrameWithBrowserText;
 import edu.stanford.smi.protege.util.PopupMenuMouseListener;
 import edu.stanford.smi.protege.util.SelectableList;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
-import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
-import edu.stanford.smi.protegex.owl.model.RDFUntypedResource;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
 import edu.stanford.smi.protegex.owl.model.triplestore.Triple;
 import edu.stanford.smi.protegex.owl.model.triplestore.impl.DefaultTriple;
@@ -56,7 +37,13 @@ import edu.stanford.smi.protegex.owl.ui.ResourceRenderer;
 import edu.stanford.smi.protegex.owl.ui.TripleSelectable;
 import edu.stanford.smi.protegex.owl.ui.actions.ResourceActionManager;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
+
+import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.*;
 
 /**
  * @author Holger Knublauch  <holger@knublauch.com>
@@ -74,7 +61,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         setCellRenderer(createRenderer());
         addMouseListener(new MouseAdapter() {
             @Override
-			public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     handleDoubleClick();
                 }
@@ -83,13 +70,13 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         addMouseListener(new PopupMenuMouseListener(this) {
 
             @Override
-			protected JPopupMenu getPopupMenu() {
+            protected JPopupMenu getPopupMenu() {
                 return createPopupMenu();
             }
 
 
             @Override
-			protected void setSelection(JComponent c, int x, int y) {
+            protected void setSelection(JComponent c, int x, int y) {
                 for (int i = 0; i < listModel.getSize(); i++) {
                     if (getCellBounds(i, i).contains(x, y)) {
                         setSelectedIndex(i);
@@ -105,26 +92,26 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
     protected ListCellRenderer createRenderer() {
         return new ResourceRenderer(false) {
             @Override
-			public void load(Object value) {
-            	if (value instanceof FrameWithBrowserText) {
-            		FrameWithBrowserText fbt = (FrameWithBrowserText) value;
-            		if (fbt.getFrame() == null) {
-            			String str = fbt.getBrowserText();
-            			//super.load(value); //TODO: what is the right approach?
-            			super.load(str != null ? str: "");
-            			return;
-            		}
-            		setMainText(fbt.getBrowserText());
-            		setMainIcon(fbt.getFrame().getIcon());
-            		if (!listModel.getPredicate().getOWLModel().getProject().isMultiUserClient()) {
-            			int row = listModel.getRowOf(value);
-                    	if (row >= 0 && !listModel.isEditable(row)) {
-                    		setGrayedText(true);
-                    	}
-            		}
-            	} else {
-            		super.load(value);
-            	}
+            public void load(Object value) {
+                if (value instanceof FrameWithBrowserText) {
+                    FrameWithBrowserText fbt = (FrameWithBrowserText) value;
+                    if (fbt.getFrame() == null) {
+                        String str = fbt.getBrowserText();
+                        //super.load(value); //TODO: what is the right approach?
+                        super.load(str != null ? str : "");
+                        return;
+                    }
+                    setMainText(fbt.getBrowserText());
+                    setMainIcon(fbt.getFrame().getIcon());
+                    if (!listModel.getPredicate().getOWLModel().getProject().isMultiUserClient()) {
+                        int row = listModel.getRowOf(value);
+                        if (row >= 0 && !listModel.isEditable(row)) {
+                            setGrayedText(true);
+                        }
+                    }
+                } else {
+                    super.load(value);
+                }
             }
         };
     }
@@ -171,6 +158,17 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         return results;
     }
 
+    public void setSelectedTriples(Collection triples) {
+        getSelectionModel().clearSelection();
+        Iterator it = triples.iterator();
+        while (it.hasNext()) {
+            Triple triple = (Triple) it.next();
+            int row = listModel.getRowOf(triple.getObject());
+            if (row >= 0) {
+                getSelectionModel().addSelectionInterval(row, row);
+            }
+        }
+    }
 
     protected void handleCreate() {
         RDFResource subject = listModel.getSubject();
@@ -181,8 +179,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         if (OWLUtil.containsAnonymousClass(clses) || clses.isEmpty()) {
             clses.clear();
             clses.add(owlModel.getOWLThingClass());
-        }
-        else if (OWLUI.isExternalResourcesSupported(owlModel)) {
+        } else if (OWLUI.isExternalResourcesSupported(owlModel)) {
             clses.add(owlModel.getRDFUntypedResourcesClass());
         }
         if (OWLUI.isExternalResourcesSupported(owlModel)) {
@@ -196,8 +193,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
             RDFResource instance = cls.createInstance(name);
             if (instance instanceof RDFUntypedResource) {
                 instance = OWLUtil.assignUniqueURI((RDFUntypedResource) instance);
-            }
-            else if (instance instanceof RDFSClass) {
+            } else if (instance instanceof RDFSClass) {
                 RDFSClass newcls = (RDFSClass) instance;
                 if (newcls.getSuperclassCount() == 0) {
                     newcls.addSuperclass(owlModel.getOWLThingClass());
@@ -211,14 +207,13 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         }
     }
 
-
     private void handleDoubleClick() {
         Project project = listModel.getPredicate().getOWLModel().getProject();
         int[] sels = getSelectedIndices();
         for (int sel : sels) {
-            Object value = listModel.getResourceAt(sel);
-            if (value instanceof RDFResource) {
-                project.show((RDFResource) value);
+            RDFResource value = listModel.getResourceAt(sel);
+            if (value != null) {
+                project.show(value);
             }
         }
     }
@@ -230,20 +225,60 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         for (int sel : sels) {
             valuesToRemove.add(listModel.getResourceAt(sel));
         }
+        for (Iterator it = valuesToRemove.iterator(); it.hasNext(); ) {
+            Object value = it.next();
+            removeValueFromListModel(value);
+        }
+    }
+
+    /**
+     * Removes object value from the list model
+     *
+     * @param value a value to be removed
+     */
+    private void removeValueFromListModel(Object value) {
         RDFProperty predicate = listModel.getPredicate();
         RDFResource subject = listModel.getSubject();
-        for (Iterator it = valuesToRemove.iterator(); it.hasNext();) {
-            Object value = it.next();
-            subject.removePropertyValue(predicate, value);
-            if (symmetric && value instanceof RDFResource) {
-                RDFResource other = (RDFResource) value;
-                if (other.getPropertyValues(predicate).contains(subject)) {
-                    other.removePropertyValue(predicate, subject);
+        subject.removePropertyValue(predicate, value);
+        if (symmetric && value instanceof RDFResource) {
+            RDFResource other = (RDFResource) value;
+            if (other.getPropertyValues(predicate).contains(subject)) {
+                other.removePropertyValue(predicate, subject);
+            }
+        }
+
+    }
+
+    /**
+     * Moves instance to trash
+     */
+    @SuppressWarnings("unchecked")
+    protected void handleMovingToTrash() {
+        int[] selections = getSelectedIndices();
+        Set valuesToRemove = new HashSet();
+        for (int sel : selections) {
+            valuesToRemove.add(listModel.getResourceAt(sel));
+        }
+        for (Object value : valuesToRemove) {
+            if (value instanceof RDFResource) {
+                RDFResource resource = (RDFResource) value;
+                if (isMoveToTrashConfirmed(resource)) {
+                    InstanceUtil.moveInstanceToTrash(resource);
+                    removeValueFromListModel(resource);
                 }
             }
         }
     }
 
+    /**
+     * Show modal dialog with OK/Cancel options
+     */
+    private boolean isMoveToTrashConfirmed(RDFResource resource) {
+        return ProtegeUI.getModalDialogFactory().showConfirmDialog(
+                listModel.getSubject().getOWLModel(),
+                "Are you sure you want to move instance \"" + resource.getBrowserText() + "\" to Trash?",
+                "Move to Trash");
+    }
 
     public boolean isRemoveEnabled() {
         int[] sels = getSelectedIndices();
@@ -254,32 +289,17 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
                 }
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-
 
     public boolean isRemoveEnabled(int row) {
         return listModel.isEditable(row);
     }
 
-
-    public void setSelectedTriples(Collection triples) {
-        getSelectionModel().clearSelection();
-        Iterator it = triples.iterator();
-        while (it.hasNext()) {
-            Triple triple = (Triple) it.next();
-            int row = listModel.getRowOf(triple.getObject());
-            if (row >= 0) {
-                getSelectionModel().addSelectionInterval(row, row);
-            }
-        }
-    }
-    
     public void dispose() {
-    	listModel.dispose();
+        listModel.dispose();
     }
-    
+
 }

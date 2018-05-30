@@ -142,8 +142,9 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
                     }
                 }
                 if (defaultValue == null){
-                    ProtegeUI.getModalDialogFactory().showMessageDialog(getOWLModel(),
-                                                                        "You have already assigned all allowed values");
+                    ProtegeUI.getModalDialogFactory()
+                            .showMessageDialog(getOWLModel(),
+                                    "You have already assigned all allowed values");
                 }
             }
             return defaultValue;
@@ -156,16 +157,30 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
         }
     }
 
-
-    private void removeEmptyStringIfExists(){
+    /**
+     * Attempts to removes empty values when exist
+     */
+    private void removeEmptyStringIfExists(Object defaultValue){
+        //Remove empty stings
         if(getObjects().contains("")) {
             getSubject().removePropertyValue(getPredicate(), "");
         }
+        //Remove empty literals
+        if(getObjects().contains(defaultValue)) {
+            if(defaultValue instanceof RDFSLiteral) {
+                String value = ((RDFSLiteral) defaultValue).getString();
+                if(value == null || value.isEmpty()) {
+                    getSubject().removePropertyValue(getPredicate(), defaultValue);
+                }
+            }
+        }
     }
      private void handleAddAction() {
-        //There was an issue when empty string exists, the widget would  not respond
-        removeEmptyStringIfExists();
         Object defaultValue = createDefaultValue();
+         // There was an issue when empty values exist when trying to create new value
+         // the case was the widget would not respond
+        removeEmptyStringIfExists(defaultValue);
+
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             getSubject().addPropertyValue(getPredicate(), defaultValue);
             table.setSelectedRow(defaultValue);
@@ -191,6 +206,12 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
                 }
             }
             table.editCell(defaultValue);
+        }
+        else { //When trying to add duplicate value
+            ProtegeUI.getModalDialogFactory().showErrorMessageDialog(
+                            getOWLModel(),
+                    "Cannot add new value. Probably you are trying to add duplicate values"
+            );
         }
     }
 

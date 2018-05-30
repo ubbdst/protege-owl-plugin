@@ -1,10 +1,12 @@
 package edu.stanford.smi.protegex.owl.util;
 
+import com.hp.hpl.jena.shared.NotFoundException;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.model.Reference;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,7 +33,6 @@ public class InstanceUtil {
 
     private InstanceUtil() {
     }
-
 
     /**
      * Remove a given property value from an instance
@@ -213,8 +214,7 @@ public class InstanceUtil {
     public static RDFProperty getRDFProperty(OWLModel model, String name) {
         RDFProperty property = model.getRDFProperty(name);
         if (property == null) {
-            throw new IllegalArgumentException(
-                    "Cannot find property with name [" + name + "] in the ontology");
+            throw new NotFoundException("Cannot find property with name [" + name + "] in the ontology");
         }
         return property;
     }
@@ -246,6 +246,15 @@ public class InstanceUtil {
         return trashClass;
     }
 
+    /**
+     * Moves instance to a Trash class
+     *
+     * @param instance an instance to move
+     */
+    public static void moveInstanceToTrash(RDFResource instance) {
+        DeleteInstanceOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
+    }
+
 
     /**
      * Check if the given individual belongs to a Momayo class Trash
@@ -269,13 +278,10 @@ public class InstanceUtil {
      */
     public static boolean isValidXSDLanguage(String language) {
         String xsdLangRegex = "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$";
-        if (language == null || language.trim().length() == 0) {
+        if (language == null || language.trim().isEmpty()) {
             return false;
         }
-        if (language.matches(xsdLangRegex)) {
-            return true;
-        }
-        return false;
+        return language.matches(xsdLangRegex);
     }
 
     /**

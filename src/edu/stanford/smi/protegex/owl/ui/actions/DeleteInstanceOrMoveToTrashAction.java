@@ -19,9 +19,9 @@ import java.util.Collection;
 /**
  * Actions for either deleting or moving an instance to Trash.
  *
- * The idea is that, if instance belongs directly to class Trash, and deletion is triggered, then
- * delete the instance entirely. On the other hand, if an instance belongs to a class other than Trash,
- * and deletion is triggered, move the instance to class Trash.
+ * The idea is that, if instance belongs directly to class Trash, and deletion is confirmed, then
+ * delete the instance permanently. On the other hand, if an instance belongs to a class other than Trash,
+ * and deletion is confirmed, move the instance to class Trash.
  * This came as a request from the University of Bergen Library to avoid deletion mistakes.
  *
  * @author Hemed Al Ruwehy
@@ -36,6 +36,13 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         super(key, selectable);
     }
 
+    public DeleteInstanceOrMoveToTrashAction(ResourceKey key) {
+        super(key, null);
+    }
+
+    public DeleteInstanceOrMoveToTrashAction(String text, Icon icon, Selectable selectable) {
+        super(text, icon, selectable);
+    }
 
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -63,13 +70,12 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      * Show modal dialog with OK/Cancel options
      */
     private boolean isMoveToTrashConfirmed(Instance instance) {
-        String text =  "Instance " +   "\"" + instance.getBrowserText() + "\"" + " of class " +
-                instance.getDirectType().getBrowserText() + " will be moved to Trash";
+        String text =  "Instance " +   "\"" + instance.getBrowserText() + "\""  + " will be moved to Trash";
 
         int option = ModalDialog.showMessageDialog(
                 (JComponent)this.getSelectable(),
                 text,
-                "Move to trash",
+                "Move to Trash",
                 ModalDialogFactory.MODE_OK_CANCEL);
 
         return option == ModalDialogFactory.OPTION_OK;
@@ -146,7 +152,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
         Collection selectedResources = getSelection();
         for (Object selection : selectedResources) {
             Instance selectedInstance = (Instance) selection;
-            deleteOrMove(selectedInstance);
+            deleteOrMoveToTrash(selectedInstance);
         }
     }
 
@@ -172,7 +178,7 @@ public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
      *
      * @param sourceInstance instance to move or delete
      */
-    protected void deleteOrMove(Instance sourceInstance) {
+    public void deleteOrMoveToTrash(Instance sourceInstance) {
         OWLNamedClass targetCls = InstanceUtil.getOrCreateTrashClass(getOWLModel(sourceInstance));
         //If instance belongs to class Trash and deletion is confirmed,
         //then delete permanently
