@@ -56,6 +56,7 @@ public class OWLDateWidget extends AbstractPropertyWidget {
 
     private JDateChooser dateChooser;
     private LabeledComponent lc;
+    private boolean enableAddAction = true;
 
     private final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
         public void propertyChange(PropertyChangeEvent evt) {
@@ -65,11 +66,19 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         }
     };
 
-    private final Action deleteAction = new AbstractAction("Delete value", OWLIcons.getDeleteIcon()) {
+   protected Action deleteAction = new AbstractAction(getDeleteActionText(), getDeleteActionIcon()) {
         public void actionPerformed(ActionEvent e) {
             deleteValue();
         }
     };
+
+    public String getDeleteActionText() {
+        return "Delete value";
+    }
+
+    public Icon getDeleteActionIcon() {
+        return  OWLIcons.getDeleteIcon();
+    }
 
     private final Action setAction = new AbstractAction("Set value", OWLIcons.getAddIcon()) {
         public void actionPerformed(ActionEvent e) {
@@ -77,12 +86,15 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         }
     };
 
-
     public OWLDateWidget() {
         setPreferredColumns(2);
         setPreferredRows(1);
     }
 
+    public OWLDateWidget(boolean enableAddAction) {
+        this();
+        this.enableAddAction = enableAddAction;
+    }
 
     protected RDFSLiteral createPropertyValue(Date date) {
         String value = XMLSchemaDatatypes.getDateString(date);
@@ -139,7 +151,9 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("yyyy-MM-dd");
         lc = new LabeledComponent(getRDFProperty().getBrowserText(), getCenterComponent());
-        lc.addHeaderButton(setAction);
+        if(enableAddAction) {
+            lc.addHeaderButton(setAction);
+        }
         lc.addHeaderButton(deleteAction);
         add(BorderLayout.CENTER, lc);
         enabledCompListeners();
@@ -150,6 +164,7 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         RDFResource resource = getEditedResource();
         RDFProperty property = getRDFProperty();
         Object value = resource.getPropertyValue(property);
+        System.out.println("Set date chooser value: " + value);
         setValue(value == null ? null : value.toString());
     }
 
@@ -174,7 +189,6 @@ public class OWLDateWidget extends AbstractPropertyWidget {
             }
         }
     }
-
 
     @Override
 	public void setEnabled(boolean enabled) {
@@ -264,12 +278,6 @@ public class OWLDateWidget extends AbstractPropertyWidget {
     }
 
 
-    /**
-     * @param cls
-     * @param slot
-     * @param facet
-     * @deprecated
-     */
     @Deprecated
 	public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
         return OWLWidgetMapper.isSuitable(OWLDateWidget.class, cls, slot);
