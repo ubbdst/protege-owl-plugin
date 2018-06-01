@@ -164,7 +164,6 @@ public class OWLDateWidget extends AbstractPropertyWidget {
         RDFResource resource = getEditedResource();
         RDFProperty property = getRDFProperty();
         Object value = resource.getPropertyValue(property);
-        System.out.println("Set date chooser value: " + value);
         setValue(value == null ? null : value.toString());
     }
 

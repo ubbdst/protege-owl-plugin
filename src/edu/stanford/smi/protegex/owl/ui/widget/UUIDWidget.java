@@ -5,6 +5,8 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -27,9 +29,12 @@ public class UUIDWidget extends TextFieldWidget {
     public static boolean isSuitable(Cls cls, Slot slot, Facet facet) {
         //Check if a slot accept values of type String,
         //if it does, then show this widget in the dropdown list as one of the options.
-        boolean isString = cls.getTemplateSlotValueType(slot) == ValueType.STRING;
+        return cls.getTemplateSlotValueType(slot) == ValueType.STRING;
+    }
 
-        return isString;
+    @Override
+    public void initialize() {
+        super.initialize(false, 3, 1);
     }
 
     /**
@@ -44,9 +49,25 @@ public class UUIDWidget extends TextFieldWidget {
         } else {
             super.setValues(values);
         }
-        //Disable this widget for editing
-        getTextField().setEnabled(false);
+        //Disable editing for this widget
+         disableEditing(getTextField());
     }
+
+    @Override
+    public String getLabel() {
+        return getSlot().getBrowserText();
+    }
+
+
+    /**
+     * Disables editing for the given component
+     */
+    private void disableEditing(JTextComponent textComponent) {
+        textComponent.setEditable(false);
+        textComponent.setBackground(new Color(240, 240, 240));
+        textComponent.setForeground(Color.gray);
+    }
+
 
     /**
      * Extract UUID from instance URI, if it exists
