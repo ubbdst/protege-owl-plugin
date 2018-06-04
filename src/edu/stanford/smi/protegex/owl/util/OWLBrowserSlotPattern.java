@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static edu.stanford.smi.protegex.owl.model.classparser.ParserUtils.SINGLE_QUOTE_STRING;
+
 /**
  * The OWL browser slot pattern used to display the name of OWL elements. It treats the RDFSLiterals
  * in a special manner based on the default language.
@@ -199,9 +201,10 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
             }
         } else if (o instanceof RDFSLiteral) {
             //text = getLangBrowserText(o, lang);
-            text = getBrowserText(o, instance, lang);
+            text = quoteIfEmpty(getBrowserText(o, instance, lang));
         } else {
-            text = ParserUtils.quoteIfNeeded(o.toString());
+            //text = ParserUtils.quoteIfNeeded(o.toString());
+            text = quoteIfEmpty(o.toString());
         }
         return text;
     }
@@ -256,7 +259,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         // within the Protege browser (since search depends on browser texts).
         // Hemed, 23.05.2018
         if (hasSingleValue) {
-            return ParserUtils.quoteIfNeeded(rdfsLiteral.getString());
+            return rdfsLiteral.getString();
         }
 
         //Get display value based on language
@@ -279,12 +282,12 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
     private String getLangBrowserText(RDFSLiteral literal, String defaultLanguage) {
         if (defaultLanguage == null) {// no default language
             if (literal.getLanguage() == null) {
-                return ParserUtils.quoteIfNeeded(literal.getString());
+                return literal.getString();
             }
         } else { //default language exists
             String lang = literal.getLanguage();
             if (lang != null && lang.equals(defaultLanguage)) {
-                return ParserUtils.quoteIfNeeded(literal.getString());
+                return literal.getString();
             }
         }
         return null;
@@ -335,7 +338,7 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         int size = literals.size();
 
         for (int i = 0; i < size && i < limit; i++) {
-            String partialText = ParserUtils.quoteIfNeeded(literals.get(i).getString());
+            String partialText = literals.get(i).getString();
             if (partialText != null) {
                 if (isFirst) {
                     isFirst = false;
@@ -354,5 +357,21 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         return buffer.toString();
     }
 
+    /**
+     * Quotes an empty string. This method replaces ParserUtils#quoteIfNeeded(String)
+     * which was making a noise to the UI
+     *
+     * @see ParserUtils#quoteIfNeeded(String)
+     */
+    public static String quoteIfEmpty(String id) {
+        if (id == null) {
+            return null;
+        }
+        //We are interested only with this at the moment
+        else if (id.length() == 0) {
+            return SINGLE_QUOTE_STRING + id + SINGLE_QUOTE_STRING;
+        }
+        return id;
+    }
 
 }
