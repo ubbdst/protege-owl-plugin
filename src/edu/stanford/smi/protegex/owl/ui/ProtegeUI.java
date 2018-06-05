@@ -23,12 +23,6 @@
 
 package edu.stanford.smi.protegex.owl.ui;
 
-import java.awt.Component;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.Icon;
-
 import edu.stanford.smi.protege.model.Frame;
 import edu.stanford.smi.protege.model.Project;
 import edu.stanford.smi.protege.ui.ProjectManager;
@@ -46,6 +40,12 @@ import edu.stanford.smi.protegex.owl.ui.navigation.NavigationHistoryManager;
 import edu.stanford.smi.protegex.owl.ui.navigation.TabNavigationHistorySelectable;
 import edu.stanford.smi.protegex.owl.ui.resourcedisplay.DefaultResourcePanelFactory;
 import edu.stanford.smi.protegex.owl.ui.resourcedisplay.ResourcePanelFactory;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A utility class that can be used to access and manipulate the high-level Swing
@@ -226,5 +226,14 @@ public class ProtegeUI {
     
 	public static String getPotentialIconName(Frame frame) {
 		return (frame instanceof RDFResource) ? ((RDFResource)frame).getIconName() : null;
-	}	
+	}
+
+    /**
+     * Disables editing for the given component
+     */
+    public static void disableEditing(JTextComponent component) {
+        component.setEditable(false);
+        component.setBackground(new Color(240, 240, 240));
+        component.setForeground(Color.GRAY);
+    }
 }

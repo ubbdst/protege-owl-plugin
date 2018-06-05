@@ -5,6 +5,7 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 import org.apache.commons.validator.routines.UrlValidator;
 
@@ -95,7 +96,7 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
             super.setValues(values);
         }
         //Disable this widget from being edited by user
-        getTextField().setEnabled(false);
+        ProtegeUI.disableEditing(getTextField());
     }
 
 

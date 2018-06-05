@@ -116,6 +116,20 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                     new FrameWithBrowserText(oldInst, oldInst.getBrowserText(), oldInst.getDirectTypes()),
                     new FrameWithBrowserText(newInst, newInst.getBrowserText(), newInst.getDirectTypes()));
         }
+
+        /**
+         * We wants to trigger a change for every change in slot value.
+         */
+        @Override
+        public void ownSlotValueChanged(FrameEvent frameEvent) {
+            System.out.println(
+                    " Slot: " + frameEvent.getSlot().getName() +
+                    " Old values: " + frameEvent.getOldValues() +
+                    " Timestamp: " + InstanceUtil.formatTimestamp(frameEvent.getTimeStamp()) +
+                    " New values: " + frameEvent.getFrame().getOwnSlotValues(frameEvent.getSlot())
+            );
+
+        }
     };
     private ClsListener _clsListener = new ClsAdapter() {
         @Override

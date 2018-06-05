@@ -4,9 +4,8 @@ import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
+import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 
-import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -50,7 +49,7 @@ public class UUIDWidget extends TextFieldWidget {
             super.setValues(values);
         }
         //Disable editing for this widget
-         disableEditing(getTextField());
+        ProtegeUI.disableEditing(getTextField());
     }
 
     @Override
@@ -58,15 +57,6 @@ public class UUIDWidget extends TextFieldWidget {
         return getSlot().getBrowserText();
     }
 
-
-    /**
-     * Disables editing for the given component
-     */
-    private void disableEditing(JTextComponent textComponent) {
-        textComponent.setEditable(false);
-        textComponent.setBackground(new Color(240, 240, 240));
-        textComponent.setForeground(Color.gray);
-    }
 
 
     /**

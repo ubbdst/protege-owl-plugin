@@ -10,6 +10,7 @@ import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashActio
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -315,6 +316,12 @@ public class InstanceUtil {
             }
         }
         return UBBOntologyNames.DEFAULT_NAMESPACE;
+    }
+
+
+    public static String formatTimestamp(long timestamp) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return df.format(timestamp);
     }
 }
 
