@@ -1,6 +1,6 @@
 /*
  * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License");  you may not use this file except in 
+ * Version 1.1 (the "License");  you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
  *
@@ -37,10 +37,7 @@ import edu.stanford.smi.protege.ui.ConfigureAction;
 import edu.stanford.smi.protege.ui.FrameRenderer;
 import edu.stanford.smi.protege.ui.HeaderComponent;
 import edu.stanford.smi.protege.util.*;
-import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
@@ -66,6 +63,7 @@ import java.util.logging.Logger;
  *
  * @author Holger Knublauch  <holger@knublauch.com>
  * @author Ray Fergerson <fergerson@smi.stanford.edu>
+ * @author  Hemed Al Ruwehy - modified to meet some UBB requirements
  */
 public class AssertedInstancesListPanel extends SelectableContainer implements Disposable {
 
@@ -90,6 +88,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     private InstancesList list;
     private Collection<Instance> listenedToInstances = new ArrayList<Instance>();
     private boolean showSubclassInstances;
+    private int updatesCount = 0;
     private FrameListener _clsFrameListener = new FrameAdapter() {
         @Override
         public void ownSlotValueChanged(FrameEvent event) {
@@ -97,6 +96,10 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             updateButtons();
         }
     };
+
+    /**
+     * Instance listener
+     */
     private FrameListener _instanceFrameListener = new FrameAdapter() {
         @Override
         public void browserTextChanged(FrameEvent event) {
@@ -118,19 +121,54 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
         }
 
         /**
-         * We wants to trigger a change for every change in slot value.
+         * Triggers an action for every change in slot value of this instance
          */
         @Override
         public void ownSlotValueChanged(FrameEvent frameEvent) {
-            System.out.println(
-                    " Slot: " + frameEvent.getSlot().getName() +
-                    " Old values: " + frameEvent.getOldValues() +
-                    " Timestamp: " + InstanceUtil.formatTimestamp(frameEvent.getTimeStamp()) +
-                    " New values: " + frameEvent.getFrame().getOwnSlotValues(frameEvent.getSlot())
-            );
+            // This check avoids recursive calls. When new value is added
+            // to the dct:modified property, this method will again be triggered hence it
+            // it will create recursive updates, which we do not want.
+            if (!frameEvent.getSlot().getName().equals(UBBOntologyNames.MODIFIED)) {
+                if(frameEvent.getFrame() instanceof RDFResource) { // Only if it is a resource
+                    // Old values
+                    Collection oldValues = frameEvent.getOldValues();
+                    // New values
+                    Collection newValues = frameEvent.getFrame().getOwnSlotValues(frameEvent.getSlot());
 
+                    //Do not do anything if contents have not changed
+                    if(equalContents(oldValues, newValues)) {
+                        return;
+                    }
+                    //Fire update
+                    InstanceUtil.updateDateModified((RDFResource)frameEvent.getFrame(), frameEvent.getTimeStamp());
+                }
+            }
         }
     };
+
+    /**
+     * Checks if two collections have the same content
+     */
+    private boolean equalContents(Collection oldValues, Collection newValues) {
+        //They are both empty
+       if(isNullOrEmpty(oldValues) && isNullOrEmpty(newValues)) {
+           return true;
+       }
+       return oldValues.size() == newValues.size() && oldValues.containsAll(newValues);
+    }
+
+
+    /**
+     * Checks if a collection is null or empty
+     */
+    private boolean isNullOrEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+
+    /**
+     * Class listener
+     */
     private ClsListener _clsListener = new ClsAdapter() {
         @Override
         public void directInstanceAdded(ClsEvent event) {
@@ -142,6 +180,11 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             if (!getModel().contains(fbt)) {
                 ComponentUtilities.addListValue(list, fbt);
                 instance.addFrameListener(_instanceFrameListener);
+            }
+            // Update date modified upon creation of the resource
+            // Hemed, 06-06-2018
+            if(instance instanceof RDFResource) {
+                InstanceUtil.updateDateModified((RDFResource) instance, event.getTimeStamp());
             }
         }
 
@@ -435,9 +478,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     /**
      * Act upon copying the instance. When instance is copied, delete it's identifier property,
      * and replace classHierarchyURI with UUID
-     *
+     * <p>
      * Modified by Hemed, 2017-05-02
-     *
      */
     protected Action createCopyAction() {
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
@@ -579,7 +621,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     private void updateButtons() {
         Cls cls = CollectionUtilities.getFirstItem(classes);
-        createAction.setEnabled(cls!= null && cls.isConcrete());
+        createAction.setEnabled(cls != null && cls.isConcrete());
         createAnonymousAction.setEnabled(cls != null && cls.isConcrete());
 
         Instance instance = (Instance) getSoleSelection();
@@ -632,7 +674,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     public void setShowDisplaySlotPanel(boolean b) {
 
     }
-    
+
     /*
      * Code for getting the instances of classes that tries to optimize performance
      * for client-server

@@ -10,17 +10,22 @@ package edu.stanford.smi.protegex.owl.model;
  */
 public class UBBOntologyNames {
 
-    //Default UBB namespace
+    //Namespaces
     public static final String DEFAULT_NAMESPACE =    "http://data.ub.uib.no/";
     public static final String UBBONT_NAMESPACE =     "http://data.ub.uib.no/ontology/";
     public static final String MOMAYO_NAMESPACE =     "http://purl.org/momayo/mmo/";
+    public static final String DCT_TERMS_NAMESPACE =  "http://purl.org/dc/terms/";
 
+    //Momayo Properties
     public static final String UUID =                  MOMAYO_NAMESPACE + "uuid";
     public static final String PREVIOUS_IDENTIFIER =   MOMAYO_NAMESPACE + "previousIdentifier";
     public static final String TRASH_CLASS_NAME =      MOMAYO_NAMESPACE + "Trash";
     public static final String CLASS_HIERARCHY_URI =   MOMAYO_NAMESPACE + "classHierarchyURI";
     public static final String HAS_BEEN_MERGED_WITH =  MOMAYO_NAMESPACE + "hasBeenMergedWith";
-    public static final String TITLE =                 "http://purl.org/dc/terms/title";
-    public static final String IDENTIFIER  =           "http://purl.org/dc/terms/identifier";
+
+    //Dublin Core Properties
+    public static final String TITLE =                 DCT_TERMS_NAMESPACE + "title";
+    public static final String IDENTIFIER  =           DCT_TERMS_NAMESPACE + "identifier";
+    public static final String MODIFIED    =           DCT_TERMS_NAMESPACE + "modified";
 
 }
