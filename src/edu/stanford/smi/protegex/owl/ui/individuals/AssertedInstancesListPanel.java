@@ -88,7 +88,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     private InstancesList list;
     private Collection<Instance> listenedToInstances = new ArrayList<Instance>();
     private boolean showSubclassInstances;
-    private int updatesCount = 0;
+
     private FrameListener _clsFrameListener = new FrameAdapter() {
         @Override
         public void ownSlotValueChanged(FrameEvent event) {
@@ -119,51 +119,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                     new FrameWithBrowserText(oldInst, oldInst.getBrowserText(), oldInst.getDirectTypes()),
                     new FrameWithBrowserText(newInst, newInst.getBrowserText(), newInst.getDirectTypes()));
         }
-
-        /**
-         * Triggers an action for every change in slot value of this instance
-         */
-        @Override
-        public void ownSlotValueChanged(FrameEvent frameEvent) {
-            // This check avoids recursive calls. When new value is added
-            // to the dct:modified property, this method will again be triggered hence it
-            // it will create recursive updates, which we do not want.
-            if (!frameEvent.getSlot().getName().equals(UBBOntologyNames.MODIFIED)) {
-                if(frameEvent.getFrame() instanceof RDFResource) { // Only if it is a resource
-                    // Old values
-                    Collection oldValues = frameEvent.getOldValues();
-                    // New values
-                    Collection newValues = frameEvent.getFrame().getOwnSlotValues(frameEvent.getSlot());
-
-                    //Do not do anything if contents have not changed
-                    if(equalContents(oldValues, newValues)) {
-                        return;
-                    }
-                    //Fire update
-                    InstanceUtil.updateDateModified((RDFResource)frameEvent.getFrame(), frameEvent.getTimeStamp());
-                }
-            }
-        }
     };
-
-    /**
-     * Checks if two collections have the same content
-     */
-    private boolean equalContents(Collection oldValues, Collection newValues) {
-        //They are both empty
-       if(isNullOrEmpty(oldValues) && isNullOrEmpty(newValues)) {
-           return true;
-       }
-       return oldValues.size() == newValues.size() && oldValues.containsAll(newValues);
-    }
-
-
-    /**
-     * Checks if a collection is null or empty
-     */
-    private boolean isNullOrEmpty(Collection collection) {
-        return collection == null || collection.isEmpty();
-    }
 
 
     /**
@@ -181,9 +137,11 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 ComponentUtilities.addListValue(list, fbt);
                 instance.addFrameListener(_instanceFrameListener);
             }
-            // Update date modified upon creation of the resource
-            // Hemed, 06-06-2018
-            if(instance instanceof RDFResource) {
+            // Creates date modified upon creation of the resource in the INSTANCE BROWSER
+            // Note that there is also other places where instances can be create,
+            // such as MultiResourceComponent and SingleResourceComponent.
+            // We also have to do this there
+            if(instance instanceof RDFIndividual) {
                 InstanceUtil.updateDateModified((RDFResource) instance, event.getTimeStamp());
             }
         }
@@ -196,7 +154,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             removeInstanceListener(event.getInstance());
             ComponentUtilities.removeListValue(list, new FrameWithBrowserText(event.getInstance()));
         }
-
 
     };
 

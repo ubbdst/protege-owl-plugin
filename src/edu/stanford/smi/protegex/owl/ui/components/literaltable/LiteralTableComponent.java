@@ -207,12 +207,12 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
             }
             table.editCell(defaultValue);
         }
-        else { //When trying to add duplicate value
+        /*else { //When trying to add duplicate value
             ProtegeUI.getModalDialogFactory().showErrorMessageDialog(
                             getOWLModel(),
                     "Cannot add new value. Probably you are trying to add duplicate values"
             );
-        }
+        }*/
     }
 
 

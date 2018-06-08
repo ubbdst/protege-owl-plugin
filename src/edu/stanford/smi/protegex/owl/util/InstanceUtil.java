@@ -339,23 +339,24 @@ public class InstanceUtil {
      * Updates the date modified for a particular resource. The date will be formatted
      * to dateTime.
      * <br>
-     * The method is updates dct:modified value or it creates it if it does not exist
+     * The method updates or creates (if it does not exist) dct:modified value
      */
     public static void updateDateModified(RDFResource resource, long timeInMillis) {
-        OWLModel model = resource.getOWLModel();
+        if(resource != null) {
+            OWLModel model = resource.getOWLModel();
+            // Create date-time literal
+            RDFSLiteral dateTimeLiteral = model.createRDFSLiteral(
+                    dateFormatter.format(timeInMillis),
+                    model.getXSDdateTime()
+            );
 
-        // Create date-time literal
-        RDFSLiteral dateTimeLiteral = model.createRDFSLiteral(
-                dateFormatter.format(timeInMillis),
-                model.getXSDdateTime()
-        );
-
-        // Execute change
-        OWLUtil.setPropertyValue(
-                resource,
-                getOrCreateRDFProperty(model, UBBOntologyNames.MODIFIED),
-                dateTimeLiteral
-        );
+            // Execute change
+            OWLUtil.setPropertyValue(
+                    resource,
+                    getOrCreateRDFProperty(model, UBBOntologyNames.MODIFIED),
+                    dateTimeLiteral
+            );
+        }
     }
 
     /**
@@ -370,6 +371,15 @@ public class InstanceUtil {
         }
         return UBBOntologyNames.DEFAULT_NAMESPACE;
     }
+
+
+    /**
+     * Checks if a collection is null or empty
+     */
+    public static boolean isNullOrEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
+
 }
 
 

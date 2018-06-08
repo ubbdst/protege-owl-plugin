@@ -233,7 +233,7 @@ public class ProtegeUI {
      */
     public static void disableEditing(JTextComponent component) {
         component.setEditable(false);
-        component.setBackground(new Color(240, 240, 240));
+        component.setBackground(new Color(245, 245, 245));
         component.setForeground(Color.GRAY);
     }
 }
