@@ -46,12 +46,16 @@ import edu.stanford.smi.protegex.owl.ui.search.FindUsageAction;
 import edu.stanford.smi.protegex.owl.ui.testing.OWLTestInstanceAction;
 import edu.stanford.smi.protegex.owl.ui.widget.InferredModeWidget;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
+
+import static edu.stanford.smi.protegex.owl.util.InstanceUtil.isNullOrEmpty;
 
 /**
  * An InstanceDisplay with the "type" actions instead of the yellow sticky ones on top.
@@ -135,14 +139,40 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	private Set actionRefreshProperties;
 
 	private PropertyValueListener propertyValueListener = new PropertyValueAdapter() {
+
+        /**
+         * Triggers any change that happens within the resource display panel.
+         *
+         * For every change in slot values that happens to the individual,
+         * dct:modified will be updated.
+         */
 		@Override
-		public void propertyValueChanged(RDFResource resource, RDFProperty property, Collection oldValues)
-		{
+		public void propertyValueChanged(RDFResource resource, RDFProperty property, Collection oldValues) {
 			if (actionRefreshProperties.contains(property)) {
 				initInstanceDisplayActions(resource);
 			}
-		}
+
+			if(resource instanceof RDFIndividual) {
+                // We need to make sure that the property for which it's value has changed,
+                // is NOT dct:modified, in other words, is NOT itself.
+                // Otherwise, it will cause recursive updates.
+                if (!isDctModified(property)) {
+                    //The issue here is oldValues come as Strings instead of Literals.
+                    //Therefore, if we use #getPropertyValues(), we won't be able to compare two collections
+                    //using containsAll()
+                    Collection newValues = resource.getDirectOwnSlotValues(property);
+
+                    //Do not do anything if contents have not changed
+                    if (equalContents(newValues, oldValues)) {
+                        return;
+                    }
+                    //Fire update
+                    InstanceUtil.updateDateModified(resource, System.currentTimeMillis());
+                }
+            }
+        }
 	};
+
 
 	public ResourceDisplay(Project project, boolean showHeader, boolean showHeaderLabel)
 	{
@@ -249,6 +279,54 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 	public void clearSelection()
 	{
 	}
+
+    /**
+     * Checks if the given property is dct:modified
+     */
+	private boolean isDctModified(RDFProperty property) {
+        return property != null && property.getName().equals(UBBOntologyNames.MODIFIED);
+    }
+
+    /**
+     * Checks if two collections have the same content
+     */
+    private static boolean equalContents(Collection oldValues, Collection newValues) {
+        //They are both empty
+        if(isNullOrEmpty(oldValues) && isNullOrEmpty(newValues)) {
+            return true;
+        }
+        newValues = removeEmptyValues(newValues);
+        oldValues = removeEmptyValues(oldValues);
+
+        return oldValues.size() == newValues.size() && oldValues.containsAll(newValues);
+    }
+
+    /**
+     * Removes empty values from a given collection
+     */
+    @SuppressWarnings("unchecked")
+    private static List removeEmptyValues(Collection collection) {
+        List values = new ArrayList(collection);
+
+        for (int i = 0; i < values.size(); i ++) {
+            Object o = values.get(i);
+            if(o instanceof String) {
+                String stringPart = InstanceUtil.stripDatatype((String) o);
+                if(stringPart.isEmpty()) {
+                    values.remove(i);
+                }
+            }
+            //Just in case, if we meet Literals
+            else if(o instanceof RDFSLiteral) {
+                String stringPart = InstanceUtil.stripDatatype(((RDFSLiteral) o).getRawValue());
+                if(stringPart.isEmpty()) {
+                    values.remove(i);
+                }
+            }
+        }
+        return values;
+    }
+
 
 	public Color getInstanceBrowserColor() {
 		return instanceBrowserColor;
@@ -679,8 +757,7 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 		initInstanceDisplayActions(instance instanceof RDFResource ? (RDFResource)instance : null);
 	}
 
-	public void setResource(RDFResource resource)
-	{
+	public void setResource(RDFResource resource) {
 		setInstance(resource);
 	}
 

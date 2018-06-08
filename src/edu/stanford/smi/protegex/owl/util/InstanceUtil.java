@@ -4,12 +4,15 @@ import com.hp.hpl.jena.shared.NotFoundException;
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protege.model.Reference;
+import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
 import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +34,9 @@ public class InstanceUtil {
     public static final String PATH_SEPARATOR = "/";
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
 
+    // Used for setting date modified for every instance
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
     private InstanceUtil() {
     }
 
@@ -43,6 +49,19 @@ public class InstanceUtil {
     public static void removePropertyValue(Instance instance, RDFProperty property) {
         if (instance.hasOwnSlot(property) && instance.getDirectOwnSlotValue(property) != null) {
             instance.setDirectOwnSlotValue(property, null);
+        }
+    }
+
+
+    /**
+     * Sets a given property value to an instance. The old value will be overriden by the new value
+     *
+     * @param instance an instance to modify
+     * @param slot     RDF property
+     */
+    public static void setPropertyValue(Instance instance, Slot slot, Object value) {
+        if (instance.hasOwnSlot(slot)) {
+            instance.setDirectOwnSlotValue(slot, value);
         }
     }
 
@@ -221,6 +240,19 @@ public class InstanceUtil {
 
 
     /**
+     * Gets or creates RDF property. It will only be created if
+     * it does not exist in the knowledge base
+     */
+    public static RDFProperty getOrCreateRDFProperty(OWLModel model, String name) {
+        RDFProperty property = model.getRDFProperty(name);
+        if (property == null) {
+            property = model.createRDFProperty(name);
+        }
+        return property;
+    }
+
+
+    /**
      * Gets Trash class or create new one if it does not exist
      */
     public static OWLNamedClass getOrCreateTrashClass(OWLModel model) {
@@ -303,6 +335,29 @@ public class InstanceUtil {
         return rawValue;
     }
 
+    /**
+     * Updates the date modified for a particular resource. The date will be formatted
+     * to dateTime.
+     * <br>
+     * The method updates or creates (if it does not exist) dct:modified value
+     */
+    public static void updateDateModified(RDFResource resource, long timeInMillis) {
+        if(resource != null) {
+            OWLModel model = resource.getOWLModel();
+            // Create date-time literal
+            RDFSLiteral dateTimeLiteral = model.createRDFSLiteral(
+                    dateFormatter.format(timeInMillis),
+                    model.getXSDdateTime()
+            );
+
+            // Execute change
+            OWLUtil.setPropertyValue(
+                    resource,
+                    getOrCreateRDFProperty(model, UBBOntologyNames.MODIFIED),
+                    dateTimeLiteral
+            );
+        }
+    }
 
     /**
      * Get namespace for the active project, otherwise return default namespace
@@ -316,6 +371,15 @@ public class InstanceUtil {
         }
         return UBBOntologyNames.DEFAULT_NAMESPACE;
     }
+
+
+    /**
+     * Checks if a collection is null or empty
+     */
+    public static boolean isNullOrEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
+
 }
 
 

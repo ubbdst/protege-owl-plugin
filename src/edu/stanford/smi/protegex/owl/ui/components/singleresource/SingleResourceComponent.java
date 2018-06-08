@@ -39,6 +39,7 @@ import edu.stanford.smi.protegex.owl.ui.components.AbstractPropertyValuesCompone
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.util.InstanceNameGenerator;
+import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
 
 import javax.swing.*;
@@ -182,6 +183,11 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
                 }
             }
             if (instance instanceof RDFResource) {
+                // Programmatically creates or updates dct:modified
+                // for the created individual.
+                if(instance instanceof RDFIndividual) {
+                    InstanceUtil.updateDateModified((RDFIndividual)instance, System.currentTimeMillis());
+                }
                 showResource((RDFResource) instance);
             }
             getSubject().setPropertyValue(getPredicate(), instance);

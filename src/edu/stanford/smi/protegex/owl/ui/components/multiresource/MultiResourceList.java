@@ -88,7 +88,6 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         });
     }
 
-
     protected ListCellRenderer createRenderer() {
         return new ResourceRenderer(false) {
             @Override
@@ -187,6 +186,7 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
         }
         RDFSNamedClass cls = ProtegeUI.getSelectionDialogFactory().selectClass(this, owlModel, clses, "Select type of new resource");
         owlModel.getRDFUntypedResourcesClass().setVisible(false);
+
         if (cls != null) {
             //Generate unique name for the instance
             final String name = new UUIDInstanceName(owlModel).generateUniqueName();
@@ -203,9 +203,14 @@ public class MultiResourceList extends SelectableList implements TripleSelectabl
             if (symmetric) {
                 instance.addPropertyValue(predicate, subject);
             }
+            // Programmatically creates date modified(dct:modified) for the created individual
+            if(instance instanceof RDFIndividual) {
+                InstanceUtil.updateDateModified(instance, System.currentTimeMillis());
+            }
             owlModel.getProject().show(instance);
         }
     }
+
 
     private void handleDoubleClick() {
         Project project = listModel.getPredicate().getOWLModel().getProject();

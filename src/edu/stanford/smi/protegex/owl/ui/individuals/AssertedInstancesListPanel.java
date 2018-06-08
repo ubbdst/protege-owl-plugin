@@ -1,6 +1,6 @@
 /*
  * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License");  you may not use this file except in 
+ * Version 1.1 (the "License");  you may not use this file except in
  * compliance with the License.  You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
  *
@@ -37,10 +37,7 @@ import edu.stanford.smi.protege.ui.ConfigureAction;
 import edu.stanford.smi.protege.ui.FrameRenderer;
 import edu.stanford.smi.protege.ui.HeaderComponent;
 import edu.stanford.smi.protege.util.*;
-import edu.stanford.smi.protegex.owl.model.NamespaceUtil;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
@@ -66,6 +63,7 @@ import java.util.logging.Logger;
  *
  * @author Holger Knublauch  <holger@knublauch.com>
  * @author Ray Fergerson <fergerson@smi.stanford.edu>
+ * @author  Hemed Al Ruwehy - modified to meet some UBB requirements
  */
 public class AssertedInstancesListPanel extends SelectableContainer implements Disposable {
 
@@ -90,6 +88,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     private InstancesList list;
     private Collection<Instance> listenedToInstances = new ArrayList<Instance>();
     private boolean showSubclassInstances;
+
     private FrameListener _clsFrameListener = new FrameAdapter() {
         @Override
         public void ownSlotValueChanged(FrameEvent event) {
@@ -97,6 +96,10 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             updateButtons();
         }
     };
+
+    /**
+     * Instance listener
+     */
     private FrameListener _instanceFrameListener = new FrameAdapter() {
         @Override
         public void browserTextChanged(FrameEvent event) {
@@ -117,6 +120,11 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                     new FrameWithBrowserText(newInst, newInst.getBrowserText(), newInst.getDirectTypes()));
         }
     };
+
+
+    /**
+     * Class listener
+     */
     private ClsListener _clsListener = new ClsAdapter() {
         @Override
         public void directInstanceAdded(ClsEvent event) {
@@ -129,6 +137,13 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 ComponentUtilities.addListValue(list, fbt);
                 instance.addFrameListener(_instanceFrameListener);
             }
+            // Creates date modified upon creation of the resource in the INSTANCE BROWSER
+            // Note that there is also other places where instances can be create,
+            // such as MultiResourceComponent and SingleResourceComponent.
+            // We also have to do this there
+            if(instance instanceof RDFIndividual) {
+                InstanceUtil.updateDateModified((RDFResource) instance, event.getTimeStamp());
+            }
         }
 
         @Override
@@ -139,7 +154,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             removeInstanceListener(event.getInstance());
             ComponentUtilities.removeListValue(list, new FrameWithBrowserText(event.getInstance()));
         }
-
 
     };
 
@@ -421,9 +435,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     /**
      * Act upon copying the instance. When instance is copied, delete it's identifier property,
      * and replace classHierarchyURI with UUID
-     *
+     * <p>
      * Modified by Hemed, 2017-05-02
-     *
      */
     protected Action createCopyAction() {
         copyAction = new MakeCopiesAction(ResourceKey.INSTANCE_COPY, this) {
@@ -565,7 +578,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     private void updateButtons() {
         Cls cls = CollectionUtilities.getFirstItem(classes);
-        createAction.setEnabled(cls!= null && cls.isConcrete());
+        createAction.setEnabled(cls != null && cls.isConcrete());
         createAnonymousAction.setEnabled(cls != null && cls.isConcrete());
 
         Instance instance = (Instance) getSoleSelection();
@@ -618,7 +631,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     public void setShowDisplaySlotPanel(boolean b) {
 
     }
-    
+
     /*
      * Code for getting the instances of classes that tries to optimize performance
      * for client-server
