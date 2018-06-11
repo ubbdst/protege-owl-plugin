@@ -35,7 +35,7 @@ public class InstanceUtil {
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
 
     // Used for setting date modified for every instance
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     private InstanceUtil() {
     }
