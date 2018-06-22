@@ -34,8 +34,10 @@ public class InstanceUtil {
     public static final String PATH_SEPARATOR = "/";
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
 
-    // Used for setting date modified for every instance
+    // Used for setting date modified for every instance (only works for Java > 1.6)
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    //private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
 
     private InstanceUtil() {
     }

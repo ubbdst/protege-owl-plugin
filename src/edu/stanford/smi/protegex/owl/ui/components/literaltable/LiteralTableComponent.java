@@ -181,6 +181,13 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
          // the case was the widget would not respond
         removeEmptyStringIfExists(defaultValue);
 
+         //When trying to add duplicate value
+        if(getObjects().contains(defaultValue)) {
+                ProtegeUI.getModalDialogFactory().showErrorMessageDialog(getOWLModel(),
+                        "Cannot add new value. You are probably trying to add duplicate value.");
+                return;
+        }
+
         if (defaultValue != null && !getObjects().contains(defaultValue)) {
             getSubject().addPropertyValue(getPredicate(), defaultValue);
             table.setSelectedRow(defaultValue);
@@ -207,12 +214,6 @@ public class LiteralTableComponent extends AddablePropertyValuesComponent {
             }
             table.editCell(defaultValue);
         }
-        /*else { //When trying to add duplicate value
-            ProtegeUI.getModalDialogFactory().showErrorMessageDialog(
-                            getOWLModel(),
-                    "Cannot add new value. Probably you are trying to add duplicate values"
-            );
-        }*/
     }
 
 

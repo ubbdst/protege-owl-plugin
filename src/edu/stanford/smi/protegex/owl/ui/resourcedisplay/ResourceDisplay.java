@@ -306,8 +306,10 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
      */
     @SuppressWarnings("unchecked")
     private static List removeEmptyValues(Collection collection) {
+    	if(collection == null) {
+    		return Collections.emptyList();
+		}
         List values = new ArrayList(collection);
-
         for (int i = 0; i < values.size(); i ++) {
             Object o = values.get(i);
             if(o instanceof String) {
@@ -794,7 +796,6 @@ public class ResourceDisplay extends InstanceDisplay implements ResourcePanel {
 		if (instanceNameComponent != null) {
 			instanceNameComponent.setEnabled(enabled);
 		}
-
 		super.setEnabled(enabled);
 	};
 

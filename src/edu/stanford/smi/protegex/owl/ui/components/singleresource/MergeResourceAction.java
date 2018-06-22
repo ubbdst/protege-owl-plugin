@@ -2,19 +2,13 @@ package edu.stanford.smi.protegex.owl.ui.components.singleresource;
 
 
 import edu.stanford.smi.protege.util.Log;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getOrCreateTrashClass;
 
@@ -35,7 +29,8 @@ public class MergeResourceAction extends SetResourceAction {
         this.component = component;
     }
 
-    /**method@2x.png
+    /**
+     * method@2x.png
      * Moves a given instance to class Trash
      */
     private static void moveToTrash(RDFResource resource) {
@@ -127,11 +122,11 @@ public class MergeResourceAction extends SetResourceAction {
 
         getSubject().addPropertyValue(getProperty(UBBOntologyNames.HAS_BEEN_MERGED_WITH), uri);
 
-        if(uuid != null) {
+        if (uuid != null) {
             getSubject().addPropertyValue(getProperty(UBBOntologyNames.PREVIOUS_IDENTIFIER),
                     "uuid:" + uuid);
         }
-        if(signature != null) {
+        if (signature != null) {
             getSubject().addPropertyValue(getProperty(UBBOntologyNames.PREVIOUS_IDENTIFIER),
                     "identifier:" + signature);
         }
@@ -146,16 +141,29 @@ public class MergeResourceAction extends SetResourceAction {
      */
     private void copyInstanceReferences(RDFResource resource) {
         Map<RDFResource, RDFProperty> references = InstanceUtil.getInstanceReferences(resource);
-        for(Map.Entry<RDFResource, RDFProperty> entry : references.entrySet()){
+        for (Map.Entry<RDFResource, RDFProperty> entry : references.entrySet()) {
             RDFResource referenceInstance = entry.getKey();
             RDFProperty referenceProperty = entry.getValue();
-            //Replace the the merged resource to the new resource if the property does not allow more than two values
-            if(referenceProperty.isFunctional() && referenceInstance.getPropertyValues(referenceProperty).contains(resource)) {
+
+            // Replace the the merged resource to the new resource if
+            // the property does not allow more than two values
+            if (referenceInstance.getPropertyValues(referenceProperty).contains(resource)) {//Maybe unnecessary check?
+                if (referenceProperty.isFunctional()) {
+                    referenceInstance.setPropertyValue(referenceProperty, getSubject());
+                } else {
+                    if (!referenceInstance.getPropertyValues(referenceProperty).contains(getSubject())) {
+                        //Otherwise, keep the merged resource and just append new resource to the list
+                        referenceInstance.addPropertyValue(referenceProperty, getSubject());
+                    }
+                }
+            }
+            /*if(referenceProperty.isFunctional() &&
+                referenceInstance.getPropertyValues(referenceProperty).contains(resource)) {
                 referenceInstance.setPropertyValue(referenceProperty, getSubject());
             }
-            else {//Otherwise, keep the merged resource and just add new resource to the list
+            else {
                 referenceInstance.addPropertyValue(referenceProperty, getSubject());
-            }
+            }*/
         }
     }
 
@@ -165,11 +173,12 @@ public class MergeResourceAction extends SetResourceAction {
      */
     private void assignPropertyValue(RDFProperty property, Object value) {
         //If its functional, override any existing value
-        if(getPredicate().isFunctional()) {
+        if (getPredicate().isFunctional()) {
             getSubject().setPropertyValue(property, value);
-        }
-        else {//Otherwise, append it to the list
-            getSubject().addPropertyValue(property, value);
+        } else {//Otherwise, append it to the list
+            if (!getSubject().getPropertyValues(property).contains(value)) {
+                getSubject().addPropertyValue(property, value);
+            }
         }
     }
 
@@ -177,7 +186,7 @@ public class MergeResourceAction extends SetResourceAction {
     /**
      * Copies all values from given resource to a target resource, except values for properties {@code ct:identifier},
      * {@code ubbont:uuid} and {@code ubbont:classHierarchyURI}.
-     *
+     * <p>
      * If a predicate is of functional property, and there exist values for such property in the target resource,
      * do not copy, user must decide which value to pick manually.
      *
@@ -211,6 +220,7 @@ public class MergeResourceAction extends SetResourceAction {
                 }
                 if (hasValues(combinedValues)) {
                     //Remove duplicates and assign values to the target resource
+                    // getSubject().setPropertyValues(property, Collections.emptyList());
                     getSubject().setPropertyValues(property, new HashSet(combinedValues));
                 }
             }

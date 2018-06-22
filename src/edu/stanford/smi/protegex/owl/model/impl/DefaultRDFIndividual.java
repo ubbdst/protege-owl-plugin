@@ -39,7 +39,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.getUUIDFromInstanceURI;
-import static edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget.isValidUUID;
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.stripDatatype;
 
 public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIndividual {
@@ -76,7 +75,8 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
     }
 
 
-    @Override
+    //Server client becomes very slow with this process
+    /*@Override
     public String getBrowserText() {
         String browserText = super.getBrowserText();
         //Append class name for easy readability
@@ -86,16 +86,16 @@ public class DefaultRDFIndividual extends DefaultSimpleInstance implements RDFIn
             }
         }
         return browserText;
-    }
+    }*/
 
     public Icon getIcon() {
     	String iconName;
     	if(isAnonymous()) {
            iconName = OWLIcons.RDF_ANON_INDIVIDUAL;
         }
-        else if(InstanceUtil.isInTrash(this)) {
+        /*else if(InstanceUtil.isInTrash(this)) { //Server-client becomes very slow with this check
             iconName = OWLIcons.TRASH_INDIVIDUAL_ICON;
-        }
+        }*/
         else {
     	    iconName = OWLIcons.RDF_INDIVIDUAL;
         }
