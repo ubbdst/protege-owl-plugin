@@ -309,9 +309,11 @@ public class OWLBrowserSlotPattern extends BrowserSlotPattern {
         boolean isMatchFound = false;
         for (String lang : AbstractOWLModel.DEFAULT_USED_LANGUAGES) {
             for (RDFSLiteral literal : literals) {
-                if (literal.getLanguage().equalsIgnoreCase(lang)) {
-                    matches.add(literal);
-                    isMatchFound = true;
+                if(literal != null && literal.getLanguage() != null) { //Ensure no NPE
+                    if (literal.getLanguage().equalsIgnoreCase(lang)) {
+                        matches.add(literal);
+                        isMatchFound = true;
+                    }
                 }
             }
             if (isMatchFound) {

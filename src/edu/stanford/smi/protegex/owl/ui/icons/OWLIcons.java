@@ -117,6 +117,7 @@ public class OWLIcons {
 
     public static final String DELETE = "Delete";
 
+    public static final String CREATE_NEW_INDIVIDUAL = "CreateNewIndividual";
     public static final String TRASH_CLASS_ICON = "OWLTrashClass";
     public static final String TRASH_INDIVIDUAL_ICON = "OWLTrashIndividual";
     public static final String MERGE_INDIVIDUAL_ICON = "OWLMergeIndividual";

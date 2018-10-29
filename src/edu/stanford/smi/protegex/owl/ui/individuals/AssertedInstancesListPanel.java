@@ -56,6 +56,8 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static edu.stanford.smi.protegex.owl.ui.icons.OWLIcons.CREATE_NEW_INDIVIDUAL;
+
 /**
  * The panel that holds the list of direct instances of one or more classes. If
  * only one class is chosen then you can also create new instances of this
@@ -274,7 +276,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
     }
 
     protected Action createCreateAction() {
-        createAction = new CreateAction("Create new instance", OWLIcons.getCreateIndividualIcon(OWLIcons.RDF_INDIVIDUAL)) {
+        //createAction = new CreateAction("Create new instance", OWLIcons.getCreateIndividualIcon(OWLIcons.RDF_INDIVIDUAL)) {
+        createAction = new CreateAction("Create new instance", OWLIcons.getImageIcon(CREATE_NEW_INDIVIDUAL)) {
             @Override
             public void onCreate() {
                 if (!classes.isEmpty()) {
