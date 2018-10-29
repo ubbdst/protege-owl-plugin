@@ -118,6 +118,7 @@ public class OWLIcons {
     public static final String DELETE = "Delete";
 
     public static final String CREATE_NEW_INDIVIDUAL = "CreateNewIndividual";
+    public static final String REMOVE = "Remove";
     public static final String TRASH_CLASS_ICON = "OWLTrashClass";
     public static final String TRASH_INDIVIDUAL_ICON = "OWLTrashIndividual";
     public static final String MERGE_INDIVIDUAL_ICON = "OWLMergeIndividual";
@@ -654,16 +655,13 @@ public class OWLIcons {
         return getImageIcon("Redo");
     }
 
-
-    public static Icon getRemoveIcon() {
-        return getImageIcon("Remove");
-    }
-
-
     public static Icon getRemoveIcon(String baseIconName) {
         return new OverlayIcon(baseIconName, 5, 4, REMOVE_OVERLAY, 14, 13);
     }
 
+    public static Icon getRemoveIcon() {
+        return getImageIcon(REMOVE);
+    }
 
     public static ImageIcon getRevertProjectIcon() {
         return getImageIcon("RevertProject");

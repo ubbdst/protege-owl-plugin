@@ -67,7 +67,8 @@ public class SingleResourceComponent extends AbstractPropertyValuesComponent imp
             list.repaint();
         }
     };
-    private Action removeAction = new AbstractAction("Remove current value", OWLIcons.getRemoveIcon(OWLIcons.RDF_INDIVIDUAL)) {
+    private Action removeAction = new AbstractAction("Remove current value", OWLIcons.getRemoveIcon()
+            /*OWLIcons.getRemoveIcon(OWLIcons.RDF_INDIVIDUAL)*/) {
         public void actionPerformed(ActionEvent e) {
             handleRemove();
         }

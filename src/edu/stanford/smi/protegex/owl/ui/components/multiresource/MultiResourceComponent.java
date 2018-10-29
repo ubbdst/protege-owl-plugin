@@ -47,7 +47,8 @@ public class MultiResourceComponent extends AddablePropertyValuesComponent {
     private MultiResourceList list;
      
 
-    private Action removeAction = new AbstractAction("Remove selected values", OWLIcons.getRemoveIcon(OWLIcons.RDF_INDIVIDUAL)) {
+    private Action removeAction = new AbstractAction("Remove selected values", OWLIcons.getRemoveIcon()
+            /*OWLIcons.getRemoveIcon(OWLIcons.RDF_INDIVIDUAL)*/) {
         public void actionPerformed(ActionEvent e) {
             handleRemove();
         }
