@@ -23,36 +23,25 @@
 
 package edu.stanford.smi.protegex.owl.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-
-import javax.swing.Icon;
-
 import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Frame;
 import edu.stanford.smi.protege.model.SimpleInstance;
 import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.resource.Colors;
 import edu.stanford.smi.protege.ui.FrameRenderer;
+import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.util.StringUtilities;
 import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
-import edu.stanford.smi.protegex.owl.model.Deprecatable;
-import edu.stanford.smi.protegex.owl.model.OWLAnonymousClass;
-import edu.stanford.smi.protegex.owl.model.OWLClass;
-import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
-import edu.stanford.smi.protegex.owl.model.OWLProperty;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
-import edu.stanford.smi.protegex.owl.model.RDFSClass;
+import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.classparser.manchester.ManchesterOWLParserUtil;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLOntology;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
  * A FrameRenderer which displays a small A behind those anonymous classes
@@ -149,7 +138,13 @@ public class ResourceRenderer extends FrameRenderer {
 
 
     private void addInverseSlot(Slot slot) {
-        Slot inverse = slot.getInverseSlot();
+        Slot inverse = null;
+        try {
+            inverse = slot.getInverseSlot();
+        }
+        catch (ClassCastException e) {
+            Log.getLogger().warning("Cannot get inverse slot for " + slot);
+        }
         if (inverse != null) {
             appendText(" " + (char) 0x2194 + " " + inverse.getBrowserText());
         }
