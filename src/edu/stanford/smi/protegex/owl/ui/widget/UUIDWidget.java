@@ -66,7 +66,7 @@ public class UUIDWidget extends TextFieldWidget {
         String instanceURI = instance.getName();
         int lastIndex = instanceURI.lastIndexOf(PATH_SEPARATOR);
         if (lastIndex != -1) {
-            String lastPart = instanceURI.substring(lastIndex + 1, instanceURI.length());
+            String lastPart = instanceURI.substring(lastIndex + 1);
             if (isValidUUID(lastPart)) {
                 return lastPart;
             }

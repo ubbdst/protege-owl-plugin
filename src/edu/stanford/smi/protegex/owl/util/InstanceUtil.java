@@ -36,8 +36,6 @@ public class InstanceUtil {
 
     // Used for setting date modified for every instance (only works for Java > 1.6)
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    //private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
 
     private InstanceUtil() {
     }
@@ -112,22 +110,13 @@ public class InstanceUtil {
     }
 
     /**
-     * Modify instance properties
+     * Updates property values for a given instance
      *
      * @param instance      an instance to be modified
      * @param propertiesMap properties map which holds keys as RDF properties and values as RDF property values
      * @since 1.8
      */
-    /*public static void modifyProperties(Instance instance, Map<RDFProperty, Optional<?>> propertiesMap) {
-        for (Map.Entry<RDFProperty, Optional<?>> entry : propertiesMap.entrySet()) {
-            if (entry.getValue().isPresent()) {
-                updatePropertyValue(instance, entry.getKey(), entry.getValue().get());
-            } else {
-                removePropertyValue(instance, entry.getKey());
-            }
-        }
-    }*/
-    public static void modifyProperties(Instance instance, Map<RDFProperty, Object> propertiesMap) {
+    public static void updatePropertyValues(Instance instance, Map<RDFProperty, Object> propertiesMap) {
         for (Map.Entry<RDFProperty, Object> entry : propertiesMap.entrySet()) {
             if (entry.getValue() != null) {
                 updatePropertyValue(instance, entry.getKey(), entry.getValue());
@@ -164,10 +153,6 @@ public class InstanceUtil {
         OWLModel owlModel = (OWLModel) instance.getKnowledgeBase();
         Collection<Cls> rdfTypes = instance.getDirectTypes();
         int iterations = 0;
-         /*
-         if (rdfTypes.size() >= 2)
-            log.info("Found classes: " + rdfTypes.toString() + " for instance " +  instance.getName());
-         */
         for (Cls clazz : rdfTypes) {
             iterations++;
             String className = clazz.getName();
@@ -209,7 +194,7 @@ public class InstanceUtil {
             encodedUrl = URLEncoder.encode(url, "UTF-8");
             return encodedUrl;
         } catch (UnsupportedEncodingException e) {
-            log.warning("(UnsupportedEncodingException: " + e.getLocalizedMessage());
+            log.warning("UnsupportedEncodingException: " + e.getLocalizedMessage());
         }
         return encodedUrl;
     }

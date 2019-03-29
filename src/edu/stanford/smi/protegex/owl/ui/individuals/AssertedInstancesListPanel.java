@@ -26,8 +26,8 @@ package edu.stanford.smi.protegex.owl.ui.individuals;
 import edu.stanford.smi.protege.action.MakeCopiesAction;
 import edu.stanford.smi.protege.action.ReferencersAction;
 import edu.stanford.smi.protege.event.*;
-import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.model.Frame;
+import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.resource.Colors;
 import edu.stanford.smi.protege.resource.LocalizedText;
 import edu.stanford.smi.protege.resource.ResourceKey;
@@ -52,10 +52,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
+import static edu.stanford.smi.protegex.owl.model.UBBOntologyNames.*;
 import static edu.stanford.smi.protegex.owl.ui.icons.OWLIcons.CREATE_NEW_INDIVIDUAL;
 
 /**
@@ -436,8 +437,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
 
     /**
-     * Act upon copying the instance. When instance is copied, delete it's identifier property,
-     * and replace classHierarchyURI with UUID
+     * When instance is copied, there are some properties that should not be copied like
+     * identifier, thumbnail etc
      * <p>
      * Modified by Hemed, 2017-05-02
      */
@@ -447,7 +448,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
             protected Instance copy(Instance instance, boolean isDeep) {
                 InstanceNameGenerator generator = new UUIDInstanceName(owlModel);
                 final String newName = generator.generateUniqueName();
-                //log.info("Copying instance: " + instance.getName() + " to " + newName);
                 Instance copy = (Instance) super.copy(instance, isDeep).rename(newName);
                 log.info("Copied instance " + instance.getName() + " to " + copy.getName());
 
@@ -456,23 +456,29 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
                 //Get corresponding class URI in xsd:anyURI datatype
                 Object classHierarchyURI = owlModel.createRDFSLiteral(
-                        InstanceUtil.getClassURIPrefix(copy).toLowerCase() + uuid,
-                        owlModel.getXSDanyURI()
+                        InstanceUtil.getClassURIPrefix(copy).toLowerCase() + uuid, owlModel.getXSDanyURI()
                 );
 
-                //Build properties that need to be modified before instance is displaced
+                // Build properties that need to be modified before instance is displaced
+                // Keys are properties and values are new property values
                 Map<RDFProperty, Object> properties = new HashMap<RDFProperty, Object>();
-                properties.put(owlModel.getRDFProperty(UBBOntologyNames.IDENTIFIER), null);
-                properties.put(owlModel.getRDFProperty(UBBOntologyNames.UUID), uuid);
-                properties.put(owlModel.getRDFProperty(UBBOntologyNames.CLASS_HIERARCHY_URI), classHierarchyURI);
+                properties.put(getProperty(UUID), uuid);
+                properties.put(getProperty(CLASS_HIERARCHY_URI), classHierarchyURI);
+                properties.put(getProperty(IDENTIFIER), null);
+                properties.put(getProperty(HAS_THUMBNAIL), null);
+                properties.put(getProperty(HAS_THUMBNAIL_MMDR), null);
 
-                //After copying, modify particular properties for a copied instance
-                InstanceUtil.modifyProperties(copy, properties);
+                //After copying, update these properties
+                InstanceUtil.updatePropertyValues(copy, properties);
                 setSelectedInstance(copy);
                 return copy;
             }
         };
         return copyAction;
+    }
+
+    private RDFProperty getProperty(String propertyName) {
+        return owlModel.getRDFProperty(propertyName);
     }
 
     protected Action createReferencersAction() {
