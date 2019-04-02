@@ -40,7 +40,7 @@ import edu.stanford.smi.protege.util.*;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.OWLLabeledComponent;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
-import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteOrMoveToTrashAction;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.ui.widget.OWLUI;
 import edu.stanford.smi.protegex.owl.ui.widget.UUIDWidget;
@@ -429,8 +429,8 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     protected Action createDeleteAction() {
         //deleteAction = new DeleteInstancesAction(this);
-        //deleteAction = new DeleteInstanceOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
-        deleteAction = new DeleteInstanceOrMoveToTrashAction(
+        //deleteAction = new DeleteOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
+        deleteAction = new DeleteOrMoveToTrashAction(
                 "Delete instance", OWLIcons.getDeleteIcon(), this);
         return deleteAction;
     }
@@ -466,7 +466,6 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 properties.put(getProperty(CLASS_HIERARCHY_URI), classHierarchyURI);
                 properties.put(getProperty(IDENTIFIER), null);
                 properties.put(getProperty(HAS_THUMBNAIL), null);
-                properties.put(getProperty(HAS_THUMBNAIL_MMDR), null);
 
                 //After copying, update these properties
                 InstanceUtil.updatePropertyValues(copy, properties);

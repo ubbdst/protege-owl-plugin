@@ -8,9 +8,11 @@ import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
+import edu.stanford.smi.protegex.owl.ui.dialogs.DefaultSelectionDialogFactory;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,6 +30,8 @@ import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getOrCreateTrashCl
  */
 public class MergeResourceAction extends SetResourceAction {
 
+    private PropertyValuesComponent component;
+
     //Properties in which their values should not be copied to a merged instance
     private static String[] EXCLUDED_PROPERTIES = {
             UBBOntologyNames.UUID,
@@ -35,22 +39,25 @@ public class MergeResourceAction extends SetResourceAction {
             UBBOntologyNames.HAS_THUMBNAIL,
             UBBOntologyNames.CLASS_HIERARCHY_URI
     };
-    private PropertyValuesComponent component;
+
 
     public MergeResourceAction(PropertyValuesComponent component) {
         super("Select resource to merge", OWLIcons.getAddIcon(OWLIcons.MERGE_INDIVIDUAL_ICON), component);
         this.component = component;
     }
 
-    /*@Override
+    /**
+     * Picks resource of the same type. Merging can be performed only if resources are of the same type
+     */
+    @Override
     public RDFResource pickResource() {
         RDFResource subject = component.getSubject();
-        OWLModel model = subject.getOWLModel();
-        return ProtegeUI
-                .getSelectionDialogFactory()
-                .selectResourceByType((Component) component, model, subject.getProtegeType().getSuperclasses(false));
+        OWLModel owlModel = subject.getOWLModel();
+        Collection allowedClasses = subject.getProtegeTypes();
 
-    }*/
+        return new DefaultSelectionDialogFactory().selectResourceWithBrowserTextByType(
+                (Component) component, owlModel, allowedClasses, "Select resource to merge");
+    }
 
     /**
      * Checks if we should copy property values to the merged instance

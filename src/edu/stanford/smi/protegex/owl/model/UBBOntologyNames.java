@@ -1,8 +1,9 @@
 package edu.stanford.smi.protegex.owl.model;
 
 /**
- * These property names are used throughout the system, for copying, merging and so forth.
- * The expectation is that, imported ontology should contain these property names and
+ * These property names are used throughout the system, for generating instance URI, copying,
+ * merging and so forth.
+ * The expectation is that, imported ontology should contain these properties and
  * their corresponding namespaces
  *
  * @author Hemed Al Ruwehy
@@ -14,20 +15,15 @@ public class UBBOntologyNames {
 
     //Namespaces
     public static final String DEFAULT_NAMESPACE =    "http://data.ub.uib.no/";
-    public static final String MOMAYO_MMO =           "http://purl.org/momayo/mmo/";
-    public static final String MOMAYO_MMDR =          "http://purl.org/momayo/mmdr/";
-    public static final String DCT_TERMS_NAMESPACE =  "http://purl.org/dc/terms/";
     public static final String UBBONT_NAMESPACE =     "http://data.ub.uib.no/ontology/";
+    public static final String DCT_TERMS_NAMESPACE =  "http://purl.org/dc/terms/";
 
-    //Momayo Properties
-    public static final String UUID =                  MOMAYO_MMO + "uuid";
-    public static final String PREVIOUS_IDENTIFIER =   MOMAYO_MMO + "previousIdentifier";
-    public static final String TRASH_CLASS_NAME =      MOMAYO_MMO + "Trash";
-    public static final String CLASS_HIERARCHY_URI =   MOMAYO_MMO + "classHierarchyURI";
-    public static final String HAS_BEEN_MERGED_WITH =  MOMAYO_MMO + "hasBeenMergedWith";
-    public static final String HAS_THUMBNAIL_MMDR =    MOMAYO_MMDR + "hasThumbnail";
-
-    //Ubbont namespaces
+    // UBBOntology properties
+    public static final String UUID =                  UBBONT_NAMESPACE + "uuid";
+    public static final String PREVIOUS_IDENTIFIER =   UBBONT_NAMESPACE + "previousIdentifier";
+    public static final String TRASH_CLASS_NAME =      UBBONT_NAMESPACE + "Trash";
+    public static final String CLASS_HIERARCHY_URI =   UBBONT_NAMESPACE + "classHierarchyURI";
+    public static final String HAS_BEEN_MERGED_WITH =  UBBONT_NAMESPACE + "hasBeenMergedWith";
     public static final String HAS_THUMBNAIL =         UBBONT_NAMESPACE + "hasThumbnail";
 
     //Dublin Core Properties

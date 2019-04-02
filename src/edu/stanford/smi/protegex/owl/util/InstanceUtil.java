@@ -8,7 +8,7 @@ import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
-import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteOrMoveToTrashAction;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -201,10 +201,10 @@ public class InstanceUtil {
 
 
     /**
-     * Gets Trash class with Momayo namespace or null if it does not exist
+     * Gets Trash class or null if it does not exist
      */
-    public static OWLNamedClass getMomayoTrashClass(OWLModel model) {
-        return model.getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+    public static OWLNamedClass getTrashClass(OWLModel model) {
+        return getOWLClass(model, UBBOntologyNames.TRASH_CLASS_NAME);
     }
 
     /**
@@ -220,11 +220,10 @@ public class InstanceUtil {
     public static RDFProperty getRDFProperty(OWLModel model, String name) {
         RDFProperty property = model.getRDFProperty(name);
         if (property == null) {
-            throw new NotFoundException("Cannot find property with name [" + name + "] in the ontology");
+            throw new NotFoundException("Cannot find property [" + name + "] in the ontology");
         }
         return property;
     }
-
 
     /**
      * Gets or creates RDF property. It will only be created if
@@ -243,8 +242,8 @@ public class InstanceUtil {
      * Gets Trash class or create new one if it does not exist
      */
     public static OWLNamedClass getOrCreateTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = getMomayoTrashClass(model);
-        //If it does not exist, create the default version of the Trash
+        OWLNamedClass trashClass = getTrashClass(model);
+        //If it does not exist, create the default version of Trash
         if (trashClass == null) {
             trashClass = getDefaultTrashClass(model);
         }
@@ -253,14 +252,17 @@ public class InstanceUtil {
 
 
     /**
-     * Gets default Trash class. If Momayo Trash class is not defined in the ontology, generate new Trash class
+     * Gets default Trash class. If ubbont:Trash is not defined in the ontology, generate new Trash class
      * based on the active ontology
      */
     public static OWLNamedClass getDefaultTrashClass(OWLModel model) {
         OWLNamedClass trashClass = getOWLClass(model, "Trash");
-        //If it does not exists, create one.
+        //If it does not exist, create one
         if (trashClass == null) {
+            log.info("ubbont:Trash is not defined in the ontology. Creating Trash using default namespace ...");
             trashClass = model.createOWLNamedClass("Trash");
+            trashClass.addLabel("Trash", "en");
+            trashClass.addLabel("Søppelkasse", "no");
         }
         return trashClass;
     }
@@ -271,7 +273,7 @@ public class InstanceUtil {
      * @param instance an instance to move
      */
     public static void moveInstanceToTrash(RDFResource instance) {
-        DeleteInstanceOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
+        DeleteOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
     }
 
 
@@ -282,7 +284,7 @@ public class InstanceUtil {
      */
     public static boolean isInTrash(RDFIndividual resource) {
         if (resource != null) {
-            OWLNamedClass trashClass = getMomayoTrashClass(resource.getOWLModel());
+            OWLNamedClass trashClass = getTrashClass(resource.getOWLModel());
             return trashClass != null && resource.getProtegeTypes().contains(trashClass);
         }
         return false;

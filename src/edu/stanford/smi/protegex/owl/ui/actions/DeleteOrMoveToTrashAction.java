@@ -29,18 +29,18 @@ import java.util.Collection;
  * University of Bergen Library
  */
 
-public class DeleteInstanceOrMoveToTrashAction extends AllowableAction {
+public class DeleteOrMoveToTrashAction extends AllowableAction {
     private static final long serialVersionUID = -1874566858726067173L;
 
-    public DeleteInstanceOrMoveToTrashAction(ResourceKey key, Selectable selectable) {
+    public DeleteOrMoveToTrashAction(ResourceKey key, Selectable selectable) {
         super(key, selectable);
     }
 
-    public DeleteInstanceOrMoveToTrashAction(ResourceKey key) {
+    public DeleteOrMoveToTrashAction(ResourceKey key) {
         super(key, null);
     }
 
-    public DeleteInstanceOrMoveToTrashAction(String text, Icon icon, Selectable selectable) {
+    public DeleteOrMoveToTrashAction(String text, Icon icon, Selectable selectable) {
         super(text, icon, selectable);
     }
 
