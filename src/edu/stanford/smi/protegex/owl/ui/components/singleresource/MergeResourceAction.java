@@ -47,16 +47,17 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     /**
-     * Picks resource of the same type. Merging can be performed only if resources are of the same type
+     * Allows picking resources of the same type as subject. Remember that Merging can only be
+     * performed if resources are of the same type
      */
     @Override
     public RDFResource pickResource() {
         RDFResource subject = component.getSubject();
         OWLModel owlModel = subject.getOWLModel();
-        Collection allowedClasses = subject.getProtegeTypes();
+        Collection allowedTypes = subject.getProtegeTypes();
 
         return new DefaultSelectionDialogFactory().selectResourceWithBrowserTextByType(
-                (Component) component, owlModel, allowedClasses, "Select resource to merge");
+                (Component) component, owlModel, allowedTypes, "Select resource to merge");
     }
 
     /**
