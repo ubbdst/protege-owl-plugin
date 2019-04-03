@@ -14,9 +14,10 @@ The original Protege 3.5 OWL plugin with some customizations from the University
 - Solve some bugs in the original OWL 3.5 plugin, see https://prosjekt.uib.no/issues/7757 
 - Add a whole nortion of Trash. When instance is deleted, put it to the Trash class, such that it can be recovered. The logic is that, if instance belongs to a class other that Trash, and deletion is confirmed, then move the instance to the Trash class. Otherwise, delete instance permanently.
 - Add new, flat icons for classes and instances and in particular, icons for Trash class and its instances. This will help users not to confuse instances of Trash to other instances.
+- Update or create datestamp using `dct:modified` for every instance change.
 - Add support for merge feature, such that two instance can be merged to one. Merging means copying all property values of the source instance to the target instance and then make all references of the source instance point to the target instance. A reference instance is an instance whereby source instance is an object for a certain property of this instance. 
 In technical words, merging means :
-<code>s ?p ?o ===> ?s2 ?p ?o (except dct:identifier, ubbont:uuid og ubbont:classHierarchyURI) </code>  and <code>?o2 ?p2 ?s ===> o2 ?p2 ?s2 </code> 
+<code>s ?p ?o ===> ?s2 ?p ?o (except dct:identifier, ubbont:uuid og ubbont:classHierarchyURI) </code>  and <code>?o2 ?p2 ?s ===> o2 ?p2 ?s2 </code>
 
 ## Original source codes 
 For Protege Core 3.5 : http://smi-protege.stanford.edu/svn/
