@@ -141,7 +141,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 instance.addFrameListener(_instanceFrameListener);
             }
             // Creates date modified upon creation of the resource in the INSTANCE BROWSER
-            // Note that there is also other places where instances can be create,
+            // Note that there is also other places where instances can be created,
             // such as MultiResourceComponent and SingleResourceComponent.
             // We also have to do this there
             if(instance instanceof RDFIndividual) {
@@ -429,9 +429,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
 
     protected Action createDeleteAction() {
         //deleteAction = new DeleteInstancesAction(this);
-        //deleteAction = new DeleteOrMoveToTrashAction(ResourceKey.INSTANCE_DELETE, this);
-        deleteAction = new DeleteOrMoveToTrashAction(
-                "Delete instance", OWLIcons.getDeleteIcon(), this);
+        deleteAction = new DeleteOrMoveToTrashAction("Delete instance", OWLIcons.getDeleteIcon(), this);
         return deleteAction;
     }
 
@@ -455,7 +453,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 String uuid = UUIDWidget.getUUIDFromInstanceURI(copy);
 
                 //Get corresponding class URI in xsd:anyURI datatype
-                Object classHierarchyURI = owlModel.createRDFSLiteral(
+                Object newClassHierarchyUri = owlModel.createRDFSLiteral(
                         InstanceUtil.getClassURIPrefix(copy).toLowerCase() + uuid, owlModel.getXSDanyURI()
                 );
 
@@ -463,7 +461,7 @@ public class AssertedInstancesListPanel extends SelectableContainer implements D
                 // Keys are properties and values are new property values
                 Map<RDFProperty, Object> properties = new HashMap<RDFProperty, Object>();
                 properties.put(getProperty(UUID), uuid);
-                properties.put(getProperty(CLASS_HIERARCHY_URI), classHierarchyURI);
+                properties.put(getProperty(CLASS_HIERARCHY_URI), newClassHierarchyUri);
                 properties.put(getProperty(IDENTIFIER), null);
                 properties.put(getProperty(HAS_THUMBNAIL), null);
 

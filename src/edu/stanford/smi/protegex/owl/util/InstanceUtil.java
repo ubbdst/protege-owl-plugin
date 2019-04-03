@@ -138,7 +138,7 @@ public class InstanceUtil {
         }
         String typeName = className.replaceAll(regex, "$1");
         //Lowercase the class label
-        if (typeName != null && !typeName.isEmpty()) {
+        if (!typeName.isEmpty()) {
             typeName = typeName.toLowerCase();
         }
         return getNamespace(model) + "instance" + PATH_SEPARATOR + typeName + PATH_SEPARATOR;
@@ -259,10 +259,11 @@ public class InstanceUtil {
         OWLNamedClass trashClass = getOWLClass(model, "Trash");
         //If it does not exist, create one
         if (trashClass == null) {
-            log.info("ubbont:Trash is not defined in the ontology. Creating Trash using default namespace ...");
+            log.info("Trash class with name [ " + UBBOntologyNames.TRASH_CLASS_NAME + "] " +
+                    "is not defined in the ontology. Creating using default namespace ...");
             trashClass = model.createOWLNamedClass("Trash");
-            trashClass.addLabel("Trash", "en");
             trashClass.addLabel("Søppelkasse", "no");
+            trashClass.addLabel("Trash", "en");
         }
         return trashClass;
     }
@@ -331,7 +332,7 @@ public class InstanceUtil {
      * The method updates or creates (if it does not exist) dct:modified value
      */
     public static void updateDateModified(RDFResource resource, long timeInMillis) {
-        if(resource != null) {
+        if (resource != null) {
             OWLModel model = resource.getOWLModel();
             // Create date-time literal
             RDFSLiteral dateTimeLiteral = model.createRDFSLiteral(
@@ -349,6 +350,13 @@ public class InstanceUtil {
     }
 
     /**
+     * Checks if a collection is null or empty
+     */
+    public static boolean isNullOrEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+    /**
      * Get namespace for the active project, otherwise return default namespace
      */
     public String getNamespaceForActiveProject(OWLModel owlModel) {
@@ -359,14 +367,6 @@ public class InstanceUtil {
             }
         }
         return UBBOntologyNames.DEFAULT_NAMESPACE;
-    }
-
-
-    /**
-     * Checks if a collection is null or empty
-     */
-    public static boolean isNullOrEmpty(Collection collection) {
-        return collection == null || collection.isEmpty();
     }
 
 }
