@@ -2,13 +2,21 @@ package edu.stanford.smi.protegex.owl.ui.components.singleresource;
 
 
 import edu.stanford.smi.protege.util.Log;
-import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.model.UBBOntologyNames;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.ui.components.PropertyValuesComponent;
+import edu.stanford.smi.protegex.owl.ui.dialogs.DefaultSelectionDialogFactory;
 import edu.stanford.smi.protegex.owl.ui.icons.OWLIcons;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
 
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 
 import static edu.stanford.smi.protegex.owl.util.InstanceUtil.getOrCreateTrashClass;
 
@@ -24,9 +32,50 @@ public class MergeResourceAction extends SetResourceAction {
 
     private PropertyValuesComponent component;
 
+    //Properties in which their values should not be copied to a merged instance
+    private static String[] EXCLUDED_PROPERTIES = {
+            UBBOntologyNames.UUID,
+            UBBOntologyNames.IDENTIFIER,
+            UBBOntologyNames.HAS_THUMBNAIL,
+            UBBOntologyNames.CLASS_HIERARCHY_URI
+    };
+
+
     public MergeResourceAction(PropertyValuesComponent component) {
         super("Select resource to merge", OWLIcons.getAddIcon(OWLIcons.MERGE_INDIVIDUAL_ICON), component);
         this.component = component;
+    }
+
+    /**
+     * Allows picking resources of the same type as subject. Remember that Merging can only be
+     * performed if resources are of the same type
+     */
+    @Override
+    public RDFResource pickResource() {
+        RDFResource subject = component.getSubject();
+        OWLModel owlModel = subject.getOWLModel();
+        Collection allowedTypes = subject.getProtegeTypes();
+
+        return new DefaultSelectionDialogFactory().selectResourceWithBrowserTextByType(
+                (Component) component, owlModel, allowedTypes, "Select resource to merge");
+    }
+
+    /**
+     * Checks if we should copy property values to the merged instance
+     *
+     * @param property a property to check
+     * @return true if we should copy, otherwise false
+     */
+    private static boolean shouldCopyValues(RDFProperty property) {
+        if (property == null) {
+            return false;
+        }
+        for (String propertyName : EXCLUDED_PROPERTIES) {
+            if (property.getName().equals(propertyName)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -96,7 +145,6 @@ public class MergeResourceAction extends SetResourceAction {
     }
 
     /*
-         TODO: After merge, do the following:-
          a) Do not delete object, rather move it to class trash and give that information to user
             via Dialog box.
          b) Copy resource UUID and identifier to previousIdentifier of the target resource,
@@ -184,8 +232,7 @@ public class MergeResourceAction extends SetResourceAction {
 
 
     /**
-     * Copies all values from given resource to a target resource, except values for properties {@code ct:identifier},
-     * {@code ubbont:uuid} and {@code ubbont:classHierarchyURI}.
+     * Copies all values from given resource to a target resource, except values for properties in EXCLUDED_PROPERTIES
      * <p>
      * If a predicate is of functional property, and there exist values for such property in the target resource,
      * do not copy, user must decide which value to pick manually.
@@ -196,18 +243,11 @@ public class MergeResourceAction extends SetResourceAction {
     private void copyInstanceValues(RDFResource resource) {
         Collection<RDFProperty> properties = resource.getRDFProperties();
         for (RDFProperty property : properties) {
-            if (!property.getName().equals(UBBOntologyNames.UUID) &&
-                    /*!property.equals(getOWLModel().getRDFTypeProperty()) &&*/
-                    !property.getName().equals(UBBOntologyNames.IDENTIFIER) &&
-                    !property.getName().equals(UBBOntologyNames.CLASS_HIERARCHY_URI)) {
-
+            if (shouldCopyValues(property)) {
                 Collection existingValues = getSubject().getPropertyValues(property);
                 Collection newValues = resource.getPropertyValues(property);
-                    /*
-                     Skip the iteration if we meet a functional property and
-                     there exist values for such property in the target resource.
-                     Otherwise, we wont be able to chose which value to keep.
-                     */
+                // Do not copy if we meet a functional property and
+                // there exist values for such property in the target resource.
                 if (property.isFunctional() && hasValues(existingValues)) {
                     continue;
                 }
@@ -220,7 +260,6 @@ public class MergeResourceAction extends SetResourceAction {
                 }
                 if (hasValues(combinedValues)) {
                     //Remove duplicates and assign values to the target resource
-                    // getSubject().setPropertyValues(property, Collections.emptyList());
                     getSubject().setPropertyValues(property, new HashSet(combinedValues));
                 }
             }
@@ -234,7 +273,6 @@ public class MergeResourceAction extends SetResourceAction {
     protected RDFResource getSubject() {
         return component.getSubject();
     }
-
 
     protected boolean isDeleteConfirmed(RDFResource resource, String text) {
         return ProtegeUI.getModalDialogFactory().showConfirmDialog(resource.getOWLModel(), text, "Confirm deletion");

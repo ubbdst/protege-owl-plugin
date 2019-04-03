@@ -8,7 +8,7 @@ import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
-import edu.stanford.smi.protegex.owl.ui.actions.DeleteInstanceOrMoveToTrashAction;
+import edu.stanford.smi.protegex.owl.ui.actions.DeleteOrMoveToTrashAction;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,8 +36,6 @@ public class InstanceUtil {
 
     // Used for setting date modified for every instance (only works for Java > 1.6)
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-    //private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
 
     private InstanceUtil() {
     }
@@ -112,22 +110,13 @@ public class InstanceUtil {
     }
 
     /**
-     * Modify instance properties
+     * Updates property values for a given instance
      *
      * @param instance      an instance to be modified
      * @param propertiesMap properties map which holds keys as RDF properties and values as RDF property values
      * @since 1.8
      */
-    /*public static void modifyProperties(Instance instance, Map<RDFProperty, Optional<?>> propertiesMap) {
-        for (Map.Entry<RDFProperty, Optional<?>> entry : propertiesMap.entrySet()) {
-            if (entry.getValue().isPresent()) {
-                updatePropertyValue(instance, entry.getKey(), entry.getValue().get());
-            } else {
-                removePropertyValue(instance, entry.getKey());
-            }
-        }
-    }*/
-    public static void modifyProperties(Instance instance, Map<RDFProperty, Object> propertiesMap) {
+    public static void updatePropertyValues(Instance instance, Map<RDFProperty, Object> propertiesMap) {
         for (Map.Entry<RDFProperty, Object> entry : propertiesMap.entrySet()) {
             if (entry.getValue() != null) {
                 updatePropertyValue(instance, entry.getKey(), entry.getValue());
@@ -149,7 +138,7 @@ public class InstanceUtil {
         }
         String typeName = className.replaceAll(regex, "$1");
         //Lowercase the class label
-        if (typeName != null && !typeName.isEmpty()) {
+        if (!typeName.isEmpty()) {
             typeName = typeName.toLowerCase();
         }
         return getNamespace(model) + "instance" + PATH_SEPARATOR + typeName + PATH_SEPARATOR;
@@ -164,10 +153,6 @@ public class InstanceUtil {
         OWLModel owlModel = (OWLModel) instance.getKnowledgeBase();
         Collection<Cls> rdfTypes = instance.getDirectTypes();
         int iterations = 0;
-         /*
-         if (rdfTypes.size() >= 2)
-            log.info("Found classes: " + rdfTypes.toString() + " for instance " +  instance.getName());
-         */
         for (Cls clazz : rdfTypes) {
             iterations++;
             String className = clazz.getName();
@@ -209,17 +194,17 @@ public class InstanceUtil {
             encodedUrl = URLEncoder.encode(url, "UTF-8");
             return encodedUrl;
         } catch (UnsupportedEncodingException e) {
-            log.warning("(UnsupportedEncodingException: " + e.getLocalizedMessage());
+            log.warning("UnsupportedEncodingException: " + e.getLocalizedMessage());
         }
         return encodedUrl;
     }
 
 
     /**
-     * Gets Trash class with Momayo namespace or null if it does not exist
+     * Gets Trash class or null if it does not exist
      */
-    public static OWLNamedClass getMomayoTrashClass(OWLModel model) {
-        return model.getOWLNamedClass(UBBOntologyNames.TRASH_CLASS_NAME);
+    public static OWLNamedClass getTrashClass(OWLModel model) {
+        return getOWLClass(model, UBBOntologyNames.TRASH_CLASS_NAME);
     }
 
     /**
@@ -235,11 +220,10 @@ public class InstanceUtil {
     public static RDFProperty getRDFProperty(OWLModel model, String name) {
         RDFProperty property = model.getRDFProperty(name);
         if (property == null) {
-            throw new NotFoundException("Cannot find property with name [" + name + "] in the ontology");
+            throw new NotFoundException("Cannot find property [" + name + "] in the ontology");
         }
         return property;
     }
-
 
     /**
      * Gets or creates RDF property. It will only be created if
@@ -258,8 +242,8 @@ public class InstanceUtil {
      * Gets Trash class or create new one if it does not exist
      */
     public static OWLNamedClass getOrCreateTrashClass(OWLModel model) {
-        OWLNamedClass trashClass = getMomayoTrashClass(model);
-        //If it does not exist, create the default version of the Trash
+        OWLNamedClass trashClass = getTrashClass(model);
+        //If it does not exist, create the default version of Trash
         if (trashClass == null) {
             trashClass = getDefaultTrashClass(model);
         }
@@ -268,14 +252,18 @@ public class InstanceUtil {
 
 
     /**
-     * Gets default Trash class. If Momayo Trash class is not defined in the ontology, generate new Trash class
+     * Gets default Trash class. If ubbont:Trash is not defined in the ontology, generate new Trash class
      * based on the active ontology
      */
     public static OWLNamedClass getDefaultTrashClass(OWLModel model) {
         OWLNamedClass trashClass = getOWLClass(model, "Trash");
-        //If it does not exists, create one.
+        //If it does not exist, create one
         if (trashClass == null) {
+            log.info("Trash class with name [ " + UBBOntologyNames.TRASH_CLASS_NAME + "] " +
+                    "is not defined in the ontology. Creating using default namespace ...");
             trashClass = model.createOWLNamedClass("Trash");
+            trashClass.addLabel("Søppelkasse", "no");
+            trashClass.addLabel("Trash", "en");
         }
         return trashClass;
     }
@@ -286,7 +274,7 @@ public class InstanceUtil {
      * @param instance an instance to move
      */
     public static void moveInstanceToTrash(RDFResource instance) {
-        DeleteInstanceOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
+        DeleteOrMoveToTrashAction.moveInstance(instance, getOrCreateTrashClass(instance.getOWLModel()));
     }
 
 
@@ -297,7 +285,7 @@ public class InstanceUtil {
      */
     public static boolean isInTrash(RDFIndividual resource) {
         if (resource != null) {
-            OWLNamedClass trashClass = getMomayoTrashClass(resource.getOWLModel());
+            OWLNamedClass trashClass = getTrashClass(resource.getOWLModel());
             return trashClass != null && resource.getProtegeTypes().contains(trashClass);
         }
         return false;
@@ -344,7 +332,7 @@ public class InstanceUtil {
      * The method updates or creates (if it does not exist) dct:modified value
      */
     public static void updateDateModified(RDFResource resource, long timeInMillis) {
-        if(resource != null) {
+        if (resource != null) {
             OWLModel model = resource.getOWLModel();
             // Create date-time literal
             RDFSLiteral dateTimeLiteral = model.createRDFSLiteral(
@@ -362,6 +350,13 @@ public class InstanceUtil {
     }
 
     /**
+     * Checks if a collection is null or empty
+     */
+    public static boolean isNullOrEmpty(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+    /**
      * Get namespace for the active project, otherwise return default namespace
      */
     public String getNamespaceForActiveProject(OWLModel owlModel) {
@@ -372,14 +367,6 @@ public class InstanceUtil {
             }
         }
         return UBBOntologyNames.DEFAULT_NAMESPACE;
-    }
-
-
-    /**
-     * Checks if a collection is null or empty
-     */
-    public static boolean isNullOrEmpty(Collection collection) {
-        return collection == null || collection.isEmpty();
     }
 
 }
