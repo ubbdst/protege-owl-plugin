@@ -2,6 +2,7 @@ package edu.stanford.smi.protegex.owl.ui.widget;
 
 import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.Assert;
+import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
@@ -14,9 +15,10 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
- * A widget that holds identifier value and
- * modifies value for classHierarchyURI slot (http://data.ub.uib.no/ontology/classHierarchyURI")
- * based on change of it's value
+ * A widget that holds identifier value and modifies value for classHierarchyURI slot
+ * if exists (http://data.ub.uib.no/ontology/classHierarchyURI) on value change.
+ *
+ * Modification: The widget now generates new UUID if there is no signature
  *
  * @author Hemed Al Ruwehy
  * University of Bergen Library
@@ -30,8 +32,22 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //Check if a slot accept values of type String (has range of data type String),
         //if it does then show this widget in the dropdown list as one of the it's options.
         boolean isString = cls.getTemplateSlotValueType(slot) == ValueType.STRING;
-
         return isString;
+    }
+
+
+    /**
+     * Generates new UUID when instance is created
+     */
+    @Override
+    public void setValues(final Collection values) {
+        String uuid = (String) CollectionUtilities.getFirstItem(values);
+        if (uuid == null) {
+            setText(UUIDWidget.getOrGenerateUUID(getInstance()));
+            setInstanceValues();
+        } else {
+            super.setValues(getSlotValues());
+        }
     }
 
     /**
@@ -45,7 +61,6 @@ public class UBBSignatureWidget extends TextFieldWidget {
         //Value change will be executed in this given slot
         RDFProperty classHierarchySlot = getSlot(UBBOntologyNames.CLASS_HIERARCHY_URI);
         prepareValueChange(classHierarchySlot, newValue);
-
         return super.getValues();
     }
 
@@ -53,11 +68,11 @@ public class UBBSignatureWidget extends TextFieldWidget {
      * Identifier slot will get it's value when editing,
      * we don't have to do anything when instance is created
      */
-    @Override
+    /*@Override
     public void setValues(Collection collection) {
         //System.out.println("Signature Collection values: " + getSlotValues());
         super.setValues(getSlotValues());
-    }
+    }*/
 
     /**
      * Get values for this slot, or null if no value
@@ -79,22 +94,22 @@ public class UBBSignatureWidget extends TextFieldWidget {
     /**
      * Validate signature. Signature is not UUID, and is not a URI, it is UiB specific number
      */
-    private void validateSignature(String signature) {
-        if (UUIDWidget.isValidUUID(signature)) {
+     private void validateSignature(String signature) {
+        /*if (UUIDWidget.isValidUUID(signature)) {
             showErrorMessage("Encountered UUID [" + signature + "] which is not valid signature. Try another one");
-            //Do not continue
             throw new IllegalArgumentException("Encountered UUID [" + signature + "] which is not valid signature");
-        /*} else if (startsWithScheme(signature) || isValidUri(signature)) {
+        } else if (startsWithScheme(signature) || isValidUri(signature)) {
             showErrorMessage("Encountered URI [" + signature + "] which is not valid signature. Try another one");
             //Do not continue
             throw new IllegalArgumentException("URI [" + signature + "] is not a valid signature");
-        */
-        } else if (slotValueExists(getSlot(UBBOntologyNames.IDENTIFIER), signature)) {
-            showErrorMessage("Signature \"" + signature + "\" already exists. Please try another one");
+        } else*/
+         if (slotValueExists(getSlot(UBBOntologyNames.IDENTIFIER), signature)) {
+            showErrorMessage("Signature \"" + signature + "\" already exists. Try another one");
             //Do not continue
             throw new IllegalArgumentException("Signature already exists for value [" + signature + "]");
         }
     }
+
 
 
     /**

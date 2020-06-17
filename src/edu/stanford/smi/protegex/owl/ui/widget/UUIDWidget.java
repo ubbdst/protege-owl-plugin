@@ -5,6 +5,7 @@ import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
+import edu.stanford.smi.protegex.owl.util.UUIDInstanceName;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -14,7 +15,6 @@ import java.util.logging.Logger;
  * A widget that copies UUID from the instance URI to a given slot.
  * This widget is disabled for editing.
  * <p>
- *
  * @author Hemed Al Ruwehy
  *         2017-04-06
  *         University of Bergen Library
@@ -58,7 +58,6 @@ public class UUIDWidget extends TextFieldWidget {
     }
 
 
-
     /**
      * Extract UUID from instance URI, if it exists
      */
@@ -72,6 +71,16 @@ public class UUIDWidget extends TextFieldWidget {
             }
         }
         return EMPTY_STRING;
+    }
+
+    /**
+     * Gets UUID from instance URI or generates it if it does not exist
+     */
+    public static String getOrGenerateUUID(Instance instance) {
+        String instanceUuid = getUUIDFromInstanceURI(instance);
+        return instanceUuid.isEmpty()
+                ? UUIDInstanceName.generateRandomUUID()
+                : instanceUuid;
     }
 
     /**
