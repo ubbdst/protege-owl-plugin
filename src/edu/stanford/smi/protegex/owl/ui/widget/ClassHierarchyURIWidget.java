@@ -1,13 +1,15 @@
 package edu.stanford.smi.protegex.owl.ui.widget;
 
-import edu.stanford.smi.protege.model.*;
+import edu.stanford.smi.protege.model.Cls;
+import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protege.model.Slot;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protege.util.URIUtilities;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
 import edu.stanford.smi.protegex.owl.util.InstanceUtil;
-import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -52,11 +54,11 @@ public class ClassHierarchyURIWidget extends TextFieldWidget {
      *
      * @param name a name to be checked for validity
      */
-    public static boolean isValidUrl(String name) {
-        String[] schemes = {"http", "https", "file", "ftp"};
-        //UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
-        UrlValidator urlValidator = new UrlValidator();
-        return urlValidator.isValid(name);
+    public static boolean isValidUri(String name) {
+        // String[] schemes = {"http", "https", "file", "ftp"};
+        // UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
+        // UrlValidator urlValidator = new UrlValidator();
+        return URIUtilities.isValidURI(name);
 
     }
 

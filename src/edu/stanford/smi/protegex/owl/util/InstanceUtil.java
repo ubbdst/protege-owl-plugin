@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import static edu.stanford.smi.protegex.owl.model.impl.DefaultRDFSLiteral.*;
@@ -35,9 +36,14 @@ public class InstanceUtil {
     private static transient Logger log = Log.getLogger(InstanceUtil.class);
 
     // Used for setting date modified for every instance (only works for Java > 1.6)
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    // private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+
+    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
 
     private InstanceUtil() {
+        //Set UTC timezone
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**
@@ -339,7 +345,6 @@ public class InstanceUtil {
                     dateFormatter.format(timeInMillis),
                     model.getXSDdateTime()
             );
-
             // Execute change
             OWLUtil.setPropertyValue(
                     resource,

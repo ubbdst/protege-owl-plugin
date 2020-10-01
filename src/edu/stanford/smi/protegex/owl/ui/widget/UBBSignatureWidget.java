@@ -4,6 +4,7 @@ import edu.stanford.smi.protege.model.*;
 import edu.stanford.smi.protege.util.Assert;
 import edu.stanford.smi.protege.util.CollectionUtilities;
 import edu.stanford.smi.protege.util.Log;
+import edu.stanford.smi.protege.util.URIUtilities;
 import edu.stanford.smi.protege.widget.TextFieldWidget;
 import edu.stanford.smi.protegex.owl.model.*;
 import edu.stanford.smi.protegex.owl.ui.ProtegeUI;
@@ -140,7 +141,7 @@ public class UBBSignatureWidget extends TextFieldWidget {
                 newValue = classHierarchyPrefix + InstanceUtil.encodeUrl(newValue.toLowerCase(Locale.ROOT));
             }
             //Do not proceed if new value is not a valid URI
-            if(isValidUri(newValue)) {
+            if(URIUtilities.isValidURI(newValue)) {
                 RDFSLiteral newValueLiteral = createLiteral(newValue, getDefaultDatatype());
                 replaceSlotValue(slot, oldValue, newValueLiteral);
             }
@@ -220,13 +221,6 @@ public class UBBSignatureWidget extends TextFieldWidget {
      */
     protected RDFSLiteral createLiteral(String value,  RDFSDatatype datatype){
         return getOWLModel().createRDFSLiteral(value, datatype);
-    }
-
-    /**
-      * A wrapper for validating URI
-     */
-    protected static boolean isValidUri(String name){
-        return ClassHierarchyURIWidget.isValidUrl(name);
     }
 
     /**
